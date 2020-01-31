@@ -18,7 +18,6 @@ namespace MedicalFactory
 
     public class Sprite : GameObject
     {
-
         public Vector2 Position;
         public float Radius;
         public bool CanCollide = false;
@@ -31,7 +30,8 @@ namespace MedicalFactory
         public int AnimationFrameTimeInMS { get; set; } = 1000;
 
         public AnimationMode AnimationMode { get; set; }
-        private int animationFrame;
+
+        private int animationFrame = -1;    /* hack to trigger initial setter with 0 */
         public int AnimationFrame
         {
             get {
@@ -41,6 +41,7 @@ namespace MedicalFactory
                 if (animationFrame != value)
                 {
                     animationFrame = value;
+
                     Radius = textures[animationFrame].Width / 2.0f;
                 }
             }
@@ -86,16 +87,9 @@ namespace MedicalFactory
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            var color = hasCollision ? Color.Red : Color.White;
 
-
-            if (hasCollision)
-            {
-                spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.Red);
-            }
-            else
-            {
-                spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.White);
-            }
+            spriteBatch.Draw(textures[AnimationFrame], Position-(Vector2.One * Radius), null, color);
         }
     }
 }
