@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MedicalFactory
 {
-    public class Screen
+    public class Screen : Group
     {
         private const int bigWidth = 1920;
         private const int bigHeight = 1080;
@@ -15,6 +15,7 @@ namespace MedicalFactory
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch screenBatch;
         private RenderTarget2D canvas;
+        private Texture2D palaceholderBackground;
 
         public int Width { get; }
         public int Height { get; }
@@ -43,13 +44,16 @@ namespace MedicalFactory
             graphics.ApplyChanges();
         }
 
-        public void PreDraw()
+        public void PreDraw(SpriteBatch spriteBatch)
         {
             graphics.GraphicsDevice.SetRenderTarget(canvas);
+            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
         }
 
-        public void PostDraw()
+        public void PostDraw(SpriteBatch spriteBatch)
         {
+            spriteBatch.End();
             graphics.GraphicsDevice.SetRenderTarget(null);
             screenBatch.Begin();
             screenBatch.Draw(canvas, new Rectangle(0, 0,
@@ -60,21 +64,38 @@ namespace MedicalFactory
 
         private void ToggleFullscreen()
         {
-            graphics.PreferredBackBufferWidth = graphics.IsFullScreen ? 1280 : bigWidth;
+            graphics.PreferredBackBufferWidth = graphics.IsFullScreen ? smalWidth : bigWidth;
             graphics.PreferredBackBufferHeight = graphics.IsFullScreen ? smalHeight : bigHeight;
             graphics.ToggleFullScreen();
         }
 
-        internal void Update(GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            this.PreDraw(spriteBatch);
+            spriteBatch.Draw(palaceholderBackground, Vector2.Zero, null, Color.White);
+            base.Draw(spriteBatch, gameTime);
+            this.PostDraw(spriteBatch);
+        }
+
+        public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content)
+        {
+            palaceholderBackground = Content.Load<Texture2D>("background");
+
+            base.LoadContent(Content);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+
             var keyboardstate = Keyboard.GetState();
-            var isKeyDown = keyboardstate.IsKeyDown(Keys.F);
+            var isKeyDown = keyboardstate.IsKeyDown(Keys.F1);
 
             if (isKeyDown && !lastKeyState)
             {
                 this.ToggleFullscreen();
             }
             this.lastKeyState = isKeyDown;
+            base.Update(gameTime);
         }
     }
 }
