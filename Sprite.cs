@@ -8,13 +8,24 @@ namespace MedicalFactory
 {
     public class Sprite : GameObject
     {
-        private Vector2 Position;
+        public Vector2 Position;
+        private string TextureName;
         private Texture2D Texture;
+
+        public Sprite() : this("stick")
+        {
+        }
+
+        public Sprite(string TextureName)
+        {
+            this.TextureName = TextureName;
+        }
 
         public void LoadContent(ContentManager Content)
         {
-            Texture = Content.Load<Texture2D>("stick");
+            Texture = Content.Load<Texture2D>(this.TextureName);
         }
+
         public void Update(GameTime gameTime)
         {
 

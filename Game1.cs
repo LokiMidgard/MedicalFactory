@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PaToRo_Desktop.Engine.Input;
+using System;
 
 namespace MedicalFactory
 {
@@ -16,6 +17,7 @@ namespace MedicalFactory
         private readonly Screen screen;
 
         private Sprite testSprite;
+        private Player playerOne;
         private Texture2D palaceholderBackground;
 
         public Game1()
@@ -37,6 +39,16 @@ namespace MedicalFactory
 
             testSprite = new Sprite();
             gameObjects.Add(testSprite);
+            playerOne = new Player(xBoxController, testSprite);
+            gameObjects.Add(playerOne);
+
+            Random r = new Random();
+            for (int i = 0; i < 100; ++i) {
+                Sprite blub = new Sprite("Roboter_blau");
+                blub.Position.X = (float)r.NextDouble()*1920.0f;
+                blub.Position.Y = (float)r.NextDouble()*1080.0f;
+                gameObjects.Add(blub);
+            }
 
 
             base.Initialize();
@@ -56,8 +68,10 @@ namespace MedicalFactory
                 Exit();
 
             xBoxController.Update(gameTime);
-            Position.X += xBoxController.Get(Sliders.LeftStickX);
             screen.Update(gameTime);
+
+            this.gameObjects.Update(gameTime);
+
             base.Update(gameTime);
         }
 
