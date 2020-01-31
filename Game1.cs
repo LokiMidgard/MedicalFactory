@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PaToRo_Desktop.Engine.Input;
 
 namespace monoGameTest
 {
@@ -8,6 +9,8 @@ namespace monoGameTest
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private XBoxController xBoxController;
+        private Vector2 Position;
 
         private readonly Screen screen;
 
@@ -27,6 +30,8 @@ namespace monoGameTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            xBoxController = new XBoxController(0);
+
 
             base.Initialize();
             this.screen.Initialize();
@@ -45,14 +50,14 @@ namespace monoGameTest
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            xBoxController.Update(gameTime);
+            Position.X += xBoxController.Get(Sliders.LeftStickX);
             var keyboardstate = Keyboard.GetState();
             var isKeyDown = keyboardstate.IsKeyDown(Keys.F);
             if (isKeyDown)
             {
                 screen.ToggleFullscreen();
             }
-
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -63,8 +68,9 @@ namespace monoGameTest
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             this._spriteBatch.Begin();
+         
             this._spriteBatch.Draw(this.palaceholderBackground, Vector2.Zero, null, Color.White);
-            this._spriteBatch.Draw(this.stick, Vector2.Zero, null, Color.White);
+            this._spriteBatch.Draw(this.stick, Position, null, Color.White);
             this._spriteBatch.End();
 
             // TODO: Add your drawing code here
