@@ -31,7 +31,7 @@ namespace MedicalFactory
 
         public AnimationMode AnimationMode { get; set; }
 
-        private int animationFrame = -1;    /* hack to trigger initial setter with 0 */
+        private int animationFrame;
         public int AnimationFrame
         {
             get {
@@ -41,10 +41,14 @@ namespace MedicalFactory
                 if (animationFrame != value)
                 {
                     animationFrame = value;
-
-                    Radius = textures[animationFrame].Width / 2.0f;
+                    UpdateRadius();
                 }
             }
+        }
+
+        private void UpdateRadius()
+        {
+            Radius = textures[animationFrame].Width / 2.0f;
         }
 
         private static int PingPong(int value, int length)
@@ -71,6 +75,7 @@ namespace MedicalFactory
         public void LoadContent(ContentManager Content)
         {
             textures = this.textureNames.Select(x => Content.Load<Texture2D>(x)).ToArray();
+            UpdateRadius();
         }
 
         public void Update(GameTime gameTime)
