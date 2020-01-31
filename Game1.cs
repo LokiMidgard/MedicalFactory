@@ -37,7 +37,7 @@ namespace MedicalFactory
             xBoxController = new XBoxController(0);
             this.screen.Initialize();
 
-            testSprite = new Sprite();
+            testSprite = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.PingPong };
             gameObjects.Add(testSprite);
             playerOne = new Player(xBoxController, testSprite);
             gameObjects.Add(playerOne);
