@@ -9,20 +9,20 @@ namespace MedicalFactory
 {
     public class Group : List<GameObject>, GameObject
     {
-        public void LoadContent(ContentManager Content)
+        public virtual void LoadContent(ContentManager Content)
         {
             foreach(var gameObject in this) {
                 gameObject.LoadContent(Content);
             }
         }
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             foreach(var gameObject in this) {
                 gameObject.Update(gameTime);
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             foreach (var gameObject in this)
             {

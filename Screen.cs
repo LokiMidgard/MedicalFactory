@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MedicalFactory
 {
-    public class Screen
+    public class Screen : Group
     {
         private const int bigWidth = 1920;
         private const int bigHeight = 1080;
