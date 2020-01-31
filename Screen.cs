@@ -88,7 +88,7 @@ namespace MedicalFactory
         {
 
             var keyboardstate = Keyboard.GetState();
-            var isKeyDown = keyboardstate.IsKeyDown(Keys.F);
+            var isKeyDown = keyboardstate.IsKeyDown(Keys.F1);
 
             if (isKeyDown && !lastKeyState)
             {
