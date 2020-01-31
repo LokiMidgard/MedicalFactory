@@ -7,6 +7,10 @@ namespace monoGameTest
 {
     public class Screen
     {
+        private const int bigWidth = 1920;
+        private const int bigHeight = 1080;
+        private const int smalWidth = 1280;
+        private const int smalHeight = 720;
         private bool lastKeyState;
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch screenBatch;
@@ -18,8 +22,8 @@ namespace monoGameTest
         public Screen(GraphicsDeviceManager graphics)
         {
             this.graphics = graphics;
-            this.Width = 1920;
-            this.Height = 1080;
+            this.Width = bigWidth;
+            this.Height = bigHeight;
         }
 
         public void Initialize()
@@ -27,9 +31,15 @@ namespace monoGameTest
             this.screenBatch = new SpriteBatch(graphics.GraphicsDevice);
             this.canvas = new RenderTarget2D(graphics.GraphicsDevice, Width, Height);
 
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+#if DEBUG
+            graphics.PreferredBackBufferWidth = smalWidth;
+            graphics.PreferredBackBufferHeight = smalHeight;
             graphics.IsFullScreen = false;
+#else
+            graphics.PreferredBackBufferWidth = bigHeight;
+            graphics.PreferredBackBufferHeight = bigHeight;
+            graphics.IsFullScreen = true;
+#endif
             graphics.ApplyChanges();
         }
 
@@ -50,8 +60,8 @@ namespace monoGameTest
 
         private void ToggleFullscreen()
         {
-            graphics.PreferredBackBufferWidth = graphics.IsFullScreen ? 1280 : 1920;
-            graphics.PreferredBackBufferHeight = graphics.IsFullScreen ? 720 : 1080;
+            graphics.PreferredBackBufferWidth = graphics.IsFullScreen ? 1280 : bigWidth;
+            graphics.PreferredBackBufferHeight = graphics.IsFullScreen ? smalHeight : bigHeight;
             graphics.ToggleFullScreen();
         }
 
