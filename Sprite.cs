@@ -22,25 +22,23 @@ namespace MedicalFactory
         public Vector2 Position;
         private readonly string[] textureNames;
         private Texture2D[] textures;
-        private int animationFrame;
 
         public int AnimationFrameTimeInMS { get; set; } = 1000;
 
         public AnimationMode AnimationMode { get; set; }
         public int AnimationFrame
         {
-            get => animationFrame; set
+            get; set;
+        }
+
+        private static int PingPong(int value, int length)
+        {
+            if (value >= length)
             {
-                if (value >= this.textures.Length)
-                {
-                    var diff = value - this.textures.Length;
-                    animationFrame = this.textures.Length - diff - 2;
-                }
-                else
-                {
-                    animationFrame = value;
-                }
+                var diff = value - length;
+                return length - diff - 2;
             }
+            return value;
         }
 
         [Obsolete]
@@ -70,7 +68,7 @@ namespace MedicalFactory
             {
                 AnimationMode.None => this.AnimationFrame,
                 AnimationMode.Loop => ((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / AnimationFrameTimeInMS)) % textures.Length,
-                AnimationMode.PingPong => ((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / AnimationFrameTimeInMS)) % (textures.Length + textures.Length - 2),
+                AnimationMode.PingPong => PingPong(((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / AnimationFrameTimeInMS)) % (textures.Length + textures.Length - 2), textures.Length),
                 _ => throw new NotImplementedException($"AnimationMode {this.AnimationMode}")
             };
 
