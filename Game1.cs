@@ -3,23 +3,25 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PaToRo_Desktop.Engine.Input;
 
-namespace monoGameTest
+namespace MedicalFactory
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Group gameObjects;
         private XBoxController xBoxController;
         private Vector2 Position;
 
         private readonly Screen screen;
 
-        private Texture2D stick;
+        private Sprite testSprite;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             screen = new Screen(_graphics);
+            gameObjects = new Group();
 
 
             Content.RootDirectory = "Content";
@@ -30,17 +32,20 @@ namespace monoGameTest
         {
             // TODO: Add your initialization logic here
             xBoxController = new XBoxController(0);
+            this.screen.Initialize();
+
+            testSprite = new Sprite();
+            gameObjects.Add(testSprite);
 
 
             base.Initialize();
-            this.screen.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            stick = Content.Load<Texture2D>("stick");
             // TODO: use this.Content to load your game content here
+            gameObjects.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -66,7 +71,7 @@ namespace monoGameTest
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             this._spriteBatch.Begin();
-            this._spriteBatch.Draw(this.stick, Position, null, Color.White);
+            this.gameObjects.Draw(this._spriteBatch, gameTime);
             this._spriteBatch.End();
 
             // TODO: Add your drawing code here
