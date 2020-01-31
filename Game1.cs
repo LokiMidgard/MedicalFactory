@@ -52,13 +52,7 @@ namespace monoGameTest
 
             xBoxController.Update(gameTime);
             Position.X += xBoxController.Get(Sliders.LeftStickX);
-            var keyboardstate = Keyboard.GetState();
-            var isKeyDown = keyboardstate.IsKeyDown(Keys.F);
-            if (isKeyDown)
-            {
-                screen.ToggleFullscreen();
-            }
-
+            screen.Update(gameTime);
             base.Update(gameTime);
         }
 

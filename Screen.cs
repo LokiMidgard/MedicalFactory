@@ -1,10 +1,13 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace monoGameTest
 {
     public class Screen
     {
+        private bool lastKeyState;
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch screenBatch;
         private RenderTarget2D canvas;
@@ -45,11 +48,23 @@ namespace monoGameTest
             screenBatch.End();
         }
 
-        public void ToggleFullscreen()
+        private void ToggleFullscreen()
         {
             graphics.PreferredBackBufferWidth = graphics.IsFullScreen ? 1280 : 1920;
             graphics.PreferredBackBufferHeight = graphics.IsFullScreen ? 720 : 1080;
             graphics.ToggleFullScreen();
+        }
+
+        internal void Update(GameTime gameTime)
+        {
+            var keyboardstate = Keyboard.GetState();
+            var isKeyDown = keyboardstate.IsKeyDown(Keys.F);
+
+            if (isKeyDown && !lastKeyState)
+            {
+                this.ToggleFullscreen();
+            }
+            this.lastKeyState = isKeyDown;
         }
     }
 }
