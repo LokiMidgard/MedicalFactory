@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PaToRo_Desktop.Engine.Input;
 using System;
+using System.Collections.Generic;
 
 namespace MedicalFactory
 {
@@ -42,6 +43,14 @@ namespace MedicalFactory
             playerOne = new Player(xBoxController, testSprite);
             gameObjects.Add(playerOne);
 
+            Random r = new Random();
+            for(int i = 0; i < 100; ++i) {
+                Sprite blub = new Sprite("stick_master");
+                blub.Position.X = (float)r.NextDouble()*1920;
+                blub.Position.Y = (float)r.NextDouble()*1080;
+                gameObjects.Add(blub);
+            }
+
             this.screen.Add(gameObjects);
 
             base.Initialize();
@@ -63,6 +72,11 @@ namespace MedicalFactory
             screen.Update(gameTime);
 
             this.gameObjects.Update(gameTime);
+
+            List<Collision> collisions = CollisionManager.GetCollisions(gameObjects);
+            foreach(Collision c in collisions) {
+                c.spriteA.hasCollision = true;
+            }
 
             base.Update(gameTime);
         }
