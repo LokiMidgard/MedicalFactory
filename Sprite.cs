@@ -3,48 +3,98 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using PaToRo_Desktop.Engine.Input;
+using System.Linq;
+using System;
 
 namespace MedicalFactory
 {
+
+    public enum AnimationMode
+    {
+        None,
+        Loop,
+        PingPong
+    }
+
     public class Sprite : GameObject
     {
+
         public Vector2 Position;
         public float Radius;
         public bool CanCollide = false;
-        private string TextureName;
-        private Texture2D Texture;
 
         public bool hasCollision;
 
-        public Sprite() : this("stick")
+        private readonly string[] textureNames;
+        private Texture2D[] textures;
+
+        public int AnimationFrameTimeInMS { get; set; } = 1000;
+
+        public AnimationMode AnimationMode { get; set; }
+        private int animationFrame;
+        public int AnimationFrame
         {
+            get {
+                return animationFrame;
+            }
+            set {
+                if (animationFrame != value)
+                {
+                    animationFrame = value;
+                    Radius = textures[animationFrame].Width / 2.0f;
+                }
+            }
         }
 
-        public Sprite(string TextureName)
+        private static int PingPong(int value, int length)
         {
-            this.TextureName = TextureName;
+            if (value >= length)
+            {
+                var diff = value - length;
+                return length - diff - 2;
+            }
+            return value;
+        }
+
+        [Obsolete]
+        public Sprite() : this("stick")
+        {
+
+        }
+
+        public Sprite(params string[] textureNames)
+        {
+            this.textureNames = textureNames;
         }
 
         public void LoadContent(ContentManager Content)
         {
-            Texture = Content.Load<Texture2D>(this.TextureName);
-            Radius = Texture.Width / 2.0f;
+            textures = this.textureNames.Select(x => Content.Load<Texture2D>(x)).ToArray();
         }
 
         public void Update(GameTime gameTime)
         {
+            this.AnimationFrame = this.AnimationMode switch
+            {
+                AnimationMode.None => this.AnimationFrame,
+                AnimationMode.Loop => ((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / AnimationFrameTimeInMS)) % textures.Length,
+                AnimationMode.PingPong => PingPong(((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / AnimationFrameTimeInMS)) % (textures.Length + textures.Length - 2), textures.Length),
+                _ => throw new NotImplementedException($"AnimationMode {this.AnimationMode}")
+            };
 
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+
+
             if (hasCollision)
             {
-                spriteBatch.Draw(Texture, Position, null, Color.Red);
+                spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.Red);
             }
             else
             {
-                spriteBatch.Draw(Texture, Position, null, Color.White);
+                spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.White);
             }
         }
     }

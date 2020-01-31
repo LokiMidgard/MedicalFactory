@@ -17,9 +17,7 @@ namespace MedicalFactory
 
         private readonly Screen screen;
 
-        private Sprite testSprite;
         private Player playerOne;
-        private Texture2D palaceholderBackground;
 
         public Game1()
         {
@@ -38,8 +36,11 @@ namespace MedicalFactory
             xBoxController = new XBoxController(0);
             this.screen.Initialize();
 
-            testSprite = new Sprite();
+            var testSprite = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.PingPong };
+            var testSprite2 = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.Loop };
+            testSprite2.Position.X = 100;
             gameObjects.Add(testSprite);
+            gameObjects.Add(testSprite2);
             playerOne = new Player(xBoxController, testSprite);
             gameObjects.Add(playerOne);
 
