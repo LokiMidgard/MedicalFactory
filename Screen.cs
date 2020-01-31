@@ -15,7 +15,7 @@ namespace MedicalFactory
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch screenBatch;
         private RenderTarget2D canvas;
-        private Texture2D palaceholderBackground;
+        private Texture2D placeholderBackground;
 
         public int Width { get; }
         public int Height { get; }
@@ -72,14 +72,14 @@ namespace MedicalFactory
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             this.PreDraw(spriteBatch);
-            spriteBatch.Draw(palaceholderBackground, Vector2.Zero, null, Color.White);
+            spriteBatch.Draw(placeholderBackground, Vector2.Zero, null, Color.White);
             base.Draw(spriteBatch, gameTime);
             this.PostDraw(spriteBatch);
         }
 
         public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content)
         {
-            palaceholderBackground = Content.Load<Texture2D>("background");
+            placeholderBackground = Content.Load<Texture2D>("background");
 
             base.LoadContent(Content);
         }

@@ -8,10 +8,5 @@ namespace MedicalFactory
 {
     public interface GameObject
     {
-        void LoadContent(ContentManager Content);
-
-        void Update(GameTime gameTime);
-
-        void Draw(SpriteBatch spriteBatch, GameTime gameTime);
     }
 }
