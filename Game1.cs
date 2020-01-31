@@ -16,7 +16,6 @@ namespace MedicalFactory
         private readonly Screen screen;
 
         private Sprite testSprite;
-        private Texture2D palaceholderBackground;
 
         public Game1()
         {
@@ -37,7 +36,7 @@ namespace MedicalFactory
 
             testSprite = new Sprite();
             gameObjects.Add(testSprite);
-
+            this.screen.Add(gameObjects);
 
             base.Initialize();
         }
@@ -45,9 +44,8 @@ namespace MedicalFactory
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            palaceholderBackground = Content.Load<Texture2D>("background");
             // TODO: use this.Content to load your game content here
-            gameObjects.LoadContent(Content);
+            screen.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -63,21 +61,7 @@ namespace MedicalFactory
 
         protected override void Draw(GameTime gameTime)
         {
-            this.screen.PreDraw();
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            this._spriteBatch.Begin();
-
-            this._spriteBatch.Draw(this.palaceholderBackground, Vector2.Zero, null, Color.White);
-
-            this.gameObjects.Draw(this._spriteBatch, gameTime);
-
-            this._spriteBatch.End();
-
-            // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
-            this.screen.PostDraw();
+            this.screen.Draw(this._spriteBatch, gameTime);
         }
     }
 }
