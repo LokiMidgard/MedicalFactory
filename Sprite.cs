@@ -16,9 +16,8 @@ namespace MedicalFactory
         PingPong
     }
 
-    public class Sprite : GameObject
+    public class Sprite : GameObject, IUpdateable, IDrawable, ILoadable
     {
-
         public Vector2 Position;
         public float Radius;
         public bool CanCollide = false;
@@ -31,6 +30,7 @@ namespace MedicalFactory
         public int AnimationFrameTimeInMS { get; set; } = 1000;
 
         public AnimationMode AnimationMode { get; set; }
+
         private int animationFrame;
         public int AnimationFrame
         {
@@ -41,9 +41,14 @@ namespace MedicalFactory
                 if (animationFrame != value)
                 {
                     animationFrame = value;
-                    Radius = textures[animationFrame].Width / 2.0f;
+                    UpdateRadius();
                 }
             }
+        }
+
+        private void UpdateRadius()
+        {
+            Radius = textures[animationFrame].Width / 2.0f;
         }
 
         private static int PingPong(int value, int length)
@@ -70,6 +75,7 @@ namespace MedicalFactory
         public void LoadContent(ContentManager Content)
         {
             textures = this.textureNames.Select(x => Content.Load<Texture2D>(x)).ToArray();
+            UpdateRadius();
         }
 
         public void Update(GameTime gameTime)
@@ -86,16 +92,9 @@ namespace MedicalFactory
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            var color = hasCollision ? Color.Red : Color.White;
 
-
-            if (hasCollision)
-            {
-                spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.Red);
-            }
-            else
-            {
-                spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.White);
-            }
+            spriteBatch.Draw(textures[AnimationFrame], Position-(Vector2.One * Radius), null, color);
         }
     }
 }

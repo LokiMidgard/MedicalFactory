@@ -12,23 +12,30 @@ namespace MedicalFactory
         public static List<Collision> GetCollisions(Group group)
         {
             List<Collision> Collisions = new List<Collision>();
-            foreach(GameObject thisgo in group) {
-                if (thisgo is Sprite) {
-                    Sprite thisSprite = thisgo as Sprite;
-                    foreach (GameObject othergo in group)
+            for(var i = 0; i<group.Count; ++i)
+            {
+                var thisSprite = group[i] as Sprite;
+                if (thisSprite != null) {
+                    for(var j = i+1; j<group.Count; ++j)
                     {
-                        if (othergo is Sprite)
+                        var otherSprite = group[j] as Sprite;
+                        if (otherSprite != null)
                         {
-                            if (othergo == thisgo) continue;
-                            Sprite otherSprite = othergo as Sprite;
                             Vector2 FromTo = otherSprite.Position - thisSprite.Position;
                             if (FromTo.Length() < thisSprite.Radius + otherSprite.Radius)
                             {
-                                Collision collision = new Collision();
-                                collision.Direction = FromTo * (FromTo.Length() - thisSprite.Radius - otherSprite.Radius);
-                                collision.spriteA = thisSprite;
-                                collision.spriteB = otherSprite;
-                                Collisions.Add(collision);
+                                Collision collisionAB = new Collision();
+                                collisionAB.Direction = FromTo * (FromTo.Length() - thisSprite.Radius - otherSprite.Radius);
+                                collisionAB.spriteA = thisSprite;
+                                collisionAB.spriteB = otherSprite;
+                                Collisions.Add(collisionAB);
+
+                                // TODO: not sure if we need this
+                                Collision collisionBA = new Collision();
+                                collisionBA.Direction = -collisionAB.Direction;
+                                collisionBA.spriteA = otherSprite;
+                                collisionBA.spriteB = thisSprite;
+                                Collisions.Add(collisionBA);
                             }
                         }
                     }
