@@ -37,9 +37,25 @@ namespace MedicalFactory.GameObjects
             this.playerColor = color;
             this.Origin = new Vector2(30.0f, 90.0f);
             this.AnimationFrameLength = TimeSpan.FromMilliseconds(100);
-            var verticalOffset = 30;
-            if (color == PlayerColor.BlauerRoboter)
-                verticalOffset = 0;
+
+            var offsetLeft = color switch
+            {
+                PlayerColor.GruenerRoboter => new Vector2(0, -30),
+                PlayerColor.BlauerRoboter => new Vector2(30, 0),
+                PlayerColor.GelberRoboter => new Vector2(30, 30),
+                PlayerColor.RoterRoboter => new Vector2(30, -30),
+                _ => throw new NotSupportedException()
+            };
+            var offsetRigth = color switch
+            {
+                PlayerColor.GruenerRoboter => new Vector2(0, 30),
+                PlayerColor.BlauerRoboter => new Vector2(-30, 0),
+                PlayerColor.GelberRoboter => new Vector2(-30, 30),
+                PlayerColor.RoterRoboter => new Vector2(-30, -30),
+                _ => throw new NotSupportedException()
+            };
+
+
             // initilize Particles
             this.particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
@@ -52,7 +68,7 @@ namespace MedicalFactory.GameObjects
                 IsEnabled = true,
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
-                AttachOffset = new Vector2(30, verticalOffset),
+                AttachOffset = offsetLeft,
             };
             this.particles2 = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
@@ -65,7 +81,7 @@ namespace MedicalFactory.GameObjects
                 IsEnabled = true,
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
-                AttachOffset = new Vector2(-30, verticalOffset),
+                AttachOffset = offsetRigth,
             };
             this.Attach(this.particles);
             this.Attach(this.particles2);
@@ -136,11 +152,6 @@ namespace MedicalFactory.GameObjects
                 this.particles.IsEnabled = false;
                 this.particles2.IsEnabled = false;
             }
-
-            this.particles.IsEnabled = true;
-            this.particles2.IsEnabled = true;
-
-
         }
 
     }
