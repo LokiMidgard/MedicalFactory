@@ -76,12 +76,15 @@ namespace MedicalFactory.GameObjects
                     var isSeccondHath = value.Attached.OfType<BodyPart>().Where(x => x.Type == BodyPartType.HERZ).Count() >= 2;
                     this.AttachOffset = this.Type switch
                     {
-                        BodyPartType.HERZ => isSeccondHath? new Vector2(-15, -75) : new Vector2(15, -60),
+                        BodyPartType.HERZ => isSeccondHath ? new Vector2(-15, -75) : new Vector2(15, -60),
                         BodyPartType.LUNGE => new Vector2(-20, 20),
                         BodyPartType.NIERE => new Vector2(-20, -20),
                         _ => throw new NotImplementedException($"Type {this.Type}")
                     };
                 }
+
+                
+
                 if (value is Robot)
                     this.AttachOffset = DefaultAttachOffset;
 
@@ -109,12 +112,12 @@ namespace MedicalFactory.GameObjects
 
 
             var scalingTime = TimeSpan.FromSeconds(1);
-            if (this.ShouldScaleDown && this.finishedScalingDown == default)
+            if (this.ShouldScaleDown && this.finishedScalingDown == default && this.Scale.X > 0.5f)
             {
                 this.finishedScalingDown = gameTime.TotalGameTime + scalingTime;
                 this.ShouldScaleDown = false;
             }
-            if (this.ShouldScaleUp && this.finishedScalingUp == default)
+            if (this.ShouldScaleUp && this.finishedScalingUp == default && this.Scale.X < 1.0f)
             {
                 this.finishedScalingUp = gameTime.TotalGameTime + scalingTime;
                 this.ShouldScaleUp = false;
