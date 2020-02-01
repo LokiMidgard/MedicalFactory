@@ -134,6 +134,7 @@ namespace MedicalFactory
         {
             this.textures = new Texture2D[]{texture};
             this.textureNames = new string[]{"directloaded"};
+            Init();
         }
 
 
@@ -144,14 +145,20 @@ namespace MedicalFactory
             this.textureNames = textureNames;
         }
 
-        public virtual void LoadContent(Game1 game)
+        public virtual void Init()
         {
-            textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
             UpdateRadius();
             if (Origin == default)
             {
                 Origin = new Vector2(textures[0].Width / 2.0f, textures[0].Height / 2.0f);
             }
+
+        }
+
+        public virtual void LoadContent(Game1 game)
+        {
+            textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
+            Init();
         }
 
         public virtual void Update(GameTime gameTime)

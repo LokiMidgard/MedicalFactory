@@ -7,25 +7,25 @@ using MedicalFactory.GameObjects;
 
 namespace MedicalFactory
 {
-    public class PatientFactory
+    public class ConveyerBelt
     {
-        double Timer = 0.0;
+        public float Speed = 10.0f;
         Texture2D HumanTexture;
 
         public void LoadContent(Game1 game)
         {
             HumanTexture = game.Content.Load<Texture2D>("Mensch");
+            Texture2D ConveyerTexture = game.Content.Load<Texture2D>("Fließband");
+            for (int i = 0; i < 10; ++i)
+            {
+                Sprite conveyer = new Sprite(ConveyerTexture);
+                conveyer.Position = new Vector2(i * 180.0f + 90.0f, 60.0f * 9.5f);
+                Game1.sprites.Add(conveyer);
+            }
         }
         public void Update(GameTime gameTime)
         {
-            if(Timer >= 5.0) {
-                Patient patient = new Patient(HumanTexture);
-                patient.Position = new Vector2(-120.0f, 540.0f + 30.0f);
-                patient.Rotation = MathHelper.PiOver2;
-                Game1.sprites.Add(patient);
-                Timer = 0.0;
-            }
-            Timer += gameTime.ElapsedGameTime.TotalSeconds;
         }
+
     }
 }
