@@ -9,7 +9,6 @@ namespace MedicalFactory.GameObjects
     public class Patient : Sprite
     {
 
-        public float ConveyerSpeed = 10.0f;
         public readonly PatientState PatientState;
 
         public Patient(Texture2D texture) : base(texture)
@@ -19,7 +18,10 @@ namespace MedicalFactory.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            this.Position = this.Position + new Vector2(ConveyerSpeed, 0.0f);
+            this.Velocity = new Vector2(Game1.game.conveyerBelt.Speed, 0);
+
+            base.Update(gameTime);
+            //this.Position = this.Position + new Vector2(Game1.game.conveyerBelt.Speed, 0.0f) * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }

@@ -9,6 +9,8 @@ namespace MedicalFactory
 {
     public class MyMathHelper
     {
+
+        public static Random Random = new Random(10);
         public static float RightAngleInRadians(Vector2 Basis, Vector2 Target)
         {
             float SignedAngleInRadians = Vector2.Dot(Vector2.Normalize(Basis), Vector2.Normalize(Target));

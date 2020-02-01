@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using PaToRo_Desktop.Engine.Input;
 using MedicalFactory.GameObjects;
+using System;
 
 namespace MedicalFactory
 {
@@ -25,6 +26,7 @@ namespace MedicalFactory
         }
         public void Update(GameTime gameTime)
         {
+            Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*100.0f;
         }
 
     }
