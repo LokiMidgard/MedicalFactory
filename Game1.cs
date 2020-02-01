@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using PaToRo_Desktop.Engine.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MedicalFactory
 {
@@ -42,7 +43,7 @@ namespace MedicalFactory
             controllers = new Group();
             players = new Group();
             sprites = new Group();
-            
+
             patientFactory = new PatientFactory();
             conveyerBelt = new ConveyerBelt();
 

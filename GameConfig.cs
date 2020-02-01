@@ -6,6 +6,6 @@ namespace MedicalFactory
 {
     public static class GameConfig
     {
-        public static bool DrawCollisionGeometry = true;
+        public static bool DrawCollisionGeometry = false;
     }
 }

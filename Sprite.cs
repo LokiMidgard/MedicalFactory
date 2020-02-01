@@ -36,6 +36,8 @@ namespace MedicalFactory
     public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable, IAttachable, ICanCarray
     {
         public Vector2 Position { get; set; }
+        public Vector2 Scale { get; set; } = Vector2.One;
+
         public Vector2 Origin;
         public float Radius;
         public Vector2 Velocity;
@@ -52,7 +54,7 @@ namespace MedicalFactory
         public AnimationMode AnimationMode { get; set; }
 
         private ICanCarray attachedTo;
-        public ICanCarray AttachedTo
+        public virtual ICanCarray AttachedTo
         {
             get => this.attachedTo; set
             {
@@ -83,7 +85,8 @@ namespace MedicalFactory
             toAdd.AttachedTo = this;
         }
         public virtual void Detach(IAttachable toRemove)
-        {   this.attached.Remove(toRemove);
+        {
+            this.attached.Remove(toRemove);
             toRemove.AttachedTo = null;
         }
 
@@ -122,16 +125,16 @@ namespace MedicalFactory
 
         public bool Visible { get; set; } = true;
 
-        private Sprite() 
+        private Sprite()
         {
             this.attached = new List<IAttachable>();
             this.Attached = this.attached.AsReadOnly();
         }
 
-        public Sprite(Texture2D texture) :this()
+        public Sprite(Texture2D texture) : this()
         {
-            this.textures = new Texture2D[]{texture};
-            this.textureNames = new string[]{""};
+            this.textures = new Texture2D[] { texture };
+            this.textureNames = new string[] { "" };
             Init();
         }
 
@@ -143,7 +146,7 @@ namespace MedicalFactory
         }
 
 
-        public Sprite(params string[] textureNames):this()
+        public Sprite(params string[] textureNames) : this()
         {
             this.textureNames = textureNames;
             this.textures = new Texture2D[textureNames.Length];
@@ -161,7 +164,7 @@ namespace MedicalFactory
 
         public virtual void LoadContent(Game1 game)
         {
-            for (var i = 0; i<textures.Length; ++i)
+            for (var i = 0; i < textures.Length; ++i)
             {
                 if (textures[i] == null && !string.IsNullOrEmpty(textureNames[i]))
                 {
