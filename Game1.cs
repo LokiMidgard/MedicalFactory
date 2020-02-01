@@ -19,6 +19,7 @@ namespace MedicalFactory
         private Group playersGroup;      // player abstraction, see class Player
         public SpriteFont Font;
         public static Background Background;
+        public static TextBox TextBoxLeft;
         public static Group sprites;
 
         public readonly Screen Screen;
@@ -105,6 +106,12 @@ namespace MedicalFactory
             recycler.AddDispenser(bpdLungs);
             recycler.AddDispenser(bpdKidneys);
             conveyerBelt.Add(recycler);
+
+            // add Textboxes
+            TextBoxLeft = new TextBox() { Position = new Vector2(30, 30), Width = 100, Height = 100 };
+            TextBoxLeft.Text = "Hello World \nWelcome";
+            TextBoxLeft.FontScale = 0.5f;
+            TopLayer.Add(TextBoxLeft);
 
             base.Initialize();
         }

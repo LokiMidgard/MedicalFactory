@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Diagnostics;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MedicalFactory
 {
@@ -21,6 +22,10 @@ namespace MedicalFactory
         private List<Sprite> parts = new List<Sprite>();
         private Texture2D[] ConveyorTextures;
 
+        private SoundEffect beltStart;
+        private SoundEffect beltLoop;
+        private SoundEffectInstance playing;
+
         public override void LoadContent(Game1 game)
         {
             ConveyorTextures = new Texture2D[]
@@ -29,6 +34,9 @@ namespace MedicalFactory
                 game.Content.Load<Texture2D>("FliessbandAnimiert_2"),
                 game.Content.Load<Texture2D>("FliessbandAnimiert_3")
             };
+
+            beltStart = game.Content.Load<SoundEffect>("belt_start");
+            beltLoop = game.Content.Load<SoundEffect>("belt_loop");
 
             for (int i = 0; i < 10; ++i)
             {
@@ -52,6 +60,20 @@ namespace MedicalFactory
         public void Update(GameTime gameTime)
         {
             Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds) + 1.0f) * MaxSpeed;
+
+            //if (playing == null)
+            //{
+            //    playing = beltStart.CreateInstance();
+            //    playing.Volume = 0.5f;
+            //    playing.IsLooped = false;
+            //    playing.Play();
+            //} else if (playing.State == SoundState.Stopped)
+            //{
+            //    playing = beltLoop.CreateInstance();
+            //    playing.Volume = 0.5f;
+            //    playing.IsLooped = false;
+            //    playing.Play();
+            //}
 
             XPos += (float)(Speed * gameTime.ElapsedGameTime.TotalSeconds);
 

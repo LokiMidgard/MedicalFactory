@@ -32,7 +32,7 @@ namespace MedicalFactory
         public bool hasCollision;
 
         private readonly string[] textureNames;
-        private Texture2D[] textures;
+        protected Texture2D[] textures;
 
         public TimeSpan AnimationFrameLength { get; set; } = TimeSpan.FromSeconds(1);
 

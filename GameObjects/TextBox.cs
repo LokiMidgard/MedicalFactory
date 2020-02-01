@@ -1,0 +1,43 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MedicalFactory.GameObjects
+{
+    public class TextBox : Sprite
+    {
+        public int Width = 100;
+        public int Height = 100;
+        public float FontScale = 1;
+        public Color Color = Color.Wheat;
+
+        public string Text;
+        private SpriteFont font;
+
+        public TextBox() : base("square")
+        {
+        }
+
+        public override void LoadContent(Game1 game)
+        {
+            base.LoadContent(game);
+            font = game.Content.Load<SpriteFont>("PressStart2P");
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            var rect = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+            spriteBatch.Draw(this.textures[0], rect, Color);
+
+            var lineHeight = 30 * FontScale;
+            var yOffset = 0f;
+            foreach (var line in this.Text.Split("\n"))
+            {
+                spriteBatch.DrawString(font, line, Position + Vector2.One * 5 + Vector2.UnitY * yOffset, Color.Black, 0, Vector2.Zero, FontScale, SpriteEffects.None, 0);
+                yOffset += lineHeight;
+            }
+        }
+    }
+}

@@ -37,6 +37,24 @@
 /processorParam:TextureFormat=Color
 /build:background.png
 
+#begin belt_end.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:belt_end.ogg
+
+#begin belt_loop.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:belt_loop.ogg
+
+#begin belt_start.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:belt_start.ogg
+
 #begin BlauerRoboter_1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -96,18 +114,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Blut_Klein.PNG
-
-#begin square.PNG
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:square.PNG
 
 #begin Blut_Mittel.PNG
 /importer:TextureImporter
@@ -607,6 +613,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Schleim_Mittel.PNG
+
+#begin square.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:square.PNG
 
 #begin stick.png
 /importer:TextureImporter
