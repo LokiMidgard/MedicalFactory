@@ -8,8 +8,7 @@ using System.Text;
 
 namespace MedicalFactory.GameObjects
 {
-
-    public class BodyPart : Sprite
+    public class BodyPart : Sprite, IItem
     {
 
         public bool IsDemaged { get => this.AnimationFrame == 0 ? false : true; set => this.AnimationFrame = value ? 1 : 0; }

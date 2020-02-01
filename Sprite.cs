@@ -34,7 +34,7 @@ namespace MedicalFactory
         private readonly string[] textureNames;
         private Texture2D[] textures;
 
-        public int AnimationFrameTimeInMS { get; set; } = 1000;
+        public TimeSpan AnimationFrameLength { get; set; } = TimeSpan.FromSeconds(1);
 
         public AnimationMode AnimationMode { get; set; }
 
@@ -165,8 +165,8 @@ namespace MedicalFactory
             this.AnimationFrame = this.AnimationMode switch
             {
                 AnimationMode.None => this.AnimationFrame,
-                AnimationMode.Loop => ((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / this.AnimationFrameTimeInMS)) % this.textures.Length,
-                AnimationMode.PingPong => PingPong(((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / this.AnimationFrameTimeInMS)) % (this.textures.Length + this.textures.Length - 2), this.textures.Length),
+                AnimationMode.Loop => ((int)Math.Floor(gameTime.TotalGameTime / this.AnimationFrameLength)) % this.textures.Length,
+                AnimationMode.PingPong => PingPong(((int)Math.Floor(gameTime.TotalGameTime / this.AnimationFrameLength)) % (this.textures.Length + this.textures.Length - 2), this.textures.Length),
                 _ => throw new NotImplementedException($"AnimationMode {this.AnimationMode}")
             };
 

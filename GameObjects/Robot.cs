@@ -32,11 +32,11 @@ namespace MedicalFactory.GameObjects
             };
         }
 
-        public Robot(PlayerColor color) : base(color.ToString()+"_1")
+        public Robot(PlayerColor color) : base(color.ToString() + "_1", color.ToString() + "_2", color.ToString() + "_3")
         {
             this.playerColor = color;
             this.Origin = new Vector2(30.0f, 90.0f);
-
+            this.AnimationFrameLength = TimeSpan.FromMilliseconds(400);
             // initilize Particles
             this.particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
@@ -105,11 +105,18 @@ namespace MedicalFactory.GameObjects
             );
 
             // if transporting body part => spill some blood
-            var bp = Attached.FirstOrDefault(a => a is BodyPart) as BodyPart;
-            if (bp != null)
+            var item = Attached.OfType<IItem>().FirstOrDefault();
+            if (item is BodyPart bodyPart)
             {
                 if (random.NextDouble() < 0.025)
-                    Game1.Background.AddBloodSplash(Position, bp.IsDemaged);
+                    Game1.Background.AddBloodSplash(Position, bodyPart.IsDemaged);
+            }
+            if (item is null)
+                this.AnimationMode = AnimationMode.PingPong;
+            else
+            {
+                this.AnimationMode = AnimationMode.None;
+                this.AnimationFrame = 0;
             }
 
             this.particles.Update(gameTime);
