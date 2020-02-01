@@ -70,7 +70,13 @@ namespace MedicalFactory
                             }
                         }
                         if (!patientFound) {
+                            var bp = ControlledSprite.Attached[0] as BodyPart;
+
                             ControlledSprite.Detach(ControlledSprite.Attached[0]);
+                            if (bp != null)
+                            {
+                                Game1.Background.AddBloodSplash(bp.Position, bp.IsDemaged, true);
+                            }
                         }
                     }
                 }
