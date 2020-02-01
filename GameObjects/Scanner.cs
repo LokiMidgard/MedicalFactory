@@ -23,6 +23,9 @@ namespace MedicalFactory.GameObjects
 
         public void Update(GameTime gameTime)
         {
+            if (Game1.game.Screen.scores.Count == Game1.game.patientFactory.PatientCount)
+                Game1.game.ShowFinisScreen();
+
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -31,6 +34,7 @@ namespace MedicalFactory.GameObjects
             var pationt = ConveyerBelt.GetPatientUnderScanner();
             if (pationt != null)
                 spriteBatch.DrawString(Game1.game.Font, pationt.patient.State.CalculateScore().actual.ToString(), this.Upper.Position - new Vector2(15, 0), Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+
         }
 
     }

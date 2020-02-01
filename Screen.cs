@@ -87,8 +87,8 @@ namespace MedicalFactory
             this.PreDraw(spriteBatch);
             spriteBatch.Draw(this.placeholderBackground, Vector2.Zero, null, Color.White);
             base.Draw(spriteBatch, gameTime);
-            
-            
+
+
             this.PostDraw(spriteBatch);
         }
 
@@ -107,6 +107,7 @@ namespace MedicalFactory
             var isKeyDownFullScreen = GetBlockingConveyer(Keys.F1);
             var isKeyDownDebugGraphic = GetBlockingConveyer(Keys.F2);
             var blockingConveyer = GetBlockingConveyer(Keys.F3);
+            var speedUp = GetBlockingConveyer(Keys.F4);
 
 
             bool GetBlockingConveyer(Keys key)
@@ -123,6 +124,11 @@ namespace MedicalFactory
 
             if (blockingConveyer)
                 GameConfig.KeepPlayersToTheirSide = !GameConfig.KeepPlayersToTheirSide;
+
+            if (speedUp)
+                Game1.conveyerBelt.MaxSpeed = (Game1.conveyerBelt.MaxSpeed == ConveyerBelt.DefaultSpeed) ? ConveyerBelt.DefaultSpeed * 10f : ConveyerBelt.DefaultSpeed;
+
+
 
             this.tint = Color.Lerp(Color.Transparent, Color.Red, (float)(gameTime.TotalGameTime / TimeSpan.FromSeconds(10)));
             this.tint = Color.Transparent;

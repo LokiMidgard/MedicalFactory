@@ -32,7 +32,7 @@ namespace MedicalFactory
         public static Group TopLayer;
 
         private Random rng = new Random();
-
+        private Sprite finishScreen;
 
         public Game1()
         {
@@ -99,6 +99,10 @@ namespace MedicalFactory
             TopLayer.Add(scanner.Upper);
             TopLayer.Add(scanner);
 
+            this.finishScreen = new Sprite("FinishedOverlay") { Position = new Vector2(960,540)};
+            TopLayer.Add(finishScreen);
+            finishScreen.Visible = false;
+
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };
             recycler.AddDispenser(bpdHeart);
@@ -107,6 +111,14 @@ namespace MedicalFactory
             conveyerBelt.Add(recycler);
 
             base.Initialize();
+        }
+
+        public void ShowFinisScreen()
+        {
+            if (this.finishScreen.Visible)
+                return;
+            this.finishScreen.Visible = true;
+            // Show Score
         }
 
         protected override void LoadContent()
@@ -122,6 +134,12 @@ namespace MedicalFactory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (this.finishScreen.Visible)
+            {
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    this.RestartGame();
+            }
+
             patientFactory.Update(gameTime);
             conveyerBelt.Update(gameTime);
 
@@ -132,6 +150,13 @@ namespace MedicalFactory
             Screen.Update(gameTime);
 
             base.Update(gameTime);
+        }
+
+        private void RestartGame()
+        {
+            this.finishScreen.Visible = false;
+            this.patientFactory.Start();
+            this.Screen.scores.Clear();
         }
 
         protected override void Draw(GameTime gameTime)
