@@ -175,8 +175,8 @@ namespace MedicalFactory
                 this.Position += this.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (Velocity.Length() != 0.0f)
                 {
-                    this.Velocity *= 0.95f;
-                    if (Velocity.Length() < 0.01f)
+                    this.Velocity *= 0.96f;
+                    if (Velocity.Length() < 0.1f)
                     {
                         Velocity = new Vector2(0.0f);
                     }

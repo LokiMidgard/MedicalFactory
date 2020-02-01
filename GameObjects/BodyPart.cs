@@ -11,6 +11,7 @@ namespace MedicalFactory.GameObjects
     public class BodyPart : Sprite, IItem
     {
 
+        private TimeSpan DreiSekundenRegel = TimeSpan.FromSeconds(3);
         public bool IsDamaged { get => this.AnimationFrame == 0 ? false : true; set => this.AnimationFrame = value ? 1 : 0; }
 
         public enum BodyPartType
@@ -117,8 +118,15 @@ namespace MedicalFactory.GameObjects
 
             if (this.AttachedTo is null)
             {
-                this.IsDamaged = true;
+                DreiSekundenRegel -= gameTime.ElapsedGameTime;
+                if (DreiSekundenRegel.TotalMilliseconds < 0)
+                {
+                    this.IsDamaged = true;
+                }
                 CollisionManager.KeepInWorld(this, (recycler) => { recycler.PutStuffInside(this); });
+            } else
+            {
+                DreiSekundenRegel = TimeSpan.FromSeconds(3);
             }
 
             var scalingTime = TimeSpan.FromSeconds(1);
@@ -153,11 +161,11 @@ namespace MedicalFactory.GameObjects
                 this.Scale = new Vector2(scalePosition, scalePosition);
             }
 
-            if (Velocity.Length() > 0.0f)
+            if (Velocity.Length() > 2f)
             {
                 if (NextSplashTime < 0.0f)
                 {
-                    Game1.Background.AddBloodSplash(Position, false, SplashCount * 0.7f / (1.0f + SplashCount));
+                    Game1.Background.AddBloodSplash(Position, IsDamaged, SplashCount * 0.5f / (1.0f + SplashCount));
                     NextSplashTime = 0.3f;
                     SplashCount += 1;
                 }
