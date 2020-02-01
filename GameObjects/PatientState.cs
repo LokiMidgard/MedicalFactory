@@ -21,7 +21,7 @@ namespace MedicalFactory.GameObjects
             patient.Attach(organ);
         }
 
-        public void TryRemoveBodyPart(BodyPart.BodyPartType type, ICanCarray newOwner)
+        public void TryRemoveBodyPart(BodyPart.BodyPartType type, ICanCarry newOwner)
         {
             var matching = BodyParts.Where(o => o.GetType().Name == type.ToString());
             if (matching.Count() > 0)

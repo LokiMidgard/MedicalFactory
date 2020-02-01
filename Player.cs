@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using PaToRo_Desktop.Engine.Input;
 using MedicalFactory.GameObjects;
+using System.Linq;
 
 namespace MedicalFactory
 {
@@ -44,7 +45,9 @@ namespace MedicalFactory
                 // Handle Buttons
                 if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
                 {
-                    if (ControlledSprite.Attached.Count == 0)  // if nothing is attached
+                    var holdables = ControlledSprite.Attached.OfType<BodyPart>();
+
+                    if (holdables.Count() == 0)  // if nothing is attached
                     {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
                         var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
@@ -65,25 +68,23 @@ namespace MedicalFactory
                         {
                             Patient patient = collision.spriteB as Patient;
                             if (patient != null) {
-                                patient.Attach(ControlledSprite.Attached[0]);
+                                patient.Attach(holdables.First());
                                 iPutItSomewhere = true;
                                 break;
                             }
                             Recycler recycler = collision.spriteB as Recycler;
                             if (recycler != null) {
-                                recycler.PutStuffInside(ControlledSprite.Attached[0] as BodyPart);
+                                recycler.PutStuffInside(holdables.First());
                                 iPutItSomewhere = true;
                                 break;
                             }
                         }
                         if (!iPutItSomewhere) {
-                            var bp = ControlledSprite.Attached[0] as BodyPart;
-
-                            ControlledSprite.Detach(ControlledSprite.Attached[0]);
+                            var bp = holdables.First();
                             if (bp != null)
-                            {
                                 Game1.Background.AddBloodSplash(bp.Position, bp.IsDemaged, true);
-                            }
+
+                            ControlledSprite.Detach(holdables.First());
                         }
                     }
                 }

@@ -55,42 +55,40 @@ namespace MedicalFactory.GameObjects
             this.Type = type;
         }
 
-        public override ICanCarray AttachedTo
+        private ICanCarry oldValue;
+        public override void OnAttachChanged()
         {
-            get => base.AttachedTo; set
+            var value = AttachedTo;    
+            if (value is HumanPatient)
             {
-                var oldValue = base.AttachedTo;
-                base.AttachedTo = value;
-                if (value is HumanPatient)
+                this.AttachOffset = this.Type switch
                 {
-                    this.AttachOffset = this.Type switch
-                    {
-                        BodyPartType.HERZ => new Vector2(15, -60),
-                        BodyPartType.LUNGE => new Vector2(0, -90),
-                        BodyPartType.NIERE => new Vector2(-20, -20),
-                        _ => throw new NotImplementedException($"Type {this.Type}")
-                    };
-                }
-                if (value is AlienPatient)
-                {
-                    var isSeccondHath = value.Attached.OfType<BodyPart>().Where(x => x.Type == BodyPartType.HERZ).Count() >= 2;
-                    this.AttachOffset = this.Type switch
-                    {
-                        BodyPartType.HERZ => isSeccondHath ? new Vector2(-15, -75) : new Vector2(15, -60),
-                        BodyPartType.LUNGE => new Vector2(-20, 20),
-                        BodyPartType.NIERE => new Vector2(-20, -20),
-                        _ => throw new NotImplementedException($"Type {this.Type}")
-                    };
-                }
-
-                
-
-                if (value is Robot)
-                    this.AttachOffset = DefaultAttachOffset;
-
-                this.ShouldScaleDown = value is Patient && !(oldValue is Patient);
-                this.ShouldScaleUp = !(value is Patient) && this.Scale.X < 1f;
+                    BodyPartType.HERZ => new Vector2(15, -60),
+                    BodyPartType.LUNGE => new Vector2(0, -90),
+                    BodyPartType.NIERE => new Vector2(-20, -20),
+                    _ => throw new NotImplementedException($"Type {this.Type}")
+                };
             }
+
+            if (value is AlienPatient)
+            {
+                var isSeccondHath = value.Attached.OfType<BodyPart>().Where(x => x.Type == BodyPartType.HERZ).Count() >= 2;
+                this.AttachOffset = this.Type switch
+                {
+                    BodyPartType.HERZ => isSeccondHath ? new Vector2(-15, -75) : new Vector2(15, -60),
+                    BodyPartType.LUNGE => new Vector2(-20, 20),
+                    BodyPartType.NIERE => new Vector2(-20, -20),
+                    _ => throw new NotImplementedException($"Type {this.Type}")
+                };
+            }
+
+            if (value is Robot)
+                this.AttachOffset = DefaultAttachOffset;
+
+            this.ShouldScaleDown = value is Patient && !(oldValue is Patient);
+            this.ShouldScaleUp = !(value is Patient) && this.Scale.X < 1f;
+
+            oldValue = value;
         }
 
         private bool ShouldScaleDown;

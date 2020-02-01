@@ -48,7 +48,7 @@ namespace MedicalFactory
 
     }
 
-    public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject, IAttachable
+    public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject, IAttachable, IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables
     {
         private readonly int MaxParticles;
         private readonly string textureName;
@@ -89,23 +89,18 @@ namespace MedicalFactory
         private TimeSpan[] createionTime;
         private bool[] actives;
 
-        private ICanCarray attachedTo;
-        public ICanCarray AttachedTo
-        {
-            get => this.attachedTo; set
-            {
-                if (this.attachedTo == value)
-                    return;
+        private ICanCarry attachedTo;
 
-                if (this.attachedTo != null)
-                    this.attachedTo.Detach(this);
-                this.attachedTo = value;
-                this.attachedTo.Attach(this);
-            }
+        public virtual ICanCarry AttachedTo
+        {
+            get { return this.attachedTo; }
         }
 
-        public Vector2 AttachOffset { get; set; }
+        public virtual void OnAttachChanged() { }
 
+        ICanCarry IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables.AttachedTo { set { this.attachedTo = value; OnAttachChanged(); } }
+
+        public Vector2 AttachOffset { get; set; }
 
         public ParticleSystem(TimeSpan maxAge, string texture, int maxParticles = 1000)
         {

@@ -17,23 +17,7 @@ namespace MedicalFactory
         PingPong
     }
 
-
-    public interface IAttachable
-    {
-        ICanCarray AttachedTo { set; get; }
-        Vector2 AttachOffset { get; set; }
-    }
-
-    public interface ICanCarray
-    {
-        Vector2 Position { get; set; }
-        float Rotation { get; set; }
-        System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
-        void Attach(IAttachable add);
-        void Detach(IAttachable add);
-    }
-
-    public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable, IAttachable, ICanCarray
+    public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable, IAttachable, IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables, ICanCarry
     {
         public Vector2 Position { get; set; }
         public Vector2 Scale { get; set; } = Vector2.One;
@@ -53,43 +37,46 @@ namespace MedicalFactory
 
         public AnimationMode AnimationMode { get; set; }
 
-        private ICanCarray attachedTo;
-        public virtual ICanCarray AttachedTo
-        {
-            get => this.attachedTo; set
-            {
-                var newValue = value;
-                var oldValue = this.attachedTo;
-                
-                if (newValue == oldValue)
-                    return;
+        #region Attaching
+        private ICanCarry attachedTo;
 
-                this.attachedTo = newValue;
-                if (oldValue != null)
-                    oldValue.Detach(this);
-                if (newValue != null)
-                    newValue.Attach(this);
-            }
+        public virtual ICanCarry AttachedTo
+        {
+            get { return this.attachedTo; }
         }
+
+        public virtual void OnAttachChanged() { }
+
+        ICanCarry IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables.AttachedTo { set { this.attachedTo = value; OnAttachChanged(); } }
 
         public Vector2 AttachOffset { get; set; }
 
         private readonly List<IAttachable> attached;
         public System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
+        
         public virtual void Attach(IAttachable toAdd)
         {
+            if (!(toAdd is IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables impl))
+                throw new NotSupportedException();
+
             if (toAdd.AttachedTo == this)
                 return;
+
             if (toAdd.AttachedTo != null)
-                toAdd.AttachedTo = null;
+                toAdd.AttachedTo.Detach(toAdd);
+            
             this.attached.Add(toAdd);
-            toAdd.AttachedTo = this;
+            impl.AttachedTo = this;
         }
         public virtual void Detach(IAttachable toRemove)
         {
+            if (!(toRemove is IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables impl))
+                throw new NotSupportedException();
+
             this.attached.Remove(toRemove);
-            toRemove.AttachedTo = null;
+            impl.AttachedTo = null;
         }
+        #endregion
 
         private int animationFrame;
         public int AnimationFrame

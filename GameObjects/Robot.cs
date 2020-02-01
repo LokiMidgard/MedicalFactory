@@ -33,7 +33,7 @@ namespace MedicalFactory.GameObjects
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
             };
-            this.particles.AttachedTo = this;
+            this.Attach(this.particles);
             this.particles.AttachOffset = new Vector2(30, 30);
         }
 
