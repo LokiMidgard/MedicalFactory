@@ -29,6 +29,13 @@ namespace MedicalFactory.GameObjects
         private int initialStock;
         private Texture2D bodyPartTex;
         private int count;
+        private Texture2D shadow;
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 15), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.75f, 0.75f), SpriteEffects.None, 0.0f);
+            base.Draw(spriteBatch, gameTime);
+        }
 
         public BodyPartDispenser(DispenserType type, int stock) : base(type.ToString(), "Leeresgerät")
         {
@@ -39,9 +46,10 @@ namespace MedicalFactory.GameObjects
 
         public override void LoadContent(Game1 game)
         {
-            base.LoadContent(game);
-
+            this.shadow = game.Content.Load<Texture2D>("Schatten_Oval");
             this.bodyPartTex = game.Content.Load<Texture2D>(Map(type).ToString());
+
+            base.LoadContent(game);
             
             for (int i = 0; i < initialStock; ++i)
                 CreateNew();

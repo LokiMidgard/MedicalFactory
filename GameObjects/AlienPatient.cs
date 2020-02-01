@@ -6,10 +6,10 @@ using System.Text;
 
 namespace MedicalFactory.GameObjects
 {
-    public class Patient : Sprite
+    public class AlienPatient : Patient
     {
 
-        public Patient(Texture2D texture) : base(texture)
+        public AlienPatient(Texture2D texture) : base(texture)
         {
         }
 

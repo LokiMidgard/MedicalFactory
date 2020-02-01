@@ -10,6 +10,7 @@ namespace MedicalFactory.GameObjects
     }
     public class Robot : Sprite
     {
+        private Texture2D shadow;
         private readonly ParticleSystem particles;
         private TimeSpan nextSpark;
         private TimeSpan sparkDuration;
@@ -37,6 +38,7 @@ namespace MedicalFactory.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 10), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.6f, 0.6f), SpriteEffects.None, 0.0f);
             base.Draw(spriteBatch, gameTime);
             this.particles.Draw(spriteBatch, gameTime);
         }
@@ -45,6 +47,7 @@ namespace MedicalFactory.GameObjects
         {
             base.LoadContent(game);
             this.particles.LoadContent(game);
+            this.shadow = game.Content.Load<Texture2D>("Schatten_Oval");
         }
 
         public override void Update(GameTime gameTime)
@@ -64,7 +67,7 @@ namespace MedicalFactory.GameObjects
                 {
                     this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
                     this.particles.IsEnabled = true;
-                    
+
                 }
                 //else
                 {

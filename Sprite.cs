@@ -201,8 +201,7 @@ namespace MedicalFactory
         {
             if (Visible)
             {
-                spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, null, Color.White, this.Rotation, this.Origin, 1.0f, SpriteEffects.None, 0.0f);
-
+                spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, rotation: this.Rotation, origin: this.Origin, scale: this.Scale);
                 if (GameConfig.DrawCollisionGeometry)
                 {
                     var color = this.hasCollision ? Color.Red : Color.White;
