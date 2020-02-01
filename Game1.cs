@@ -24,10 +24,6 @@ namespace MedicalFactory
 
         public readonly Screen Screen;
 
-        //private XBoxController xBoxController, xBoxController2;  // => added to controllers
-        //private Robot robot1;
-        //private Robot robot2;
-
         public PatientFactory patientFactory;
         public static ConveyerBelt conveyerBelt;
         public static Group TopLayer;
@@ -61,6 +57,14 @@ namespace MedicalFactory
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+        }
+
+        public static int CountOrgansOnFloor
+        {
+            get
+            {
+                return sprites.Count(s => s is BodyPart && (s as BodyPart).AttachedTo == null);
+            }
         }
 
         protected override void Initialize()
@@ -113,7 +117,7 @@ namespace MedicalFactory
 
             // add Textboxes
             TextBoxLeft = new TextBox() { Position = new Vector2(30, 30), Width = 100, Height = 100 };
-            TextBoxLeft.Text = "Hello World \nWelcome";
+            TextBoxLeft.Text = "";
             TextBoxLeft.FontScale = 0.5f;
             TopLayer.Add(TextBoxLeft);
 

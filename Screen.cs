@@ -130,8 +130,9 @@ namespace MedicalFactory
 
 
 
-            this.tint = Color.Lerp(Color.Transparent, Color.Red, (float)(gameTime.TotalGameTime / TimeSpan.FromSeconds(10)));
-            this.tint = Color.Transparent;
+            var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 10f, 0f, 1f);
+            this.tint = Color.Lerp(Color.Transparent, Color.Red, tintAmount);
+            //this.tint = Color.Transparent;
             //this.tint = Color.Red;
 
             this.overlayScale = Vector2.One * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);

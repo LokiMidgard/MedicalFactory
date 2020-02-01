@@ -122,6 +122,7 @@ namespace MedicalFactory.GameObjects
                 if (DreiSekundenRegel.TotalMilliseconds < 0)
                 {
                     this.IsDamaged = true;
+                    Game1.Background.AddBloodSplash(Position, IsDamaged, 0.4f);
                 }
                 CollisionManager.KeepInWorld(this, (recycler) => { recycler.PutStuffInside(this); });
             } else

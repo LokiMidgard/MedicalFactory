@@ -90,7 +90,7 @@ namespace MedicalFactory
                             if (holdedItem is Sprite sprite)
                             {
                                 var direction = MyMathHelper.RotateBy(-Vector2.UnitY, ControlledSprite.Rotation);
-                                sprite.Velocity = direction * 150f + ControlledSprite.Velocity;
+                                sprite.Velocity = direction * 300f + ControlledSprite.Velocity;
                             }
 
                             ControlledSprite.Detach(holdedItem);
