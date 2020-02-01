@@ -102,7 +102,6 @@ namespace MedicalFactory
                 if (this.animationFrame != value)
                 {
                     this.animationFrame = value;
-                    this.UpdateRadius();
                 }
             }
         }
