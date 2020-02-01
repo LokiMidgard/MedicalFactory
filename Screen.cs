@@ -11,8 +11,9 @@ namespace MedicalFactory
         private const int bigHeight = 1080;
         private const int smalWidth = 1280;
         private const int smalHeight = 720;
-        private bool lastKeyState;
-        
+        private bool lastFullScreenKey;
+        private bool lastFullDebugGraficKey;
+
         private SpriteBatch screenBatch;
         public RenderTarget2D canvas;
         private Texture2D placeholderBackground;
@@ -30,25 +31,25 @@ namespace MedicalFactory
 
         public void Initialize()
         {
-            this.screenBatch = new SpriteBatch(graphics.GraphicsDevice);
-            this.canvas = new RenderTarget2D(graphics.GraphicsDevice, Width, Height);
+            this.screenBatch = new SpriteBatch(this.graphics.GraphicsDevice);
+            this.canvas = new RenderTarget2D(this.graphics.GraphicsDevice, this.Width, this.Height);
 
 #if DEBUG
-            graphics.PreferredBackBufferWidth = smalWidth;
-            graphics.PreferredBackBufferHeight = smalHeight;
-            graphics.IsFullScreen = false;
+            this.graphics.PreferredBackBufferWidth = smalWidth;
+            this.graphics.PreferredBackBufferHeight = smalHeight;
+            this.graphics.IsFullScreen = false;
 #else
             graphics.PreferredBackBufferWidth = bigHeight;
             graphics.PreferredBackBufferHeight = bigHeight;
             graphics.IsFullScreen = true;
 #endif
-            graphics.ApplyChanges();
+            this.graphics.ApplyChanges();
         }
 
         public void PreDraw(SpriteBatch spriteBatch)
         {
-            
-            spriteBatch.GraphicsDevice.SetRenderTarget(canvas);
+
+            spriteBatch.GraphicsDevice.SetRenderTarget(this.canvas);
             spriteBatch.GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(sortMode: SpriteSortMode.Immediate);
         }
@@ -57,31 +58,31 @@ namespace MedicalFactory
         {
             spriteBatch.End();
             spriteBatch.GraphicsDevice.SetRenderTarget(null);
-            screenBatch.Begin();
-            screenBatch.Draw(canvas, new Rectangle(0, 0,
+            this.screenBatch.Begin();
+            this.screenBatch.Draw(this.canvas, new Rectangle(0, 0,
                 spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
                 spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight), Color.White);
-            screenBatch.End();
+            this.screenBatch.End();
         }
 
         private void ToggleFullscreen()
         {
-            graphics.PreferredBackBufferWidth = graphics.IsFullScreen ? smalWidth : bigWidth;
-            graphics.PreferredBackBufferHeight = graphics.IsFullScreen ? smalHeight : bigHeight;
-            graphics.ToggleFullScreen();
+            this.graphics.PreferredBackBufferWidth = this.graphics.IsFullScreen ? smalWidth : bigWidth;
+            this.graphics.PreferredBackBufferHeight = this.graphics.IsFullScreen ? smalHeight : bigHeight;
+            this.graphics.ToggleFullScreen();
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             this.PreDraw(spriteBatch);
-            spriteBatch.Draw(placeholderBackground, Vector2.Zero, null, Color.White);
+            spriteBatch.Draw(this.placeholderBackground, Vector2.Zero, null, Color.White);
             base.Draw(spriteBatch, gameTime);
             this.PostDraw(spriteBatch);
         }
 
         public override void LoadContent(Game1 game)
         {
-            placeholderBackground = game.Content.Load<Texture2D>("background");
+            this.placeholderBackground = game.Content.Load<Texture2D>("background");
 
             base.LoadContent(game);
         }
@@ -90,13 +91,17 @@ namespace MedicalFactory
         {
 
             var keyboardstate = Keyboard.GetState();
-            var isKeyDown = keyboardstate.IsKeyDown(Keys.F1);
+            var isKeyDownFullScreen = keyboardstate.IsKeyDown(Keys.F1);
+            var isKeyDownDebugGraphic = keyboardstate.IsKeyDown(Keys.F2);
 
-            if (isKeyDown && !lastKeyState)
-            {
+            if (isKeyDownFullScreen && !this.lastFullScreenKey)
                 this.ToggleFullscreen();
-            }
-            this.lastKeyState = isKeyDown;
+
+            if (isKeyDownDebugGraphic && !this.lastFullDebugGraficKey)
+                GameConfig.DrawCollisionGeometry = !GameConfig.DrawCollisionGeometry;
+
+            this.lastFullScreenKey = isKeyDownFullScreen;
+            this.lastFullDebugGraficKey = isKeyDownDebugGraphic;
             base.Update(gameTime);
         }
 
