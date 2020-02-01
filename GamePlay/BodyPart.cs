@@ -20,10 +20,9 @@ namespace MedicalFactory
             if (CarriedBy != null && CarriedBy.ControlledSprite != null)
             {
                 var dist = 32;
-                var rot = CarriedBy.ControlledSprite.Rotation;
-                var upVector = -Vector2.UnitY;
-                var forwardDirection = Vector2.TransformNormal(upVector, Matrix.CreateRotationX(rot));
-                var offset = forwardDirection * dist;
+                var upVector = -Vector2.UnitY * dist;
+                var offset = MyMathHelper.RotateBy(upVector, CarriedBy.ControlledSprite.Rotation);
+             
                 Position = CarriedBy.ControlledSprite.Position + offset;
                 Rotation = CarriedBy.ControlledSprite.Rotation;
             }
