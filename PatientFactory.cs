@@ -21,19 +21,15 @@ namespace MedicalFactory
         public void Update(GameTime gameTime)
         {
             if(Timer <= 0.0) {
-                bool IsHuman = MyMathHelper.Random.NextDouble() < 0.8f;
+                bool IsHuman = MyMathHelper.Random.NextDouble() < 0.6f;
                 Patient patient;
                 if (IsHuman)
                 {
                     patient = new HumanPatient(HumanTexture);
-                    patient.Attach(new BodyPart(BodyPart.BodyPartType.KAPUTTE_LUNGE));
-                    patient.Attach(new BodyPart(BodyPart.BodyPartType.KAPUTTES_HERZ));
                 }
                 else
                 {
                     patient = new AlienPatient(AlienTexture);
-                    patient.Attach(new BodyPart(BodyPart.BodyPartType.KAPUTTES_HERZ));
-                    patient.Attach(new BodyPart(BodyPart.BodyPartType.KAPUTTES_HERZ));
                 }
                 patient.Position = new Vector2(-120.0f, 540.0f + 30.0f);
                 patient.Rotation = MathHelper.PiOver2;
