@@ -93,7 +93,7 @@ namespace MedicalFactory
             // add some bodyparts
             for (int i = 0; i < 5; ++i)
             {
-                var bodyPart = new BodyPart();
+                var bodyPart = new BodyPart("Lunge");
                 bodyPart.Position = Screen.GetRandomWorldPos();
                 sprites.Add(bodyPart);
             }
@@ -115,10 +115,8 @@ namespace MedicalFactory
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
-            {
-                if (playerOne.ControlledSprite == testSprite)
-                {
+            if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A)) {
+                if (playerOne.ControlledSprite == testSprite) {
                     playerOne.ControlledSprite = testSprite2;
                 }
                 else
