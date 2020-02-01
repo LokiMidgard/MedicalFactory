@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +18,7 @@ namespace MedicalFactory.GameObjects
         private readonly ParticleSystem particles2;
         private TimeSpan nextSpark;
         private TimeSpan sparkDuration;
-        private PlayerColor playerColor;
+        public PlayerColor PlayerColor;
 
         private static readonly Random random = new Random();
 
@@ -34,7 +36,7 @@ namespace MedicalFactory.GameObjects
 
         public Robot(PlayerColor color) : base(color.ToString() + "_1", color.ToString() + "_2", color.ToString() + "_3")
         {
-            this.playerColor = color;
+            this.PlayerColor = color;
             this.Origin = new Vector2(30.0f, 90.0f);
             this.AnimationFrameLength = TimeSpan.FromMilliseconds(100);
 
@@ -107,28 +109,14 @@ namespace MedicalFactory.GameObjects
         {
             base.Update(gameTime);
 
-            var isUpperHalf = ((int)(playerColor) % 2) == 0;
-
-            var yMin = isUpperHalf ? 64 : Game1.conveyerBelt.YPos + 64;
-            var yMax = isUpperHalf ? Game1.conveyerBelt.YPos - 64 : 1028 - 16;
-
-            if (!GameConfig.KeepPlayersToTheirSide)
-            {
-                yMin = 64;
-                yMax = 1028 - 16;
-            }
-
-            Position = new Vector2(
-                MathHelper.Clamp(Position.X, 32, 1920 - 100),
-                MathHelper.Clamp(Position.Y, yMin, yMax)
-            );
+            CollisionManager.KeepInWorld(this);
 
             // if transporting body part => spill some blood
             var item = Attached.OfType<IItem>().FirstOrDefault();
             if (item is BodyPart bodyPart)
             {
                 if (random.NextDouble() < 0.025)
-                    Game1.Background.AddBloodSplash(Position, bodyPart.IsDemaged);
+                    Game1.Background.AddBloodSplash(Position, bodyPart.IsDamaged);
             }
             if (item is null)
                 this.AnimationMode = AnimationMode.PingPong;

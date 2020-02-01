@@ -8,7 +8,7 @@ namespace MedicalFactory
 {
     public class Collision
     {
-        public Vector2 Direction;
+        public Vector2 Distance;
         public Sprite spriteA;
         public Sprite spriteB;
     }

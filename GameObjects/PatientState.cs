@@ -38,7 +38,7 @@ namespace MedicalFactory.GameObjects
             foreach (var type in Enum.GetValues(typeof(BodyPart.BodyPartType)).OfType<BodyPart.BodyPartType>())
             {
                 maximum += 3 * this.patient.MaximumBodyParts(type);
-                sum += this.BodyParts.Where(x => x.Type == type).Select(x => x.IsDemaged ? 1 : 3).Sum();
+                sum += this.BodyParts.Where(x => x.Type == type).Select(x => x.IsDamaged ? 1 : 3).Sum();
             }
             if (this.IsDead)
                 sum = 0;

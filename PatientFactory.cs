@@ -62,7 +62,7 @@ namespace MedicalFactory
                 var defectOrgans = MyMathHelper.Random.Next(1, patient.Attached.Count + 1);
 
                 foreach (var item in patient.Attached.OrderBy(x => MyMathHelper.Random.NextDouble()).Take(defectOrgans).OfType<BodyPart>())
-                    item.IsDemaged = true;
+                    item.IsDamaged = true;
 
 
                 patient.Position = new Vector2(-420.0f, 540.0f + 30.0f);

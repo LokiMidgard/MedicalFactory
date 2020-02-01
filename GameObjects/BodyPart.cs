@@ -11,7 +11,7 @@ namespace MedicalFactory.GameObjects
     public class BodyPart : Sprite, IItem
     {
 
-        public bool IsDemaged { get => this.AnimationFrame == 0 ? false : true; set => this.AnimationFrame = value ? 1 : 0; }
+        public bool IsDamaged { get => this.AnimationFrame == 0 ? false : true; set => this.AnimationFrame = value ? 1 : 0; }
 
         public enum BodyPartType
         {
@@ -116,8 +116,10 @@ namespace MedicalFactory.GameObjects
             base.Update(gameTime);
 
             if (this.AttachedTo is null)
-                this.IsDemaged = true;
-
+            {
+                this.IsDamaged = true;
+                CollisionManager.KeepInWorld(this, (recycler) => { recycler.PutStuffInside(this); });
+            }
 
             var scalingTime = TimeSpan.FromSeconds(1);
             if (this.ShouldScaleDown && this.finishedScalingDown == default && this.Scale.X > 0.5f)

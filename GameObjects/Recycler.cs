@@ -37,7 +37,7 @@ namespace MedicalFactory.GameObjects
                 int Count = dispenser.Count;
                 if (Count > 0) {
                     int Selection = MyMathHelper.Random.Next()%Count;
-                    bodyPart.IsDemaged = false;
+                    bodyPart.IsDamaged = false;
                     dispenser[Selection].Attach(bodyPart);
                 }
             }

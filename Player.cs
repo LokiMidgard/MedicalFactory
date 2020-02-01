@@ -55,7 +55,7 @@ namespace MedicalFactory
                         var toTake = collisions.Select(x => x.spriteB).OfType<IItem>().OrderBy(x =>
                         {
                             if (x is BodyPart bodyPart)
-                                return bodyPart.IsDemaged ? 0 : 1;
+                                return bodyPart.IsDamaged ? 0 : 1;
                             return 2;
                         }).FirstOrDefault();
                         if (toTake != null)
