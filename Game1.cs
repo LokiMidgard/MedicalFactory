@@ -61,12 +61,18 @@ namespace MedicalFactory
             for (int i = 0; i < 100; ++i)
             {
                 Sprite blub = new Sprite("Roboter_Blau");
-                blub.Position.X = (float)r.NextDouble() * 1920;
-                blub.Position.Y = (float)r.NextDouble() * 1080;
-                blub.Origin = new Vector2(30.0f, 90.0f);
+                blub.Position = Screen.GetRandomWorldPos();
                 blub.Rotation = (float)MathHelper.ToRadians(90);
                 blub.Rotation = (float)MyMathHelper.RightAngleInRadians(new Vector2(1, 0), new Vector2(-1, 0));
                 sprites.Add(blub);
+            }
+
+            // add some bodyparts
+            for (int i=0;i <5; ++i)
+            {
+                var bodyPart = new BodyPart();
+                bodyPart.Position = Screen.GetRandomWorldPos();
+                sprites.Add(bodyPart);
             }
 
             // initialize players
