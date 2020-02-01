@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MedicalFactory.GameObjects
@@ -34,15 +36,22 @@ namespace MedicalFactory.GameObjects
         public static Vector2 DefaultAttachOffset = Vector2.UnitY * -48;
         public BodyPartType Type;
 
-        public BodyPart(BodyPartType type) : base(type.ToString(), GetDamagedTextureName(type))
+        private static Dictionary<BodyPartType, Texture2D> defect = new Dictionary<BodyPartType, Texture2D>();
+        private static Dictionary<BodyPartType, Texture2D> correct = new Dictionary<BodyPartType, Texture2D>();
+
+        public static void LoadContent(ContentManager content)
         {
-            this.AttachOffset = DefaultAttachOffset;
-            this.Type = type;
+            if (defect.Count == 0)
+                foreach (var item in Enum.GetValues(typeof(BodyPartType)).Cast<BodyPartType>())
+                {
+                    defect.Add(item, content.Load<Texture2D>(GetDamagedTextureName(item)));
+                    correct.Add(item, content.Load<Texture2D>(item.ToString()));
+                }
         }
 
-        public BodyPart(BodyPartType type, Texture2D tex, Texture2D defectTexture) : base(tex, defectTexture)
+        public BodyPart(BodyPartType type) : base(correct[type], defect[type])
         {
-            AttachOffset = DefaultAttachOffset;
+            this.AttachOffset = DefaultAttachOffset;
             this.Type = type;
         }
 
@@ -76,6 +85,11 @@ namespace MedicalFactory.GameObjects
         private bool ShouldScaleUp;
         private TimeSpan finishedScalingDown;
         private TimeSpan finishedScalingUp;
+
+        public override void LoadContent(Game1 game)
+        {
+            LoadContent(game.Content);
+        }
 
         public override void Update(GameTime gameTime)
         {
