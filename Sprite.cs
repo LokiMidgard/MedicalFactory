@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using PaToRo_Desktop.Engine.Input;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace MedicalFactory
 {
@@ -16,9 +17,23 @@ namespace MedicalFactory
         PingPong
     }
 
-    public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable
+
+    public interface IAttachable
     {
-        public Vector2 Position;
+        ICanCarray AttachedTo { set; get; }
+    }
+
+    public interface ICanCarray
+    {
+        Vector2 Position { get; set; }
+        System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
+        void Attach(IAttachable add);
+        void Detach(IAttachable add);
+    }
+
+    public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable, IAttachable, ICanCarray
+    {
+        public Vector2 Position { get; set; }
         public Vector2 Origin;
         public float Radius;
         public Vector2 Velocity;
@@ -34,13 +49,54 @@ namespace MedicalFactory
 
         public AnimationMode AnimationMode { get; set; }
 
+        private ICanCarray attachedTo;
+        public ICanCarray AttachedTo
+        {
+            get => attachedTo; set
+            {
+                if (attachedTo == value)
+                    return;
+
+                if (attachedTo != null)
+                    attachedTo.Detach(this);
+                attachedTo = value;
+                attachedTo.Attach(this);
+            }
+        }
+
+        private readonly List<IAttachable> attached;
+        public System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
+        public void Attach(IAttachable toAdd)
+        {
+            if (toAdd.AttachedTo == this)
+                return;
+            if (toAdd.AttachedTo != null)
+                throw new ArgumentException("IAttachable may not already be attached.");
+            this.attached.Add(toAdd);
+            toAdd.AttachedTo = this;
+        }
+        public void Detach(IAttachable toRemove)
+        {
+            if (toRemove.AttachedTo is null)
+                return;
+            if (toRemove.AttachedTo != this)
+                throw new ArgumentException("IAttachable must be attached to this");
+            this.attached.Remove(toRemove);
+            toRemove.AttachedTo = null;
+        }
+
+
+
+
         private int animationFrame;
         public int AnimationFrame
         {
-            get {
+            get
+            {
                 return animationFrame;
             }
-            set {
+            set
+            {
                 if (animationFrame != value)
                 {
                     animationFrame = value;
@@ -72,6 +128,8 @@ namespace MedicalFactory
 
         public Sprite(params string[] textureNames)
         {
+            attached = new List<IAttachable>();
+            Attached = attached.AsReadOnly();
             this.textureNames = textureNames;
         }
 
@@ -79,8 +137,9 @@ namespace MedicalFactory
         {
             textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
             UpdateRadius();
-            if (Origin == default) {
-                Origin = new Vector2(textures[0].Width/2.0f, textures[0].Height/2.0f);
+            if (Origin == default)
+            {
+                Origin = new Vector2(textures[0].Width / 2.0f, textures[0].Height / 2.0f);
             }
         }
 

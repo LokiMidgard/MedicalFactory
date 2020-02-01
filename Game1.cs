@@ -83,6 +83,7 @@ namespace MedicalFactory
                 Death = PatricleDeath.Fade,
                 IsEnabled = true
             };
+            particles.AttachedTo = testSprite;
             sprites.Add(particles);
 
             /*
@@ -122,8 +123,10 @@ namespace MedicalFactory
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A)) {
-                if (playerOne.ControlledSprite == testSprite) {
+            if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A))
+            {
+                if (playerOne.ControlledSprite == testSprite)
+                {
                     playerOne.ControlledSprite = testSprite2;
                 }
                 else
