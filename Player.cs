@@ -13,7 +13,7 @@ namespace MedicalFactory
     /// </summary>
     public class Player : IGameObject, IUpdateable
     {
-        private float Speed = 1000.0f;
+        private float Speed = 600.0f;
         private float PickupRange = 50.0f;
         private float PickupOffset = 100.0f;
 
@@ -45,14 +45,19 @@ namespace MedicalFactory
                 // Handle Buttons
                 if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
                 {
-                    var holdedItem = ControlledSprite.Attached.OfType<BodyPart>().FirstOrDefault();
+                    var holdedItem = ControlledSprite.Attached.OfType<IItem>().FirstOrDefault();
 
                     if (holdedItem is null)  // if nothing is attached
                     {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
                         var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
                         // We order all Body parts we colide so demaged will be first.
-                        var toTake = collisions.Select(x => x.spriteB).OfType<BodyPart>().OrderBy(x => x.IsDemaged ? 0 : 1).FirstOrDefault();
+                        var toTake = collisions.Select(x => x.spriteB).OfType<IItem>().OrderBy(x =>
+                        {
+                            if (x is BodyPart bodyPart)
+                                return bodyPart.IsDemaged ? 0 : 1;
+                            return 2;
+                        }).FirstOrDefault();
                         if (toTake != null)
                             ControlledSprite.Attach(toTake);
 
@@ -62,30 +67,28 @@ namespace MedicalFactory
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
                         var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.conveyerBelt);
                         bool iPutItSomewhere = false;
-                        foreach (var collision in collisions)
-                        {
-                            Patient patient = collision.spriteB as Patient;
-                            if (patient != null)
+                        if (holdedItem is BodyPart bodyPart)
+                            foreach (var collision in collisions)
                             {
-                                patient.Attach(holdedItem);
-                                iPutItSomewhere = true;
-                                break;
+                                Patient patient = collision.spriteB as Patient;
+                                if (patient != null)
+                                {
+                                    patient.Attach(bodyPart);
+                                    iPutItSomewhere = true;
+                                    break;
+                                }
+                                Recycler recycler = collision.spriteB as Recycler;
+                                if (recycler != null)
+                                {
+                                    recycler.PutStuffInside(bodyPart);
+                                    iPutItSomewhere = true;
+                                    break;
+                                }
                             }
-                            Recycler recycler = collision.spriteB as Recycler;
-                            if (recycler != null)
-                            {
-                                recycler.PutStuffInside(holdedItem);
-                                iPutItSomewhere = true;
-                                break;
-                            }
-                        }
                         if (!iPutItSomewhere)
                         {
-                            var bp = holdedItem;
-                            if (bp != null)
-                            {
-                                bp.Velocity = ControlledSprite.Velocity;
-                            }
+                            if (holdedItem is Sprite sprite)
+                                sprite.Velocity = ControlledSprite.Velocity;
 
                             ControlledSprite.Detach(holdedItem);
                         }

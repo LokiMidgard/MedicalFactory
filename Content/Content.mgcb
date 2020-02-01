@@ -181,7 +181,7 @@
 /processorParam:TextureFormat=Color
 /build:FliessbandAnimiert_3.png
 
-#begin GelberRoboter _1.PNG
+#begin GelberRoboter_1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -191,7 +191,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:GelberRoboter _1.PNG
+/build:GelberRoboter_1.PNG
 
 #begin GelberRoboter_2.PNG
 /importer:TextureImporter

@@ -32,11 +32,14 @@ namespace MedicalFactory.GameObjects
             };
         }
 
-        public Robot(PlayerColor color) : base(color.ToString()+"_1")
+        public Robot(PlayerColor color) : base(color.ToString() + "_1", color.ToString() + "_2", color.ToString() + "_3")
         {
             this.playerColor = color;
             this.Origin = new Vector2(30.0f, 90.0f);
-
+            this.AnimationFrameLength = TimeSpan.FromMilliseconds(100);
+            var verticalOffset = 30;
+            if (color == PlayerColor.BlauerRoboter)
+                verticalOffset = 0;
             // initilize Particles
             this.particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
@@ -49,7 +52,7 @@ namespace MedicalFactory.GameObjects
                 IsEnabled = true,
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
-                AttachOffset = new Vector2(30, 30),
+                AttachOffset = new Vector2(30, verticalOffset),
             };
             this.particles2 = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
@@ -62,7 +65,7 @@ namespace MedicalFactory.GameObjects
                 IsEnabled = true,
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
-                AttachOffset = new Vector2(-30, 30),
+                AttachOffset = new Vector2(-30, verticalOffset),
             };
             this.Attach(this.particles);
             this.Attach(this.particles2);
@@ -105,11 +108,18 @@ namespace MedicalFactory.GameObjects
             );
 
             // if transporting body part => spill some blood
-            var bp = Attached.FirstOrDefault(a => a is BodyPart) as BodyPart;
-            if (bp != null)
+            var item = Attached.OfType<IItem>().FirstOrDefault();
+            if (item is BodyPart bodyPart)
             {
                 if (random.NextDouble() < 0.025)
-                    Game1.Background.AddBloodSplash(Position, bp.IsDemaged);
+                    Game1.Background.AddBloodSplash(Position, bodyPart.IsDemaged);
+            }
+            if (item is null)
+                this.AnimationMode = AnimationMode.PingPong;
+            else
+            {
+                this.AnimationMode = AnimationMode.None;
+                this.AnimationFrame = 0;
             }
 
             this.particles.Update(gameTime);
@@ -117,23 +127,19 @@ namespace MedicalFactory.GameObjects
 
             if (this.Velocity.Length() > 3)
             {
-                //if (this.nextSpark < gameTime.TotalGameTime)
-                {
-                    this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
-                    this.particles.IsEnabled = true;
-                    this.particles2.IsEnabled = true;
-
-                }
-                //else
-                {
-                    //this.particles.IsEnabled = false;
-                }
+                this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
+                this.particles.IsEnabled = true;
+                this.particles2.IsEnabled = true;
             }
             else
             {
                 this.particles.IsEnabled = false;
                 this.particles2.IsEnabled = false;
             }
+
+            this.particles.IsEnabled = true;
+            this.particles2.IsEnabled = true;
+
 
         }
 
