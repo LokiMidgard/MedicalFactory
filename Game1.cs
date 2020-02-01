@@ -83,13 +83,13 @@ namespace MedicalFactory
             }
 
             // add bodypartdispensers
-            var bpdHeart = new BodyPartDispenser(DispenserType.Herzgerät, 2) { Position = new Vector2(535, 80) };
+            var bpdHeart = new BodyPartDispenser(DispenserType.Herzgerät, 2) { Position = new Vector2(945, 1035) };
             conveyerBelt.Add(bpdHeart);
 
             var bpdLungs = new BodyPartDispenser(DispenserType.Lungengerät, 2) { Position = new Vector2(1350, 80) };
             conveyerBelt.Add(bpdLungs);
 
-            var bpdKidneys = new BodyPartDispenser(DispenserType.Nierengerät, 2) { Position = new Vector2(945, 1035) };
+            var bpdKidneys = new BodyPartDispenser(DispenserType.Nierengerät, 2) { Position = new Vector2(535, 80) };
             conveyerBelt.Add(bpdKidneys);
 
             // add scanner
