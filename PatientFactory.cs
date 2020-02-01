@@ -22,7 +22,7 @@ namespace MedicalFactory
                 Patient patient = new Patient(HumanTexture);
                 patient.Position = new Vector2(-120.0f, 540.0f + 30.0f);
                 patient.Rotation = MathHelper.PiOver2;
-                Game1.sprites.Add(patient);
+                Game1.game.conveyerBelt.Add(patient);
                 Timer = MyMathHelper.Random.NextDouble()*10.0f + 3.0f;
             }
             Timer -= gameTime.ElapsedGameTime.TotalSeconds;

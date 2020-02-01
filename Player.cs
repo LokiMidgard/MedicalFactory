@@ -39,9 +39,10 @@ namespace MedicalFactory
                 {
                     ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, -1.0f), Vector2.Normalize(Direction));
                 }
+
                 if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
                 {
-                    if (ControlledSprite.Attached.Count == 0)
+                    if (ControlledSprite.Attached.Count == 0)  // if nothing is attached
                     {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
                         var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
@@ -56,7 +57,7 @@ namespace MedicalFactory
                         }
                     } else {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
-                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
+                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.game.conveyerBelt);
                         bool patientFound = false;
                         foreach (var collision in collisions)
                         {
