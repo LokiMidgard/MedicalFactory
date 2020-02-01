@@ -25,7 +25,7 @@ namespace MedicalFactory.GameObjects
             }
         }
 
-        private DispenserType type;
+        public DispenserType type;
         private int initialStock;
         private Texture2D bodyPartTex;
         private Texture2D bodyPartTexDefect;
@@ -60,24 +60,26 @@ namespace MedicalFactory.GameObjects
         public void CreateNew()
         {
             var part = new BodyPart(Map(type), this.bodyPartTex, this.bodyPartTexDefect);
-            Attach(part);
             Game1.sprites.Add(part);
-            this.count++;
-            UpdateAnimFrame();
+            Attach(part);
         }
 
         public override void Attach(IAttachable toAdd)
         {
+            if (toAdd == null) return;
             base.Attach(toAdd);
             if (toAdd is Sprite s)
             {
                 s.AttachOffset = Vector2.Zero;
                 s.Visible = false;
             }
+            this.count++;
+            UpdateAnimFrame();
         }
 
         public override void Detach(IAttachable toRemove)
         {
+            if (toRemove == null) return;
             if (toRemove is Sprite s)
             {
                 s.AttachOffset = BodyPart.DefaultAttachOffset;

@@ -58,16 +58,23 @@ namespace MedicalFactory
                     } else {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
                         var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.game.conveyerBelt);
-                        bool patientFound = false;
+                        bool iPutItSomewhere = false;
                         foreach (var collision in collisions)
                         {
                             Patient patient = collision.spriteB as Patient;
                             if (patient != null) {
                                 patient.Attach(ControlledSprite.Attached[0]);
-                                patientFound = true;
+                                iPutItSomewhere = true;
+                                break;
+                            }
+                            Recycler recycler = collision.spriteB as Recycler;
+                            if (recycler != null) {
+                                recycler.PutStuffInside(ControlledSprite.Attached[0] as BodyPart);
+                                iPutItSomewhere = true;
+                                break;
                             }
                         }
-                        if (!patientFound) {
+                        if (!iPutItSomewhere) {
                             ControlledSprite.Detach(ControlledSprite.Attached[0]);
                         }
                     }

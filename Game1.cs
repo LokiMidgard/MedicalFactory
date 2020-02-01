@@ -94,17 +94,20 @@ namespace MedicalFactory
             */
 
             // add bodypartdispensers
-            var bpdHeart = new BodyPartDispenser(DispenserType.Herzgerät, 5) { Position = new Vector2(535, 80) };
+            var bpdHeart = new BodyPartDispenser(DispenserType.Herzgerät, 2) { Position = new Vector2(535, 80) };
             conveyerBelt.Add(bpdHeart);
 
-            var bpdLungs = new BodyPartDispenser(DispenserType.Lungengerät, 5) { Position = new Vector2(1350, 80) };
+            var bpdLungs = new BodyPartDispenser(DispenserType.Lungengerät, 2) { Position = new Vector2(1350, 80) };
             conveyerBelt.Add(bpdLungs);
 
-            var bpdKidneys = new BodyPartDispenser(DispenserType.Nierengerät, 5) { Position = new Vector2(945, 1035) };
+            var bpdKidneys = new BodyPartDispenser(DispenserType.Nierengerät, 2) { Position = new Vector2(945, 1035) };
             conveyerBelt.Add(bpdKidneys);
 
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };
+            recycler.AddDispenser(bpdHeart);
+            recycler.AddDispenser(bpdLungs);
+            recycler.AddDispenser(bpdKidneys);
             conveyerBelt.Add(recycler);
 
 
@@ -123,7 +126,6 @@ namespace MedicalFactory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Screen.LoadContent(this);
             patientFactory.LoadContent(this);
-            conveyerBelt.LoadContent(this);
         }
 
         protected override void Update(GameTime gameTime)
