@@ -12,6 +12,7 @@ namespace PaToRo_Desktop.Engine.Input
     {
         private int index;
         private XnaInput.GamePadState st;
+        private XnaInput.GamePadState lastState;
 
         private bool vibrationFaild;
 
@@ -26,6 +27,7 @@ namespace PaToRo_Desktop.Engine.Input
 
         public override void Update(GameTime gameTime)
         {
+            lastState = st;
             st = XnaInput.GamePad.GetState(index);
             if (cooldown > 0)
             {
@@ -63,7 +65,7 @@ namespace PaToRo_Desktop.Engine.Input
             }
         }
 
-        public override bool Get(Buttons btn)
+        private bool GetInternal(XnaInput.GamePadState st, Buttons btn)
         {
             switch (btn)
             {
@@ -88,6 +90,15 @@ namespace PaToRo_Desktop.Engine.Input
                 case Buttons.ToggleFullscreen: return st.Buttons.Back == XnaInput.ButtonState.Pressed;
             }
             return false;
+        }
+
+        public override bool GetLast(Buttons btn)
+        {
+            return GetInternal(lastState, btn);
+        }
+        public override bool Get(Buttons btn)
+        {
+            return GetInternal(st, btn);
         }
 
         public override float Get(Sliders sldr)

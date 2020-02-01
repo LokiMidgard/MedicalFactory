@@ -12,6 +12,7 @@ namespace PaToRo_Desktop.Engine.Input
     {
         private int index;
         private XnaInput.KeyboardState st;
+        private XnaInput.KeyboardState lastState;
 
 
         public KeyboardController(int index)
@@ -21,10 +22,11 @@ namespace PaToRo_Desktop.Engine.Input
 
         public override void Update(GameTime gameTime)
         {
+            lastState = st;
             st = XnaInput.Keyboard.GetState();
         }
 
-        public override bool Get(Buttons btn)
+        private bool GetInternal(XnaInput.KeyboardState st, Buttons btn)
         {
             switch (btn)
             {
@@ -49,6 +51,15 @@ namespace PaToRo_Desktop.Engine.Input
                 case Buttons.ToggleFullscreen: return st.IsKeyDown(XnaInput.Keys.F1);
             }
             return false;
+        }
+        
+        public override bool Get(Buttons btn)
+        {
+            return GetInternal(st, btn);
+        }
+        public override bool GetLast(Buttons btn)
+        {
+            return GetInternal(lastState, btn);
         }
 
         public float XAxis()

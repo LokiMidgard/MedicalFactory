@@ -106,7 +106,7 @@ namespace MedicalFactory
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) {
+            if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A)) {
                 if (playerOne.ControlledSprite == testSprite) {
                     playerOne.ControlledSprite = testSprite2;
                 } else {
