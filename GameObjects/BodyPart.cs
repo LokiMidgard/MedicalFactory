@@ -40,6 +40,12 @@ namespace MedicalFactory.GameObjects
             this.Type = type;
         }
 
+        public BodyPart(BodyPartType type, Texture2D tex) : base(tex)
+        {
+            AttachOffset = DefaultAttachOffset;
+            this.Type = type;
+        }
+
         public override ICanCarray AttachedTo
         {
             get => base.AttachedTo; set
