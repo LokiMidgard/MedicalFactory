@@ -47,7 +47,7 @@ namespace MedicalFactory
 
                 patient.Position = new Vector2(-120.0f, 540.0f + 30.0f);
                 patient.Rotation = MathHelper.PiOver2;
-                Game1.game.conveyerBelt.Add(patient);
+                Game1.conveyerBelt.Add(patient);
                 this.Timer = MyMathHelper.Random.NextDouble() * 10.0f + 3.0f;
             }
             this.Timer -= gameTime.ElapsedGameTime.TotalSeconds;

@@ -62,7 +62,7 @@ namespace MedicalFactory
                         }
                     } else {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
-                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.game.conveyerBelt);
+                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.conveyerBelt);
                         bool iPutItSomewhere = false;
                         foreach (var collision in collisions)
                         {

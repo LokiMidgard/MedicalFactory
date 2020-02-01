@@ -15,9 +15,13 @@ namespace MedicalFactory.GameObjects
         private readonly ParticleSystem particles;
         private TimeSpan nextSpark;
         private TimeSpan sparkDuration;
+        private PlayerColor playerColor;
+
         private static readonly Random random = new Random();
+        
         public Robot(PlayerColor color) : base(color.ToString())
         {
+            this.playerColor = color;
             this.Origin = new Vector2(30.0f, 90.0f);
 
             // initilize Particles
@@ -55,9 +59,20 @@ namespace MedicalFactory.GameObjects
         {
             base.Update(gameTime);
 
+            var isUpperHalf = ((int)(playerColor) % 2) == 0;
+
+            var yMin = isUpperHalf ? 64 : Game1.conveyerBelt.YPos + 64;
+            var yMax = isUpperHalf ? Game1.conveyerBelt.YPos - 64 : 1028 - 16;
+
+            if (!GameConfig.KeepPlayersToTheirSide)
+            {
+                yMin = 64;
+                yMax = 1028 - 16;
+            }
+
             Position = new Vector2(
                 MathHelper.Clamp(Position.X, 32, 1920 - 32),
-                MathHelper.Clamp(Position.Y, 64, 1028 - 16)
+                MathHelper.Clamp(Position.Y, yMin, yMax)
             );
 
             // if transporting body part => spill some blood

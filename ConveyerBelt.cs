@@ -12,6 +12,7 @@ namespace MedicalFactory
     public class ConveyerBelt : Group
     {
         public float Speed = 10.0f;
+        public float YPos = 60.0f * 9.5f;
         Texture2D HumanTexture;
 
         public override void LoadContent(Game1 game)
@@ -24,7 +25,7 @@ namespace MedicalFactory
             for (int i = 0; i < 10; ++i)
             {
                 Sprite conveyer = new Sprite(ConveyerTexture1, ConveyerTexture2, ConveyerTexture3);
-                conveyer.Position = new Vector2(i * 180.0f + 90.0f, 60.0f * 9.5f);
+                conveyer.Position = new Vector2(i * 180.0f + 90.0f, YPos);
                 conveyer.AnimationMode = AnimationMode.Loop;
                 Add(conveyer);
             }
@@ -36,7 +37,7 @@ namespace MedicalFactory
         {
             Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*100.0f;
 
-            Debugger.Log(0, "", Speed + "\n");
+            //Debugger.Log(0, "", Speed + "\n");
             base.Update(gameTime);
         }
 

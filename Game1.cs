@@ -16,20 +16,20 @@ namespace MedicalFactory
         private SpriteBatch _spriteBatch;
 
         private Group controllers;  // input devices
-        private Group players;      // player abstraction, see class Player
+        private Group playersGroup;      // player abstraction, see class Player
         public static Background Background;
         public static Group sprites;
 
         public readonly Screen Screen;
 
-        private XBoxController xBoxController, xBoxController2;  // => added to controllers
-        private Player playerOne, playerTwo;               // => added to players
-        private Robot robot1;
-        private Robot robot2;
+        //private XBoxController xBoxController, xBoxController2;  // => added to controllers
+        //private Robot robot1;
+        //private Robot robot2;
 
         public PatientFactory patientFactory;
-        public ConveyerBelt conveyerBelt;
+        public static ConveyerBelt conveyerBelt;
 
+        private Random rng = new Random();
 
         public Game1()
         {
@@ -41,7 +41,7 @@ namespace MedicalFactory
             Background = new Background(Screen);
 
             controllers = new Group();
-            players = new Group();
+            playersGroup = new Group();
             sprites = new Group();
 
             patientFactory = new PatientFactory();
@@ -50,7 +50,7 @@ namespace MedicalFactory
             Screen.Add(Background);
             Screen.Add(controllers);
             Screen.Add(conveyerBelt);
-            Screen.Add(players);
+            Screen.Add(playersGroup);
             Screen.Add(sprites);
 
             Content.RootDirectory = "Content";
@@ -64,34 +64,18 @@ namespace MedicalFactory
             // initialize screen
             this.Screen.Initialize();
 
-            // initialize Input Devices
-            xBoxController = new XBoxController(0);
-            controllers.Add(xBoxController);
-            xBoxController2 = new XBoxController(1);
-            controllers.Add(xBoxController2);
+            // initialize players
+            for (int i = 0; i < GameConfig.NumPlayers; ++i)
+            {
+                var xBoxController = new XBoxController(i);
+                controllers.Add(xBoxController);
 
-            robot1 = new Robot(PlayerColor.Roboter_Blau)
-            {
-                Position = new Vector2(300, 300)
-            };
-            robot2 = new Robot(PlayerColor.Roboter_Gelb)
-            {
-                Position = new Vector2(100, 100)
-            };
-            sprites.Add(robot1);
-            sprites.Add(robot2);
+                var robot = new Robot((PlayerColor)(i % 4)) { Position = new Vector2(300 + (float)(rng.NextDouble() * 1500), i % 2 == 0 ? 300 : 800) };
+                sprites.Add(robot);
 
-            /*
-            Random r = new Random();
-            for (int i = 0; i < 100; ++i)
-            {
-                Sprite blub = new Sprite("Roboter_Blau");
-                blub.Position = Screen.GetRandomWorldPos();
-                blub.Rotation = (float)MathHelper.ToRadians(90);
-                blub.Rotation = (float)MyMathHelper.RightAngleInRadians(new Vector2(1, 0), new Vector2(-1, 0));
-                sprites.Add(blub);
+                var player = new Player(xBoxController, robot);
+                playersGroup.Add(player);
             }
-            */
 
             // add bodypartdispensers
             var bpdHeart = new BodyPartDispenser(DispenserType.Herzgerät, 2) { Position = new Vector2(535, 80) };
@@ -110,14 +94,6 @@ namespace MedicalFactory
             recycler.AddDispenser(bpdKidneys);
             conveyerBelt.Add(recycler);
 
-
-            // initialize players
-            playerOne = new Player(xBoxController, robot1);
-            players.Add(playerOne);
-
-            playerTwo = new Player(xBoxController2, robot2);
-            players.Add(playerTwo);
-
             base.Initialize();
         }
 
@@ -132,19 +108,9 @@ namespace MedicalFactory
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            
             patientFactory.Update(gameTime);
             conveyerBelt.Update(gameTime);
-            if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A))
-            {
-                if (playerOne.ControlledSprite == robot1)
-                {
-                    playerOne.ControlledSprite = robot2;
-                }
-                else
-                {
-                    playerOne.ControlledSprite = robot1;
-                }
-            }
 
             // detect collisions
             List<Collision> collisions = CollisionManager.GetCollisions(sprites);

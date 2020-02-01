@@ -15,7 +15,7 @@ namespace MedicalFactory.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            this.Velocity = new Vector2(Game1.game.conveyerBelt.Speed, 0);
+            this.Velocity = new Vector2(Game1.conveyerBelt.Speed, 0);
 
             base.Update(gameTime);
             //this.Position = this.Position + new Vector2(Game1.game.conveyerBelt.Speed, 0.0f) * (float)gameTime.ElapsedGameTime.TotalSeconds;
