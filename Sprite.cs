@@ -36,6 +36,8 @@ namespace MedicalFactory
     public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable, IAttachable, ICanCarray
     {
         public Vector2 Position { get; set; }
+        public Vector2 Scale { get; set; } = Vector2.One;
+
         public Vector2 Origin;
         public float Radius;
         public Vector2 Velocity;
@@ -195,7 +197,7 @@ namespace MedicalFactory
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, null, Color.White, this.Rotation, this.Origin, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, rotation: this.Rotation, origin: this.Origin, scale:this.Scale);
 
             if (GameConfig.DrawCollisionGeometry)
             {
