@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,21 @@ namespace MedicalFactory.GameObjects
 
         private DispenserType type;
         private int initialStock;
+        private Texture2D shadow;
+
+        public override void LoadContent(Game1 game)
+        {
+            this.shadow = game.Content.Load<Texture2D>("Schatten_Oval");
+
+            base.LoadContent(game);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 15), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.75f, 0.75f), SpriteEffects.None, 0.0f);
+
+            base.Draw(spriteBatch, gameTime);
+        }
 
         public BodyPartDispenser(DispenserType type, int stock) : base(type.ToString())
         {

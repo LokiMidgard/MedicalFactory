@@ -38,7 +38,7 @@ namespace MedicalFactory.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(this.shadow, this.Position, null, Color.White, this.Rotation, new Vector2(shadow.Width/2.0f, shadow.Height/2.0f), 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 10), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.6f, 0.6f), SpriteEffects.None, 0.0f);
             base.Draw(spriteBatch, gameTime);
             this.particles.Draw(spriteBatch, gameTime);
         }
@@ -67,7 +67,7 @@ namespace MedicalFactory.GameObjects
                 {
                     this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
                     this.particles.IsEnabled = true;
-                    
+
                 }
                 //else
                 {
