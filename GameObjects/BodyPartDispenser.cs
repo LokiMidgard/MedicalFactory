@@ -29,11 +29,30 @@ namespace MedicalFactory.GameObjects
         private int initialStock;
         private int count;
         private Texture2D shadow;
+        private Texture2D rect;
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 15), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.75f, 0.75f), SpriteEffects.None, 0.0f);
             base.Draw(spriteBatch, gameTime);
+
+            // draw gauge
+            var pos = this.Position - new Vector2(20, 20);
+            var rect = new Rectangle((int)pos.X, (int)pos.Y, 16, 16 * 4);
+
+            spriteBatch.Draw(this.rect, rect, Color.Black);
+            rect.X += 2;
+            rect.Y += 2;
+            rect.Width -= 4;
+            rect.Height -= 4;
+
+            var fill = this.count / (float)this.initialStock;
+            var height = (int)(rect.Height * fill);
+
+            rect.Y = rect.Y + (rect.Height - height);
+            rect.Height = height;
+
+            spriteBatch.Draw(this.rect, rect, Color.Violet);
         }
 
         public BodyPartDispenser(DispenserType type, int stock) : base(type.ToString(), "Leeresgerät")
@@ -46,6 +65,7 @@ namespace MedicalFactory.GameObjects
         public override void LoadContent(Game1 game)
         {
             this.shadow = game.Content.Load<Texture2D>("Schatten_Oval");
+            this.rect = game.Content.Load<Texture2D>("square");
             BodyPart.LoadContent(game.Content);
             base.LoadContent(game);
 
@@ -70,6 +90,8 @@ namespace MedicalFactory.GameObjects
                 s.Visible = false;
             }
             this.count++;
+            if (this.count > this.initialStock)
+                initialStock = this.count;
             UpdateAnimFrame();
         }
 
