@@ -30,8 +30,12 @@ namespace MedicalFactory.GameObjects
                 var alradyAttached = this.Attached.OfType<BodyPart>().Count(x => x.Type == bodyPart.Type);
                 var maximum = this.MaximumBodyParts(bodyPart.Type);
 
-                if (alradyAttached > maximum)
+                if (alradyAttached >= maximum)
+                {
+                    if (toAdd.AttachedTo != null)
+                        toAdd.AttachedTo.Detach(toAdd);
                     return;
+                }
             }
             base.Attach(toAdd);
         }
