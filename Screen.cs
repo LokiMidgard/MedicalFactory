@@ -118,6 +118,7 @@ namespace MedicalFactory
                 GameConfig.KeepPlayersToTheirSide = !GameConfig.KeepPlayersToTheirSide;
 
             this.tint = Color.Lerp(Color.Transparent, Color.Red, (float)(gameTime.TotalGameTime / TimeSpan.FromSeconds(10)));
+            this.tint = Color.Transparent;
             //this.tint = Color.Red;
 
             this.overlayScale = Vector2.One * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);
