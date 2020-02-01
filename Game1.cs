@@ -14,6 +14,7 @@ namespace MedicalFactory
         private Group controllers;  // input devices
         private Group players;      // player abstraction, see class Player
         private Group sprites;
+        private Sprite testSprite, testSprite2;
 
         private readonly Screen screen;
 
@@ -49,11 +50,12 @@ namespace MedicalFactory
             controllers.Add(xBoxController);
 
             // initialize sprites
-            var testSprite = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.PingPong };
+            testSprite = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.PingPong };
             testSprite.Origin = new Vector2(30.0f, 90.0f);
-            var testSprite2 = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.Loop };
+            testSprite.Position = new Vector2(300, 300);
+            testSprite2 = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.Loop };
             testSprite2.Origin = new Vector2(30.0f, 90.0f);
-            testSprite2.Position.X = 100;
+            testSprite2.Position = new Vector2(100, 100);
             sprites.Add(testSprite);
             sprites.Add(testSprite2);
 
@@ -67,16 +69,24 @@ namespace MedicalFactory
             };
             sprites.Add(particles);
 
+            /*
             Random r = new Random();
             for (int i = 0; i < 100; ++i)
             {
                 Sprite blub = new Sprite("Roboter_Blau");
-                blub.Position.X = (float)r.NextDouble() * 1920;
-                blub.Position.Y = (float)r.NextDouble() * 1080;
-                blub.Origin = new Vector2(30.0f, 90.0f);
+                blub.Position = Screen.GetRandomWorldPos();
                 blub.Rotation = (float)MathHelper.ToRadians(90);
                 blub.Rotation = (float)MyMathHelper.RightAngleInRadians(new Vector2(1, 0), new Vector2(-1, 0));
                 sprites.Add(blub);
+            }
+            */
+
+            // add some bodyparts
+            for (int i=0;i <5; ++i)
+            {
+                var bodyPart = new BodyPart();
+                bodyPart.Position = Screen.GetRandomWorldPos();
+                sprites.Add(bodyPart);
             }
 
             // initialize players
@@ -96,14 +106,16 @@ namespace MedicalFactory
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) {
+                if (playerOne.ControlledSprite == testSprite) {
+                    playerOne.ControlledSprite = testSprite2;
+                } else {
+                    playerOne.ControlledSprite = testSprite;
+                }
+            }
 
             // detect collisions
             List<Collision> collisions = CollisionManager.GetCollisions(sprites);
-            foreach (Collision c in collisions)
-            {
-                c.spriteA.hasCollision = true;
-                c.spriteA.Rotation += 0.01f;
-            }
 
             // update everything (turtles aka gameobjects all the way down)
             screen.Update(gameTime);
