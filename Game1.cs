@@ -28,6 +28,8 @@ namespace MedicalFactory
 
         public PatientFactory patientFactory;
 
+        public PatientFactory patientFactory;
+
 
         public Game1()
         {
