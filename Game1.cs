@@ -17,13 +17,13 @@ namespace MedicalFactory
         private Group players;      // player abstraction, see class Player
         private Background bg;
         public static Group sprites;
-        private Sprite testSprite, testSprite2;
 
         public readonly Screen Screen;
 
         private XBoxController xBoxController;  // => added to controllers
         private Player playerOne;               // => added to players
-
+        private Robot robot1;
+        private Robot robot2;
 
         public Game1()
         {
@@ -56,15 +56,18 @@ namespace MedicalFactory
             xBoxController = new XBoxController(0);
             controllers.Add(xBoxController);
 
+            robot1 = new Robot(PlayerColor.Roboter_Blau)
+            {
+                Position = new Vector2(300, 300)
+            };
+            robot2 = new Robot(PlayerColor.Roboter_Gelb)
+            {
+                Position = new Vector2(100, 100)
+            };
+            sprites.Add(robot1);
+            sprites.Add(robot2);
+
             // initialize sprites
-            testSprite = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.PingPong };
-            testSprite.Origin = new Vector2(30.0f, 90.0f);
-            testSprite.Position = new Vector2(300, 300);
-            testSprite2 = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.Loop };
-            testSprite2.Origin = new Vector2(30.0f, 90.0f);
-            testSprite2.Position = new Vector2(100, 100);
-            sprites.Add(testSprite);
-            sprites.Add(testSprite2);
 
             for (int i = 0; i < 10; ++i)
             {
@@ -85,7 +88,7 @@ namespace MedicalFactory
                 IsEnabled = true,
                 Movement = ParticleMovement.WithEmitter,
             };
-            particles.AttachedTo = testSprite;
+            particles.AttachedTo = robot1;
             sprites.Add(particles);
 
             /*
@@ -109,7 +112,7 @@ namespace MedicalFactory
             }
 
             // initialize players
-            playerOne = new Player(xBoxController, testSprite);
+            playerOne = new Player(xBoxController, robot1);
             players.Add(playerOne);
 
             base.Initialize();
@@ -127,13 +130,13 @@ namespace MedicalFactory
                 Exit();
             if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A))
             {
-                if (playerOne.ControlledSprite == testSprite)
+                if (playerOne.ControlledSprite == robot1)
                 {
-                    playerOne.ControlledSprite = testSprite2;
+                    playerOne.ControlledSprite = robot2;
                 }
                 else
                 {
-                    playerOne.ControlledSprite = testSprite;
+                    playerOne.ControlledSprite = robot1;
                 }
             }
 

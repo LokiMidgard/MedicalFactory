@@ -6,6 +6,7 @@ using System.Text;
 
 namespace MedicalFactory.GameObjects
 {
+
     public class BodyPart : Sprite
     {
         public Player CarriedBy { get; set; }
