@@ -37,8 +37,8 @@ namespace MedicalFactory.GameObjects
             base.Draw(spriteBatch, gameTime);
 
             // draw gauge
-            var pos = this.Position - new Vector2(20, 20);
-            var rect = new Rectangle((int)pos.X, (int)pos.Y, 16, 16 * 4);
+            var pos = this.Position - new Vector2(45, 43);
+            var rect = new Rectangle((int)pos.X, (int)pos.Y, 12, 16 * 5);
 
             spriteBatch.Draw(this.rect, rect, Color.Black);
             rect.X += 2;
@@ -52,10 +52,10 @@ namespace MedicalFactory.GameObjects
             rect.Y = rect.Y + (rect.Height - height);
             rect.Height = height;
 
-            spriteBatch.Draw(this.rect, rect, Color.Violet);
+            spriteBatch.Draw(this.rect, rect, Color.LimeGreen);
         }
 
-        public BodyPartDispenser(DispenserType type, int stock) : base(type.ToString(), "Leeresgerät")
+        public BodyPartDispenser(DispenserType type, int stock) : base(type.ToString(), "Box_Leer")
         {
             this.type = type;
             this.initialStock = stock;
