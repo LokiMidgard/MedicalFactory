@@ -9,21 +9,21 @@ namespace MedicalFactory.GameObjects
     {
         private readonly Patient patient;
 
-        private IEnumerable<Organ> Organs => patient?.Attached.Where(a => a is Organ).Cast<Organ>();
+        private IEnumerable<BodyPart> BodyParts => patient?.Attached.Where(a => a is BodyPart).Cast<BodyPart>();
 
         public PatientState(Patient parent)
         {
             patient = parent;
         }
 
-        public void AddOrgan(Organ organ)
+        public void AddBodyPart(BodyPart organ)
         {
             patient.Attach(organ);
         }
 
-        public void TryRemoveOrgan(OrganType type, ICanCarray newOwner)
+        public void TryRemoveBodyPart(BodyPart.BodyPartType type, ICanCarray newOwner)
         {
-            var matching = Organs.Where(o => o.GetType().Name == type.ToString());
+            var matching = BodyParts.Where(o => o.GetType().Name == type.ToString());
             if (matching.Count() > 0)
             {
                 newOwner.Attach(matching.First());

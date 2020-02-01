@@ -9,7 +9,13 @@ namespace MedicalFactory.GameObjects
 
     public class BodyPart : Sprite
     {
-        public BodyPart(string TextureName) : base(TextureName)
+        public enum BodyPartType
+        {
+            HERZ,
+            NIERE,
+            LUNGE
+        }
+        public BodyPart(BodyPartType type) : base(type.ToString())
         {
             AttachOffset = Vector2.UnitY * -48;
         }
