@@ -76,6 +76,8 @@ namespace MedicalFactory
             }
         }
 
+        public Vector2 AttachOffset { get; set; }
+
 
         public ParticleSystem(TimeSpan maxAge, string texture)
         {

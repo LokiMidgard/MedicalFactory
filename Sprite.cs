@@ -21,11 +21,13 @@ namespace MedicalFactory
     public interface IAttachable
     {
         ICanCarray AttachedTo { set; get; }
+        Vector2 AttachOffset { get; set; }
     }
 
     public interface ICanCarray
     {
         Vector2 Position { get; set; }
+        float Rotation { get; set; }
         System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
         void Attach(IAttachable add);
         void Detach(IAttachable add);
@@ -37,7 +39,7 @@ namespace MedicalFactory
         public Vector2 Origin;
         public float Radius;
         public Vector2 Velocity;
-        public float Rotation;
+        public float Rotation { get; set; }
         public bool CanCollide = false;
 
         public bool hasCollision;
@@ -63,6 +65,8 @@ namespace MedicalFactory
                 attachedTo.Attach(this);
             }
         }
+
+        public Vector2 AttachOffset { get; set; }
 
         private readonly List<IAttachable> attached;
         public System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
@@ -153,7 +157,15 @@ namespace MedicalFactory
                 _ => throw new NotImplementedException($"AnimationMode {this.AnimationMode}")
             };
 
-            Position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.AttachedTo == null)
+            {
+                Position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            } else {
+                Vector2 offset = MyMathHelper.RotateBy(AttachOffset, AttachedTo.Rotation);
+
+                Position = AttachedTo.Position + offset;
+                Rotation = AttachedTo.Rotation;
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
