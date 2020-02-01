@@ -33,19 +33,28 @@ namespace MedicalFactory
         {
             if (ControlledSprite != null)
             {
-
                 Vector2 Direction = new Vector2(inputProvider.Get(Sliders.LeftStickX), inputProvider.Get(Sliders.LeftStickY));
                 ControlledSprite.Velocity = Direction * Speed;
                 if (Direction.X + Direction.Y != 0.0f)
                 {
                     ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, -1.0f), Vector2.Normalize(Direction));
                 }
-                Vector2 PickupPoint = ControlledSprite.Position + (Direction*PickupOffset);
-                var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
-                foreach (var collision in collisions) {
-                    BodyPart b = collision.spriteB as BodyPart;
-                    if (b != null) {
-                        ControlledSprite.Attach(b);
+                if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
+                {
+                    if (ControlledSprite.Attached.Count == 0)
+                    {
+                        Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
+                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
+                        foreach (var collision in collisions)
+                        {
+                            BodyPart b = collision.spriteB as BodyPart;
+                            if (b != null && b.AttachedTo == null)
+                            {
+                                ControlledSprite.Attach(b);
+                            }
+                        }
+                    } else {
+                        ControlledSprite.Detach(ControlledSprite.Attached[0]);
                     }
                 }
             }

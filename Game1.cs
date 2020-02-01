@@ -21,8 +21,8 @@ namespace MedicalFactory
 
         public readonly Screen Screen;
 
-        private XBoxController xBoxController;  // => added to controllers
-        private Player playerOne;               // => added to players
+        private XBoxController xBoxController, xBoxController2;  // => added to controllers
+        private Player playerOne, playerTwo;               // => added to players
         private Robot robot1;
         private Robot robot2;
 
@@ -63,6 +63,8 @@ namespace MedicalFactory
             // initialize Input Devices
             xBoxController = new XBoxController(0);
             controllers.Add(xBoxController);
+            xBoxController2 = new XBoxController(1);
+            controllers.Add(xBoxController2);
 
             robot1 = new Robot(PlayerColor.Roboter_Blau)
             {
@@ -100,6 +102,9 @@ namespace MedicalFactory
             // initialize players
             playerOne = new Player(xBoxController, robot1);
             players.Add(playerOne);
+
+            playerTwo = new Player(xBoxController2, robot2);
+            players.Add(playerTwo);
 
             base.Initialize();
         }
