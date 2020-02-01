@@ -21,6 +21,11 @@ namespace MedicalFactory
         WithEmitter
     }
 
+    public enum ParticlelBlendMode
+    {
+        None,
+        Additive,
+    }
 
     public interface IParticleDirectionSpawner
     {
@@ -32,28 +37,30 @@ namespace MedicalFactory
         public float Scale { get; set; } = 1.0f;
         public Vector2 GetVelocety()
         {
-            return new Vector2(this.Scale * (((float)random.NextDouble()) * 2f - 1f), this.Scale * (((float)random.NextDouble()) * 2f - 1f));
+            return new Vector2(this.Scale * (((float)this.random.NextDouble()) * 2f - 1f), this.Scale * (((float)this.random.NextDouble()) * 2f - 1f));
         }
 
     }
     public class ParticleDirectionFix : IParticleDirectionSpawner
     {
         public Vector2 Velocety { get; set; }
-        public Vector2 GetVelocety() => Velocety;
+        public Vector2 GetVelocety() => this.Velocety;
 
     }
 
     public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject, IAttachable
     {
-        public const int MaxParticles = 1000;
+        private readonly int MaxParticles;
         private readonly string textureName;
         private Texture2D texture;
 
-        public Vector2 Origin { get; set; }
+        public Vector2? Origin { get; set; }
         public TimeSpan SpawnRate { get; set; }
         public bool IsEnabled { get; set; }
 
         public ParticleMovement Movement { get; set; }
+
+        public ParticlelBlendMode BlendMode { get; set; }
 
         private int startIndex;
         private int active;
@@ -83,30 +90,31 @@ namespace MedicalFactory
         private ICanCarray attachedTo;
         public ICanCarray AttachedTo
         {
-            get => attachedTo; set
+            get => this.attachedTo; set
             {
-                if (attachedTo == value)
+                if (this.attachedTo == value)
                     return;
 
-                if (attachedTo != null)
-                    attachedTo.Detach(this);
-                attachedTo = value;
-                attachedTo.Attach(this);
+                if (this.attachedTo != null)
+                    this.attachedTo.Detach(this);
+                this.attachedTo = value;
+                this.attachedTo.Attach(this);
             }
         }
 
         public Vector2 AttachOffset { get; set; }
 
 
-        public ParticleSystem(TimeSpan maxAge, string texture)
+        public ParticleSystem(TimeSpan maxAge, string texture, int maxParticles = 1000)
         {
+            this.MaxParticles = maxParticles;
             this.textureName = texture;
-            positions = new Vector2[MaxParticles];
-            velocetys = new Vector2[MaxParticles];
-            scale = new Vector2[MaxParticles];
-            createionTime = new TimeSpan[MaxParticles];
-            actives = new bool[MaxParticles];
-            fade = new float[MaxParticles];
+            this.positions = new Vector2[this.MaxParticles];
+            this.velocetys = new Vector2[this.MaxParticles];
+            this.scale = new Vector2[this.MaxParticles];
+            this.createionTime = new TimeSpan[this.MaxParticles];
+            this.actives = new bool[this.MaxParticles];
+            this.fade = new float[this.MaxParticles];
             this.MaxAge = maxAge;
         }
 
@@ -116,17 +124,20 @@ namespace MedicalFactory
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             var oldBlendState = spriteBatch.GraphicsDevice.BlendState;
-            spriteBatch.GraphicsDevice.BlendState = BlendState.Additive;
+            if (this.BlendMode == ParticlelBlendMode.Additive)
+                spriteBatch.GraphicsDevice.BlendState = BlendState.Additive;
+            else
+                spriteBatch.GraphicsDevice.BlendState = BlendState.NonPremultiplied;
 
 
-            for (int i = 0; i < MaxParticles; i++)
+            for (int i = 0; i < this.MaxParticles; i++)
             {
-                if (createionTime[i] != default && gameTime.TotalGameTime - createionTime[i] < MaxAge)
+                if (this.createionTime[i] != default && gameTime.TotalGameTime - this.createionTime[i] < this.MaxAge)
                 {
-                    Vector2 position = positions[i];
+                    Vector2 position = this.positions[i];
                     if (this.Movement == ParticleMovement.WithEmitter)
                         position += this.Position;
-                    spriteBatch.Draw(texture, position, origin: this.Origin, color: new Color(this.Tint, fade[i]));
+                    spriteBatch.Draw(this.texture, position, origin: this.Origin.Value, color: new Color(this.Tint, this.fade[i]));
                 }
             }
             spriteBatch.GraphicsDevice.BlendState = oldBlendState;
@@ -137,33 +148,34 @@ namespace MedicalFactory
 
         public void LoadContent(Game1 game)
         {
-            texture = game.Content.Load<Texture2D>(textureName);
+            this.texture = game.Content.Load<Texture2D>(this.textureName);
+            this.Origin ??= new Vector2(this.texture.Width / 2f, this.texture.Height / 2f);
         }
 
 
         private void Spawn(GameTime gameTime)
         {
-            if (active < MaxParticles)
+            if (this.active < this.MaxParticles)
             {
 
-                while (createionTime[startIndex] != default && gameTime.TotalGameTime - createionTime[startIndex] < MaxAge)
+                while (this.createionTime[this.startIndex] != default && gameTime.TotalGameTime - this.createionTime[this.startIndex] < this.MaxAge)
                 {
-                    startIndex++;
-                    startIndex %= MaxParticles;
+                    this.startIndex++;
+                    this.startIndex %= this.MaxParticles;
                 }
 
 
                 if (this.Movement == ParticleMovement.Static)
-                    positions[startIndex] = Position;
+                    this.positions[this.startIndex] = this.Position;
                 else
-                    positions[startIndex] = Vector2.Zero;
-                velocetys[startIndex] = this.Spawner?.GetVelocety() ?? Vector2.Zero;
-                fade[startIndex] = 1.0f;
-                scale[startIndex] = Vector2.One;
+                    this.positions[this.startIndex] = Vector2.Zero;
+                this.velocetys[this.startIndex] = this.Spawner?.GetVelocety() ?? Vector2.Zero;
+                this.fade[this.startIndex] = 1.0f;
+                this.scale[this.startIndex] = Vector2.One;
 
-                createionTime[startIndex] = gameTime.TotalGameTime;
-                actives[startIndex] = true;
-                active++;
+                this.createionTime[this.startIndex] = gameTime.TotalGameTime;
+                this.actives[this.startIndex] = true;
+                this.active++;
             }
         }
 
@@ -171,51 +183,51 @@ namespace MedicalFactory
         public void Update(GameTime gameTime)
         {
 
-            if (AttachedTo != null)
-                this.Position = AttachedTo.Position;
+            if (this.AttachedTo != null)
+                this.Position = this.AttachedTo.Position;
 
-            if (IsEnabled)
+            if (this.IsEnabled)
             {
-                spawnBackpack += gameTime.ElapsedGameTime;
-                while (spawnBackpack >= this.SpawnRate)
+                this.spawnBackpack += gameTime.ElapsedGameTime;
+                while (this.spawnBackpack >= this.SpawnRate)
                 {
-                    spawnBackpack -= this.SpawnRate;
+                    this.spawnBackpack -= this.SpawnRate;
                     this.Spawn(gameTime);
                 }
 
             }
 
-            for (int i = 0; i < MaxParticles; i++)
+            for (int i = 0; i < this.MaxParticles; i++)
             {
-                positions[i] += velocetys[i];
-                if (actives[i])
+                this.positions[i] += this.velocetys[i];
+                if (this.actives[i])
                 {
 
-                    var age = gameTime.TotalGameTime - createionTime[i];
+                    var age = gameTime.TotalGameTime - this.createionTime[i];
 
-                    var deathBegin = this.MaxAge - DeathDuration;
-
-
+                    var deathBegin = this.MaxAge - this.DeathDuration;
 
 
-                    if (age >= MaxAge)
+
+
+                    if (age >= this.MaxAge)
                     {
-                        actives[i] = false;
-                        active--;
+                        this.actives[i] = false;
+                        this.active--;
                     }
                     else if (age > deathBegin)
                     {
-                        var deathPosition = (age - deathBegin) / DeathDuration;
+                        var deathPosition = (age - deathBegin) / this.DeathDuration;
 
                         System.Diagnostics.Debug.Assert(deathPosition <= 1 && deathPosition >= 0);
 
                         if (this.Death.HasFlag(PatricleDeath.Fade))
                         {
-                            fade[i] = 1f - (float)deathPosition;
+                            this.fade[i] = 1f - (float)deathPosition;
                         }
                         if (this.Death.HasFlag(PatricleDeath.Shrink))
                         {
-                            scale[i] = Vector2.One * (1f - (float)deathPosition);
+                            this.scale[i] = Vector2.One * (1f - (float)deathPosition);
                         }
 
                     }

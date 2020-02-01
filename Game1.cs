@@ -83,21 +83,6 @@ namespace MedicalFactory
                 sprites.Add(conveyer);
             }
 
-            // initilize Particles
-            var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle")
-            {
-                Tint = Color.Red,
-                SpawnRate = TimeSpan.FromSeconds(0.1),
-                Spawner = new ParticleDirectionRandom(),
-                DeathDuration = TimeSpan.FromSeconds(1),
-                MaxAge = TimeSpan.FromSeconds(1),
-                Death = PatricleDeath.Fade,
-                IsEnabled = true,
-                Movement = ParticleMovement.WithEmitter,
-            };
-            particles.AttachedTo = robot1;
-            sprites.Add(particles);
-
             /*
             Random r = new Random();
             for (int i = 0; i < 100; ++i)
