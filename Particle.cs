@@ -7,12 +7,18 @@ using System;
 
 namespace MedicalFactory
 {
-
+    [Flags]
     public enum PatricleDeath
     {
         None,
-        Fade,
-        Shrink,
+        Fade = 1 << 1,
+        Shrink = 1 << 2,
+    }
+
+    public enum ParticleMovement
+    {
+        Static,
+        WithEmitter
     }
 
 
@@ -46,6 +52,8 @@ namespace MedicalFactory
         public Vector2 Origin { get; set; }
         public TimeSpan SpawnRate { get; set; }
         public bool IsEnabled { get; set; }
+
+        public ParticleMovement Movement { get; set; }
 
         private int startIndex;
         private int active;
@@ -113,7 +121,10 @@ namespace MedicalFactory
             {
                 if (createionTime[i] != default && gameTime.TotalGameTime - createionTime[i] < MaxAge)
                 {
-                    spriteBatch.Draw(texture, positions[i], origin: this.Origin, color: new Color(this.Tint, fade[i]));
+                    Vector2 position = positions[i];
+                    if (this.Movement == ParticleMovement.WithEmitter)
+                        position += this.Position;
+                    spriteBatch.Draw(texture, position, origin: this.Origin, color: new Color(this.Tint, fade[i]));
                 }
             }
             spriteBatch.GraphicsDevice.BlendState = oldBlendState;
@@ -140,8 +151,10 @@ namespace MedicalFactory
                 }
 
 
-
-                positions[startIndex] = Position;
+                if (this.Movement == ParticleMovement.Static)
+                    positions[startIndex] = Position;
+                else
+                    positions[startIndex] = Vector2.Zero;
                 velocetys[startIndex] = this.Spawner?.GetVelocety() ?? Vector2.Zero;
                 fade[startIndex] = 1.0f;
                 scale[startIndex] = Vector2.One;
@@ -197,6 +210,10 @@ namespace MedicalFactory
                         if (this.Death.HasFlag(PatricleDeath.Fade))
                         {
                             fade[i] = 1f - (float)deathPosition;
+                        }
+                        if (this.Death.HasFlag(PatricleDeath.Shrink))
+                        {
+                            scale[i] = Vector2.One * (1f - (float)deathPosition);
                         }
 
                     }

@@ -69,7 +69,7 @@ namespace MedicalFactory
             for (int i = 0; i < 10; ++i)
             {
                 Sprite conveyer = new Sprite("Fließband");
-                conveyer.Position = new Vector2(i*180.0f + 90.0f, 60.0f*9.5f);
+                conveyer.Position = new Vector2(i * 180.0f + 90.0f, 60.0f * 9.5f);
                 sprites.Add(conveyer);
             }
 
@@ -82,7 +82,8 @@ namespace MedicalFactory
                 DeathDuration = TimeSpan.FromSeconds(1),
                 MaxAge = TimeSpan.FromSeconds(1),
                 Death = PatricleDeath.Fade,
-                IsEnabled = true
+                IsEnabled = true,
+                Movement = ParticleMovement.WithEmitter,
             };
             particles.AttachedTo = testSprite;
             sprites.Add(particles);
