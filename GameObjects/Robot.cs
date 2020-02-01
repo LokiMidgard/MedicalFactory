@@ -55,8 +55,8 @@ namespace MedicalFactory.GameObjects
             base.Update(gameTime);
 
             Position = new Vector2(
-                MathHelper.Clamp(Position.X, 64, 1920 - 64),
-                MathHelper.Clamp(Position.Y, 128, 1028 - 32)
+                MathHelper.Clamp(Position.X, 32, 1920 - 32),
+                MathHelper.Clamp(Position.Y, 64, 1028 - 16)
             );
 
             this.particles.Update(gameTime);

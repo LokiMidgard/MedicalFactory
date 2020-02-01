@@ -75,7 +75,7 @@ namespace MedicalFactory
 
         private readonly List<IAttachable> attached;
         public System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
-        public void Attach(IAttachable toAdd)
+        public virtual void Attach(IAttachable toAdd)
         {
             if (toAdd.AttachedTo == this)
                 return;
@@ -84,7 +84,7 @@ namespace MedicalFactory
             this.attached.Add(toAdd);
             toAdd.AttachedTo = this;
         }
-        public void Detach(IAttachable toRemove)
+        public virtual void Detach(IAttachable toRemove)
         {
             this.attached.Remove(toRemove);
             toRemove.AttachedTo = null;
@@ -122,6 +122,8 @@ namespace MedicalFactory
             return value;
         }
 
+
+        public bool Visible { get; set; } = true;
 
         private Sprite()
         {
@@ -197,12 +199,15 @@ namespace MedicalFactory
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, rotation: this.Rotation, origin: this.Origin, scale:this.Scale);
-
-            if (GameConfig.DrawCollisionGeometry)
+            if (Visible)
             {
-                var color = this.hasCollision ? Color.Red : Color.White;
-                DebugHelper.DrawCircle(spriteBatch, this.Position, this.Radius, color);
+                spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, null, Color.White, this.Rotation, this.Origin, 1.0f, SpriteEffects.None, 0.0f);
+
+                if (GameConfig.DrawCollisionGeometry)
+                {
+                    var color = this.hasCollision ? Color.Red : Color.White;
+                    DebugHelper.DrawCircle(spriteBatch, this.Position, this.Radius, color);
+                }
             }
         }
     }

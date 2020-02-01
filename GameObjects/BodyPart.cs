@@ -18,13 +18,14 @@ namespace MedicalFactory.GameObjects
             LUNGE,
             KAPUTTE_LUNGE,
         }
-        public BodyPartType Type { get; }
+
+        public static Vector2 DefaultAttachOffset = Vector2.UnitY * -48;
+        public BodyPartType Type;
 
         public BodyPart(BodyPartType type) : base(type.ToString())
         {
-            this.AttachOffset = Vector2.UnitY * -48;
+            AttachOffset = DefaultAttachOffset;
             this.Type = type;
-
         }
 
         public override ICanCarray AttachedTo
