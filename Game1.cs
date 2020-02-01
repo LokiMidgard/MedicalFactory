@@ -61,7 +61,7 @@ namespace MedicalFactory
 
 
             // initilize Particles
-            var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "Roboter_Rot")
+            var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle")
             {
                 SpawnRate = TimeSpan.FromSeconds(0.1),
                 Velocety = Vector2.One,

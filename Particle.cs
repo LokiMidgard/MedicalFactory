@@ -17,7 +17,7 @@ namespace MedicalFactory
 
     public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject
     {
-        private const int MaxParticles = 1;
+        private const int MaxParticles = 1000;
         private readonly string textureName;
         private Texture2D texture;
         public Vector2 Origin { get; set; }
