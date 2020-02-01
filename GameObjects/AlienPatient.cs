@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MedicalFactory.GameObjects
@@ -11,12 +12,14 @@ namespace MedicalFactory.GameObjects
 
         public AlienPatient(Texture2D texture) : base(texture)
         {
+            
+        }
 
+        protected override void InitOrgans()
+        {
             this.Attach(new BodyPart(BodyPart.BodyPartType.HERZ));
             this.Attach(new BodyPart(BodyPart.BodyPartType.HERZ));
             this.Attach(new BodyPart(BodyPart.BodyPartType.LUNGE));
-            foreach (var item in this.Attached)
-                Game1.sprites.Add(item as BodyPart);
         }
 
         public override void Update(GameTime gameTime)

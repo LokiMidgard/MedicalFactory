@@ -61,7 +61,7 @@ namespace MedicalFactory.GameObjects
             {
                 var oldValue = base.AttachedTo;
                 base.AttachedTo = value;
-                if (value is Patient)
+                if (value is HumanPatient)
                 {
                     this.AttachOffset = this.Type switch
                     {
@@ -70,8 +70,17 @@ namespace MedicalFactory.GameObjects
                         BodyPartType.NIERE => new Vector2(-20, -20),
                         _ => throw new NotImplementedException($"Type {this.Type}")
                     };
-
-
+                }
+                if (value is AlienPatient)
+                {
+                    var isSeccondHath = value.Attached.OfType<BodyPart>().Where(x => x.Type == BodyPartType.HERZ).Count() >= 2;
+                    this.AttachOffset = this.Type switch
+                    {
+                        BodyPartType.HERZ => isSeccondHath? new Vector2(-15, -75) : new Vector2(15, -60),
+                        BodyPartType.LUNGE => new Vector2(-20, 20),
+                        BodyPartType.NIERE => new Vector2(-20, -20),
+                        _ => throw new NotImplementedException($"Type {this.Type}")
+                    };
                 }
                 if (value is Robot)
                     this.AttachOffset = DefaultAttachOffset;
