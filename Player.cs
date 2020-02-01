@@ -33,6 +33,7 @@ namespace MedicalFactory
         {
             if (ControlledSprite != null)
             {
+                // Handle Directions
                 Vector2 Direction = new Vector2(inputProvider.Get(Sliders.LeftStickX), inputProvider.Get(Sliders.LeftStickY));
                 ControlledSprite.Velocity = Direction * Speed;
                 if (Direction.X + Direction.Y != 0.0f)
@@ -40,6 +41,7 @@ namespace MedicalFactory
                     ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, -1.0f), Vector2.Normalize(Direction));
                 }
 
+                // Handle Buttons
                 if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
                 {
                     if (ControlledSprite.Attached.Count == 0)  // if nothing is attached

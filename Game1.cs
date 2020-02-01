@@ -17,7 +17,7 @@ namespace MedicalFactory
 
         private Group controllers;  // input devices
         private Group players;      // player abstraction, see class Player
-        private Background bg;
+        public static Background Background;
         public static Group sprites;
 
         public readonly Screen Screen;
@@ -38,7 +38,7 @@ namespace MedicalFactory
 
             Screen = new Screen(_graphics);
 
-            bg = new Background(Screen);
+            Background = new Background(Screen);
 
             controllers = new Group();
             players = new Group();
@@ -47,7 +47,7 @@ namespace MedicalFactory
             patientFactory = new PatientFactory();
             conveyerBelt = new ConveyerBelt();
 
-            Screen.Add(bg);
+            Screen.Add(Background);
             Screen.Add(controllers);
             Screen.Add(conveyerBelt);
             Screen.Add(players);

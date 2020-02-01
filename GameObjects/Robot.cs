@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -58,6 +59,14 @@ namespace MedicalFactory.GameObjects
                 MathHelper.Clamp(Position.X, 32, 1920 - 32),
                 MathHelper.Clamp(Position.Y, 64, 1028 - 16)
             );
+
+            // if transporting body part => spill some blood
+            var bp = Attached.FirstOrDefault(a => a is BodyPart) as BodyPart;
+            if (bp != null)
+            {
+                if (random.NextDouble() < 0.025)
+                    Game1.Background.AddBloodSplash(Position, bp.IsDemaged);
+            }
 
             this.particles.Update(gameTime);
 
