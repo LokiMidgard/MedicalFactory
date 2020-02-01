@@ -100,7 +100,7 @@ namespace MedicalFactory.GameObjects
             }
 
             Position = new Vector2(
-                MathHelper.Clamp(Position.X, 32, 1920 - 32),
+                MathHelper.Clamp(Position.X, 32, 1920 - 100),
                 MathHelper.Clamp(Position.Y, yMin, yMax)
             );
 

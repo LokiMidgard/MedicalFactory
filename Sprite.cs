@@ -46,7 +46,11 @@ namespace MedicalFactory
             get { return this.attachedTo; }
         }
 
-        public virtual void OnAttachChanged() { }
+        public virtual void OnAttachChanged()
+        {
+            if (this.AttachedTo != null)
+                this.Velocity = Vector2.Zero;
+        }
 
         ICanCarry IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables.AttachedTo { set { this.attachedTo = value; OnAttachChanged(); } }
 
@@ -54,7 +58,7 @@ namespace MedicalFactory
 
         private readonly List<IAttachable> attached;
         public System.Collections.ObjectModel.ReadOnlyCollection<IAttachable> Attached { get; }
-        
+
         public virtual void Attach(IAttachable toAdd)
         {
             if (!(toAdd is IOnlyUseMeIfYouKnowWhatYouAreDoingWithAttachables impl))
@@ -65,7 +69,7 @@ namespace MedicalFactory
 
             if (toAdd.AttachedTo != null)
                 toAdd.AttachedTo.Detach(toAdd);
-            
+
             this.attached.Add(toAdd);
             impl.AttachedTo = this;
         }
@@ -120,10 +124,10 @@ namespace MedicalFactory
         }
 
 
-        public Sprite(params Texture2D[] textures) :this()
+        public Sprite(params Texture2D[] textures) : this()
         {
             this.textures = textures;
-            this.textureNames = new string[]{""};
+            this.textureNames = new string[] { "" };
             Init();
         }
 

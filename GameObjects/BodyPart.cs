@@ -58,6 +58,7 @@ namespace MedicalFactory.GameObjects
         private ICanCarry oldValue;
         public override void OnAttachChanged()
         {
+            base.OnAttachChanged();
             var value = this.AttachedTo;
             if (value is HumanPatient)
             {
@@ -151,14 +152,18 @@ namespace MedicalFactory.GameObjects
                 this.Scale = new Vector2(scalePosition, scalePosition);
             }
 
-            if (Velocity.Length() > 0.0f) {
-                if (NextSplashTime < 0.0f) {
-                    Game1.Background.AddBloodSplash(Position, false, SplashCount*0.7f/(1.0f+SplashCount));
+            if (Velocity.Length() > 0.0f)
+            {
+                if (NextSplashTime < 0.0f)
+                {
+                    Game1.Background.AddBloodSplash(Position, false, SplashCount * 0.7f / (1.0f + SplashCount));
                     NextSplashTime = 0.3f;
                     SplashCount += 1;
                 }
                 NextSplashTime -= gameTime.ElapsedGameTime.TotalSeconds;
-            } else {
+            }
+            else
+            {
                 SplashCount = 0;
             }
         }
