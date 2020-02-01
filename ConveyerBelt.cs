@@ -11,7 +11,7 @@ namespace MedicalFactory
 {
     public class ConveyerBelt : Group
     {
-        public float Speed = 10.0f;
+        public float Speed = 3.0f;
         public float YPos = 60.0f * 9.5f;
         Texture2D HumanTexture;
 
@@ -35,7 +35,7 @@ namespace MedicalFactory
 
         public void Update(GameTime gameTime)
         {
-            Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*100.0f;
+            Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*30.0f;
 
             //Debugger.Log(0, "", Speed + "\n");
             base.Update(gameTime);

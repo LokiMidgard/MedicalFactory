@@ -81,8 +81,9 @@ namespace MedicalFactory
                         }
                         if (!iPutItSomewhere) {
                             var bp = holdables.First();
-                            if (bp != null)
-                                Game1.Background.AddBloodSplash(bp.Position, bp.IsDemaged, true);
+                            if (bp != null) {
+                                bp.Velocity = ControlledSprite.Velocity;
+                            }
 
                             ControlledSprite.Detach(holdables.First());
                         }
