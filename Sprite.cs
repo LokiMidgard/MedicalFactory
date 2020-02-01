@@ -126,6 +126,13 @@ namespace MedicalFactory
 
         }
 
+        public Sprite(Texture2D texture)
+        {
+            this.textures = new Texture2D[]{texture};
+            this.textureNames = new string[]{"directloaded"};
+        }
+
+
         public Sprite(params string[] textureNames)
         {
             attached = new List<IAttachable>();

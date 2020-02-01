@@ -10,6 +10,7 @@ namespace MedicalFactory
 {
     public class Game1 : Game
     {
+        public static Game1 game;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -24,6 +25,8 @@ namespace MedicalFactory
         private XBoxController xBoxController;  // => added to controllers
         private Player playerOne;               // => added to players
 
+        public PatientFactory patientFactory;
+
 
         public Game1()
         {
@@ -37,6 +40,7 @@ namespace MedicalFactory
             controllers = new Group();
             players = new Group();
             sprites = new Group();
+            patientFactory = new PatientFactory();
 
             Screen.Add(bg);
             Screen.Add(controllers);
@@ -49,6 +53,7 @@ namespace MedicalFactory
 
         protected override void Initialize()
         {
+            Game1.game = this;
             // initialize screen
             this.Screen.Initialize();
 
@@ -117,12 +122,14 @@ namespace MedicalFactory
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Screen.LoadContent(this);
+            patientFactory.LoadContent(this);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            patientFactory.Update(gameTime);
             if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A))
             {
                 if (playerOne.ControlledSprite == testSprite)
