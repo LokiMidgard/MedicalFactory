@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using PaToRo_Desktop.Engine.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MedicalFactory
 {
@@ -42,7 +43,7 @@ namespace MedicalFactory
             controllers = new Group();
             players = new Group();
             sprites = new Group();
-            
+
             patientFactory = new PatientFactory();
             conveyerBelt = new ConveyerBelt();
 
@@ -92,11 +93,14 @@ namespace MedicalFactory
             */
 
             // add some bodyparts
-            for (int i = 0; i < 5; ++i)
+            foreach (var part in Enum.GetValues(typeof(BodyPart.BodyPartType)).Cast<BodyPart.BodyPartType>())
             {
-                var bodyPart = new BodyPart(BodyPart.BodyPartType.LUNGE);
-                bodyPart.Position = Screen.GetRandomWorldPos();
-                sprites.Add(bodyPart);
+                for (int i = 0; i < 5; ++i)
+                {
+                    var bodyPart = new BodyPart(part);
+                    bodyPart.Position = Screen.GetRandomWorldPos();
+                    sprites.Add(bodyPart);
+                }
             }
 
             // initialize players
