@@ -11,8 +11,6 @@ namespace MedicalFactory
         private const int bigHeight = 1080;
         private const int smalWidth = 1280;
         private const int smalHeight = 720;
-        private bool lastFullScreenKey;
-        private bool lastFullDebugGraficKey;
 
         private SpriteBatch screenBatch;
         public RenderTarget2D canvas;
@@ -89,23 +87,36 @@ namespace MedicalFactory
 
         public override void Update(GameTime gameTime)
         {
-
             var keyboardstate = Keyboard.GetState();
-            var isKeyDownFullScreen = keyboardstate.IsKeyDown(Keys.F1);
-            var isKeyDownDebugGraphic = keyboardstate.IsKeyDown(Keys.F2);
 
-            if (isKeyDownFullScreen && !this.lastFullScreenKey)
+            var isKeyDownFullScreen = GetBlockingConveyer(Keys.F1);
+            var isKeyDownDebugGraphic = GetBlockingConveyer(Keys.F2);
+            var blockingConveyer = GetBlockingConveyer(Keys.F3);
+
+
+            bool GetBlockingConveyer(Keys key)
+            {
+                return keyboardstate.IsKeyDown(key) && this.lastState.IsKeyUp(key);
+            }
+
+
+            if (isKeyDownFullScreen)
                 this.ToggleFullscreen();
 
-            if (isKeyDownDebugGraphic && !this.lastFullDebugGraficKey)
+            if (isKeyDownDebugGraphic)
                 GameConfig.DrawCollisionGeometry = !GameConfig.DrawCollisionGeometry;
 
-            this.lastFullScreenKey = isKeyDownFullScreen;
-            this.lastFullDebugGraficKey = isKeyDownDebugGraphic;
+            if (blockingConveyer)
+                GameConfig.KeepPlayersToTheirSide = !GameConfig.KeepPlayersToTheirSide;
+
+            this.lastState = keyboardstate;
             base.Update(gameTime);
         }
 
+
         private static Random rng = new Random();
+        private KeyboardState lastState;
+
         public static Vector2 GetRandomWorldPos()
         {
             return new Vector2((float)rng.NextDouble() * bigWidth, (float)rng.NextDouble() * bigHeight);
