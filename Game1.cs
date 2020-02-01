@@ -29,6 +29,7 @@ namespace MedicalFactory
 
         public PatientFactory patientFactory;
         public static ConveyerBelt conveyerBelt;
+        public static Group TopLayer;
 
         private Random rng = new Random();
 
@@ -48,12 +49,14 @@ namespace MedicalFactory
 
             patientFactory = new PatientFactory();
             conveyerBelt = new ConveyerBelt();
+            TopLayer = new Group();
 
             Screen.Add(Background);
             Screen.Add(controllers);
             Screen.Add(conveyerBelt);
             Screen.Add(playersGroup);
             Screen.Add(sprites);
+            Screen.Add(TopLayer);
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -88,6 +91,12 @@ namespace MedicalFactory
 
             var bpdKidneys = new BodyPartDispenser(DispenserType.Nierengerät, 2) { Position = new Vector2(945, 1035) };
             conveyerBelt.Add(bpdKidneys);
+
+            // add scanner
+            var scanner = new Scanner() { Position = new Vector2(1800, Game1.conveyerBelt.YPos) };
+            conveyerBelt.Add(scanner.Lower);
+            TopLayer.Add(scanner.RightWall);
+            TopLayer.Add(scanner.Upper);
 
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };

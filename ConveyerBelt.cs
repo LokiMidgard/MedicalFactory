@@ -5,28 +5,36 @@ using Microsoft.Xna.Framework.Content;
 using PaToRo_Desktop.Engine.Input;
 using MedicalFactory.GameObjects;
 using System;
+using System.Linq;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace MedicalFactory
 {
     public class ConveyerBelt : Group
     {
         public float Speed = 3.0f;
+        public float XPos = 0;
         public float YPos = 60.0f * 9.5f;
-        Texture2D HumanTexture;
+
+        private List<Sprite> parts = new List<Sprite>();
+        private Texture2D[] ConveyorTextures;
 
         public override void LoadContent(Game1 game)
         {
-            HumanTexture = game.Content.Load<Texture2D>("Mensch");
-            Texture2D ConveyerTexture1 = game.Content.Load<Texture2D>("FliessbandAnimiert_1");
-            Texture2D ConveyerTexture2 = game.Content.Load<Texture2D>("FliessbandAnimiert_2");
-            Texture2D ConveyerTexture3 = game.Content.Load<Texture2D>("FliessbandAnimiert_3");
+            ConveyorTextures = new Texture2D[]
+            {
+                game.Content.Load<Texture2D>("FliessbandAnimiert_1"),
+                game.Content.Load<Texture2D>("FliessbandAnimiert_2"),
+                game.Content.Load<Texture2D>("FliessbandAnimiert_3")
+            };
             
             for (int i = 0; i < 10; ++i)
             {
-                Sprite conveyer = new Sprite(ConveyerTexture1, ConveyerTexture2, ConveyerTexture3);
+                Sprite conveyer = new Sprite(ConveyorTextures);
                 conveyer.Position = new Vector2(i * 180.0f + 90.0f, YPos);
-                conveyer.AnimationMode = AnimationMode.Loop;
+                // conveyer.AnimationMode = AnimationMode.Loop;
+                parts.Add(conveyer);
                 Add(conveyer);
             }
 
@@ -37,7 +45,17 @@ namespace MedicalFactory
         {
             Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*30.0f;
 
-            //Debugger.Log(0, "", Speed + "\n");
+            XPos += (float)(Speed * gameTime.ElapsedGameTime.TotalSeconds);
+
+            var frameAmount = 180.0 / ConveyorTextures.Length;
+            var numTile = XPos % 180;
+            var frame = (int)((numTile / frameAmount));
+
+            foreach (var part in parts)
+            {
+                part.AnimationFrame = frame;
+            }
+
             base.Update(gameTime);
         }
 

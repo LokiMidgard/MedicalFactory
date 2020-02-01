@@ -157,6 +157,18 @@
 /processorParam:TextureFormat=Color
 /build:Hintergrund.PNG
 
+#begin Hintergrund_Right.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hintergrund_Right.PNG
+
 #begin Kaputte_Lunge.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -264,6 +276,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Nierengerät.png
+
+#begin Overlay.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Overlay.PNG
 
 #begin particle.png
 /importer:TextureImporter

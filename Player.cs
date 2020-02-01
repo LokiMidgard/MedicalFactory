@@ -45,47 +45,49 @@ namespace MedicalFactory
                 // Handle Buttons
                 if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
                 {
-                    var holdables = ControlledSprite.Attached.OfType<BodyPart>();
+                    var holdedItem = ControlledSprite.Attached.OfType<BodyPart>().FirstOrDefault();
 
-                    if (holdables.Count() == 0)  // if nothing is attached
+                    if (holdedItem is null)  // if nothing is attached
                     {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
                         var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
-                        foreach (var collision in collisions)
-                        {
-                            BodyPart b = collision.spriteB as BodyPart;
-                            if (b != null)// && (b.AttachedTo == null || b.AttachedTo.GetType() == typeof(BodyPartDispenser))) 
-                            {
-                                ControlledSprite.Attach(b);
-                                break; // only pickup one
-                            }
-                        }
-                    } else {
+                        // We order all Body parts we colide so demaged will be first.
+                        var toTake = collisions.Select(x => x.spriteB).OfType<BodyPart>().OrderBy(x => x.IsDemaged ? 0 : 1).FirstOrDefault();
+                        if (toTake != null)
+                            ControlledSprite.Attach(toTake);
+
+                    }
+                    else
+                    {
                         Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
                         var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.conveyerBelt);
                         bool iPutItSomewhere = false;
                         foreach (var collision in collisions)
                         {
                             Patient patient = collision.spriteB as Patient;
-                            if (patient != null) {
-                                patient.Attach(holdables.First());
+                            if (patient != null)
+                            {
+                                patient.Attach(holdedItem);
                                 iPutItSomewhere = true;
                                 break;
                             }
                             Recycler recycler = collision.spriteB as Recycler;
-                            if (recycler != null) {
-                                recycler.PutStuffInside(holdables.First());
+                            if (recycler != null)
+                            {
+                                recycler.PutStuffInside(holdedItem);
                                 iPutItSomewhere = true;
                                 break;
                             }
                         }
-                        if (!iPutItSomewhere) {
-                            var bp = holdables.First();
-                            if (bp != null) {
+                        if (!iPutItSomewhere)
+                        {
+                            var bp = holdedItem;
+                            if (bp != null)
+                            {
                                 bp.Velocity = ControlledSprite.Velocity;
                             }
 
-                            ControlledSprite.Detach(holdables.First());
+                            ControlledSprite.Detach(holdedItem);
                         }
                     }
                 }
