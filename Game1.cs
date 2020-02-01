@@ -24,6 +24,7 @@ namespace MedicalFactory
         private XBoxController xBoxController;  // => added to controllers
         private Player playerOne;               // => added to players
 
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -65,6 +66,12 @@ namespace MedicalFactory
             sprites.Add(testSprite);
             sprites.Add(testSprite2);
 
+            for (int i = 0; i < 10; ++i)
+            {
+                Sprite conveyer = new Sprite("Fließband");
+                conveyer.Position = new Vector2(i*180.0f + 90.0f, 60.0f*9.5f);
+                sprites.Add(conveyer);
+            }
 
             // initilize Particles
             var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle")
