@@ -36,7 +36,10 @@ namespace MedicalFactory.GameObjects
         {
             this.playerColor = color;
             this.Origin = new Vector2(30.0f, 90.0f);
-            this.AnimationFrameLength = TimeSpan.FromMilliseconds(400);
+            this.AnimationFrameLength = TimeSpan.FromMilliseconds(100);
+            var verticalOffset = 30;
+            if (color == PlayerColor.BlauerRoboter)
+                verticalOffset = 0;
             // initilize Particles
             this.particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
@@ -49,7 +52,7 @@ namespace MedicalFactory.GameObjects
                 IsEnabled = true,
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
-                AttachOffset = new Vector2(30, 30),
+                AttachOffset = new Vector2(30, verticalOffset),
             };
             this.particles2 = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
@@ -62,7 +65,7 @@ namespace MedicalFactory.GameObjects
                 IsEnabled = true,
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
-                AttachOffset = new Vector2(-30, 30),
+                AttachOffset = new Vector2(-30, verticalOffset),
             };
             this.Attach(this.particles);
             this.Attach(this.particles2);
@@ -124,23 +127,19 @@ namespace MedicalFactory.GameObjects
 
             if (this.Velocity.Length() > 3)
             {
-                //if (this.nextSpark < gameTime.TotalGameTime)
-                {
-                    this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
-                    this.particles.IsEnabled = true;
-                    this.particles2.IsEnabled = true;
-
-                }
-                //else
-                {
-                    //this.particles.IsEnabled = false;
-                }
+                this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
+                this.particles.IsEnabled = true;
+                this.particles2.IsEnabled = true;
             }
             else
             {
                 this.particles.IsEnabled = false;
                 this.particles2.IsEnabled = false;
             }
+
+            this.particles.IsEnabled = true;
+            this.particles2.IsEnabled = true;
+
 
         }
 
