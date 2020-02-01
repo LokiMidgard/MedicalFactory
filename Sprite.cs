@@ -19,7 +19,10 @@ namespace MedicalFactory
     public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable
     {
         public Vector2 Position;
+        public Vector2 Origin;
         public float Radius;
+        public Vector2 Velocity;
+        public float Rotation;
         public bool CanCollide = false;
 
         public bool hasCollision;
@@ -76,6 +79,9 @@ namespace MedicalFactory
         {
             textures = this.textureNames.Select(x => Content.Load<Texture2D>(x)).ToArray();
             UpdateRadius();
+            if (Origin == default) {
+                Origin = new Vector2(textures[0].Width/2.0f, textures[0].Height/2.0f);
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -92,8 +98,7 @@ namespace MedicalFactory
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            var topLeft = Position - (Vector2.One * Radius);
-            spriteBatch.Draw(textures[AnimationFrame], topLeft, null, Color.White);
+            spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.White, Rotation, Origin, 1.0f, SpriteEffects.None, 0.0f);
 
             if (GameConfig.DrawCollisionGeometry)
             {
