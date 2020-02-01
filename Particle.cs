@@ -17,7 +17,7 @@ namespace MedicalFactory
 
     public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject
     {
-        private const int MaxParticles = 1000;
+        private const int MaxParticles = 10;
         private readonly string textureName;
         private Texture2D texture;
         public Vector2 Origin { get; set; }
@@ -27,7 +27,8 @@ namespace MedicalFactory
         private int startIndex;
         private int active;
 
-        private readonly TimeSpan maxAge;
+        public TimeSpan MaxAge { get; set; }
+        public TimeSpan DeathDuration { get; set; }
 
         ///<Summary>        
         /// to safe the spawn between updates
@@ -37,24 +38,25 @@ namespace MedicalFactory
 
         public Vector2 Position { get; set; }
         public Vector2 Velocety { get; set; }
-
+        public PatricleDeath Death { get; set; }
 
         private Vector2[] positions;
+        private Vector2[] scale;
+        private float[] fade;
         private Vector2[] velocetys;
         private TimeSpan[] createionTime;
         private bool[] actives;
-
-
-
 
         public ParticleSystem(TimeSpan maxAge, string texture)
         {
             this.textureName = texture;
             positions = new Vector2[MaxParticles];
             velocetys = new Vector2[MaxParticles];
+            scale = new Vector2[MaxParticles];
             createionTime = new TimeSpan[MaxParticles];
             actives = new bool[MaxParticles];
-            this.maxAge = maxAge;
+            fade = new float[MaxParticles];
+            this.MaxAge = maxAge;
         }
 
 
@@ -64,7 +66,7 @@ namespace MedicalFactory
         {
             for (int i = 0; i < MaxParticles; i++)
             {
-                if (createionTime[i] != default && gameTime.TotalGameTime - createionTime[i] < maxAge)
+                if (createionTime[i] != default && gameTime.TotalGameTime - createionTime[i] < MaxAge)
                 {
                     spriteBatch.Draw(texture, positions[i], origin: this.Origin);
                 }
@@ -83,11 +85,19 @@ namespace MedicalFactory
             if (active < MaxParticles)
             {
 
-                while (createionTime[startIndex] != default && gameTime.TotalGameTime - createionTime[startIndex] < maxAge)
+                while (createionTime[startIndex] != default && gameTime.TotalGameTime - createionTime[startIndex] < MaxAge)
+                {
                     startIndex++;
+                    startIndex %= MaxParticles;
+                }
+
+
 
                 positions[startIndex] = Position;
                 velocetys[startIndex] = Velocety;
+                fade[startIndex] = 1.0f;
+                scale[startIndex] = Vector2.One;
+
                 createionTime[startIndex] = gameTime.TotalGameTime;
                 actives[startIndex] = true;
                 active++;
@@ -112,10 +122,30 @@ namespace MedicalFactory
             for (int i = 0; i < MaxParticles; i++)
             {
                 positions[i] += velocetys[i];
-                if (actives[i] && (gameTime.TotalGameTime - createionTime[startIndex] >= maxAge))
+                if (actives[i])
                 {
-                    actives[i] = false;
-                    active--;
+
+                    var age = gameTime.TotalGameTime - createionTime[i];
+
+                    var deathBegin = age - DeathDuration;
+
+
+
+
+                    if (age >= MaxAge)
+                    {
+                        actives[i] = false;
+                        active--;
+                    }
+                    else if (age > deathBegin)
+                    {
+                        // var (age - deathBegin);
+                        // if (this.Death.HasFlag(PatricleDeath.Fade))
+                        // {
+
+                        // }
+
+                    }
                 }
             }
 
