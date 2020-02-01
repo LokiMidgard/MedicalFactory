@@ -42,10 +42,12 @@ namespace MedicalFactory
             {
                 for (int y = 0; y < diameter; y++)
                 {
-                    int index = x * diameter + y;
+                    int index = y * diameter + x;
                     float len = new Vector2(x - radius, y - radius).Length();
          
-                    if (len > radius-2 && len <= radius)
+                    if ((len > radius-2 && len <= radius) ||
+                        (x == radius && y<radius)
+                        )
                     {
                         colorData[index] = Color.White;
                     }
