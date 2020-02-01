@@ -15,10 +15,13 @@ namespace MedicalFactory
         Texture2D HumanTexture;
         Texture2D AlienTexture;
         
-        static string bigNameList = "Dian Nese Falledrick Mae Valhein Dol Earl Cedria Azulei Yun Cybel Ina Foolly Skili Juddol Janver Viska Hirschendy Silka Hellsturn Essa Mykonos Fenton Tyrena Inqoul Mankov Derilia Hexema Wyton Kaedum Gouram Libertia Berasailles Juxta Taehr Comtol Gherak Hest Qony Masamka Twyll Tenos Axim Westrynda Saphros Olkham Handok Kemetra Yos Wentingle Ames Molosh Inkov Phasasia Ziedinghal Bregul Eishvack Lora Krenting Symbole Elignoir Keligkrul Qwey Vindinglag Kusakira Weme Fayd Rushvita Vulkor Amers Ortos Vanius Chandellia Lilikol Catca Cormus Yuela Ariban Tryton Fesscha Opalul Zakzos Hortimer Anklos Dushasiez Polop Mektal Orinphus Denatra Elkazzi Dyne Domos Letryal Manniv Sylestia Esnol Fasafuros Ghanfer Kahnite Sweyda Uylis Retenia Bassos Arkensval Impelos Grandius Fulcrux Lassahein Edsveda Earakun Fous Maas Basenphal Jubidya Divya Kosunten Ordayius Dozzer Gangher Escha Manchul Kempos Kulo Urtench Kesta Helahona Ryte Falcia Umannos Urkensvall Fedra Bulkensar Comia Tyul Lasendarl";
-        string[] Names = bigNameList.Split(" ");
-
-        private Random random = new Random();
+        static string bigNameList = "Frank Tim Peter James Jordan Lissy Tom Jenny Karla Sahra Brett Harold Kumar Prince Manfred";
+        static string[] Names = bigNameList.Split(" ");
+        static string GetRandomName()
+        {
+                int idx = MyMathHelper.Random.Next()%Names.Count();
+                return Names[idx];
+        }
 
         public void LoadContent(Game1 game)
         {
@@ -26,6 +29,7 @@ namespace MedicalFactory
             this.AlienTexture = game.Content.Load<Texture2D>("Alien");
             BodyPart.LoadContent(game.Content);
         }
+
         public void Update(GameTime gameTime)
         {
             if (this.Timer <= 0.0)
@@ -40,12 +44,22 @@ namespace MedicalFactory
                 {
                     patient = new AlienPatient(this.AlienTexture);
                 }
-                int idx = MyMathHelper.Random.Next()%Names.Count();
-                patient.PatientName = Names[idx];
+                patient.PatientName = GetRandomName();
+                int MaxChildren = 7;
+                patient.NumberOfChildren = MyMathHelper.Random.Next()%MaxChildren;
+                patient.Married = MyMathHelper.Random.NextDouble() < 0.5;
+                if (patient.Married) {
+                    patient.SpouseName = GetRandomName();
+                }
+                int MaxAge = 120;
+                patient.Age = MyMathHelper.Random.Next()%MaxAge;
+                patient.LifeExpectancy = MaxAge - patient.Age + (MyMathHelper.Random.Next()%20) - 10;
+                if (patient.LifeExpectancy <= 0) patient.LifeExpectancy = 0;
 
-                var defectOrgans = this.random.Next(1, patient.Attached.Count + 1);
 
-                foreach (var item in patient.Attached.OrderBy(x => this.random.NextDouble()).Take(defectOrgans).OfType<BodyPart>())
+                var defectOrgans = MyMathHelper.Random.Next(1, patient.Attached.Count + 1);
+
+                foreach (var item in patient.Attached.OrderBy(x => MyMathHelper.Random.NextDouble()).Take(defectOrgans).OfType<BodyPart>())
                     item.IsDemaged = true;
 
 

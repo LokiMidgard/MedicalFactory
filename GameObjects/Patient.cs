@@ -11,6 +11,11 @@ namespace MedicalFactory.GameObjects
     {
 
         public string PatientName;
+        public string SpouseName;
+        public int NumberOfChildren;
+        public bool Married;
+        public int Age;
+        public int LifeExpectancy;
         private bool Scored = false;
         public readonly PatientState State;
 
@@ -59,8 +64,19 @@ namespace MedicalFactory.GameObjects
         }
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.DrawString(Game1.game.Font, PatientName, Position + new Vector2(-2.0f, -151.0f), Color.White, 0.0f, new Vector2(), 1.1f, SpriteEffects.None, 0.0f);
-            spriteBatch.DrawString(Game1.game.Font, PatientName, Position + new Vector2(0.0f, -150.0f), Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+            Vector2 Offset = new Vector2(0.0f, -350.0f);
+            float LineHeight = 40.0f;
+            spriteBatch.DrawString(Game1.game.Font, PatientName, Position + Offset, Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+            if(Married) {
+                Offset += new Vector2(0.0f, LineHeight);
+                spriteBatch.DrawString(Game1.game.Font, "Married to " + SpouseName, Position + Offset, Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+            }
+            Offset += new Vector2(0.0f, LineHeight);
+            spriteBatch.DrawString(Game1.game.Font, "Age: " + LifeExpectancy + " years", Position + Offset, Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+            Offset += new Vector2(0.0f, LineHeight);
+            spriteBatch.DrawString(Game1.game.Font, "Life expectancy: " + LifeExpectancy + " years", Position + Offset, Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+            Offset += new Vector2(0.0f, LineHeight);
+            spriteBatch.DrawString(Game1.game.Font, "Has " + NumberOfChildren + " children", Position + Offset, Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
             base.Draw(spriteBatch, gameTime);
         }
     }
