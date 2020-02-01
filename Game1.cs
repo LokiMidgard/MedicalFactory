@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MedicalFactory.GameObjects;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PaToRo_Desktop.Engine.Input;
@@ -11,8 +12,10 @@ namespace MedicalFactory
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
         private Group controllers;  // input devices
         private Group players;      // player abstraction, see class Player
+        private Background bg;
         private Group sprites;
         private Sprite testSprite, testSprite2;
 
@@ -28,10 +31,13 @@ namespace MedicalFactory
 
             screen = new Screen(_graphics);
 
+            bg = new Background(screen);
+
             controllers = new Group();
             players = new Group();
             sprites = new Group();
 
+            screen.Add(bg);
             screen.Add(controllers);
             screen.Add(players);
             screen.Add(sprites);
@@ -61,10 +67,12 @@ namespace MedicalFactory
 
 
             // initilize Particles
-            var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "Fließband")
+            var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle")
             {
                 SpawnRate = TimeSpan.FromSeconds(0.1),
                 Velocety = Vector2.One,
+                DeathDuration = TimeSpan.FromSeconds(1),
+                Death = PatricleDeath.Fade,
                 IsEnabled = true
             };
             sprites.Add(particles);
@@ -82,7 +90,7 @@ namespace MedicalFactory
             */
 
             // add some bodyparts
-            for (int i=0;i <5; ++i)
+            for (int i = 0; i < 5; ++i)
             {
                 var bodyPart = new BodyPart();
                 bodyPart.Position = Screen.GetRandomWorldPos();
@@ -109,7 +117,9 @@ namespace MedicalFactory
             if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A)) {
                 if (playerOne.ControlledSprite == testSprite) {
                     playerOne.ControlledSprite = testSprite2;
-                } else {
+                }
+                else
+                {
                     playerOne.ControlledSprite = testSprite;
                 }
             }
