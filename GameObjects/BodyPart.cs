@@ -20,7 +20,7 @@ namespace MedicalFactory.GameObjects
         }
 
 
-        private static string GetDamagedTextureName(BodyPartType type)
+        public static string GetDamagedTextureName(BodyPartType type)
         {
             return type switch
             {
@@ -40,7 +40,7 @@ namespace MedicalFactory.GameObjects
             this.Type = type;
         }
 
-        public BodyPart(BodyPartType type, Texture2D tex) : base(tex)
+        public BodyPart(BodyPartType type, Texture2D tex, Texture2D defectTexture) : base(tex, defectTexture)
         {
             AttachOffset = DefaultAttachOffset;
             this.Type = type;
@@ -50,7 +50,6 @@ namespace MedicalFactory.GameObjects
         {
             get => base.AttachedTo; set
             {
-                this.IsDemaged = !this.IsDemaged;
                 var oldValue = base.AttachedTo;
                 base.AttachedTo = value;
                 if (value is Patient)
@@ -81,6 +80,10 @@ namespace MedicalFactory.GameObjects
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (this.AttachedTo is null)
+                this.IsDemaged = true;
+
 
             var scalingTime = TimeSpan.FromSeconds(1);
             if (this.ShouldScaleDown && this.finishedScalingDown == default)

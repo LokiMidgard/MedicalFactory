@@ -60,10 +60,11 @@ namespace MedicalFactory
             {
                 var newValue = value;
                 var oldValue = this.attachedTo;
-                this.attachedTo = newValue;
+                
                 if (newValue == oldValue)
                     return;
 
+                this.attachedTo = newValue;
                 if (oldValue != null)
                     oldValue.Detach(this);
                 if (newValue != null)
@@ -130,12 +131,6 @@ namespace MedicalFactory
             this.Attached = this.attached.AsReadOnly();
         }
 
-        public Sprite(Texture2D texture) : this()
-        {
-            this.textures = new Texture2D[] { texture };
-            this.textureNames = new string[] { "" };
-            Init();
-        }
 
         public Sprite(params Texture2D[] textures) :this()
         {

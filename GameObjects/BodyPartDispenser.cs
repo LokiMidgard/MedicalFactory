@@ -24,10 +24,11 @@ namespace MedicalFactory.GameObjects
                 default: throw new Exception("Unknown DispenserType");
             }
         }
- 
+
         private DispenserType type;
         private int initialStock;
         private Texture2D bodyPartTex;
+        private Texture2D bodyPartTexDefect;
         private int count;
         private Texture2D shadow;
 
@@ -48,16 +49,17 @@ namespace MedicalFactory.GameObjects
         {
             this.shadow = game.Content.Load<Texture2D>("Schatten_Oval");
             this.bodyPartTex = game.Content.Load<Texture2D>(Map(type).ToString());
+            this.bodyPartTexDefect = game.Content.Load<Texture2D>(BodyPart.GetDamagedTextureName(Map(type)));
 
             base.LoadContent(game);
-            
+
             for (int i = 0; i < initialStock; ++i)
                 CreateNew();
         }
 
         public void CreateNew()
         {
-            var part = new BodyPart(Map(type), this.bodyPartTex);
+            var part = new BodyPart(Map(type), this.bodyPartTex, this.bodyPartTexDefect);
             Attach(part);
             Game1.sprites.Add(part);
             this.count++;
