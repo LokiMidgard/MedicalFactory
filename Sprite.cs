@@ -54,15 +54,18 @@ namespace MedicalFactory
         private ICanCarray attachedTo;
         public ICanCarray AttachedTo
         {
-            get => attachedTo; set
+            get => this.attachedTo; set
             {
-                if (attachedTo == value)
+                var newValue = value;
+                var oldValue = this.attachedTo;
+                this.attachedTo = newValue;
+                if (newValue == oldValue)
                     return;
 
-                if (attachedTo != null)
-                    attachedTo.Detach(this);
-                attachedTo = value;
-                attachedTo.Attach(this);
+                if (oldValue != null)
+                    oldValue.Detach(this);
+                if (newValue != null)
+                    newValue.Attach(this);
             }
         }
 
@@ -75,7 +78,7 @@ namespace MedicalFactory
             if (toAdd.AttachedTo == this)
                 return;
             if (toAdd.AttachedTo != null)
-                throw new ArgumentException("IAttachable may not already be attached.");
+                toAdd.AttachedTo = null;
             this.attached.Add(toAdd);
             toAdd.AttachedTo = this;
         }
@@ -97,21 +100,21 @@ namespace MedicalFactory
         {
             get
             {
-                return animationFrame;
+                return this.animationFrame;
             }
             set
             {
-                if (animationFrame != value)
+                if (this.animationFrame != value)
                 {
-                    animationFrame = value;
-                    UpdateRadius();
+                    this.animationFrame = value;
+                    this.UpdateRadius();
                 }
             }
         }
 
         private void UpdateRadius()
         {
-            Radius = textures[animationFrame].Width / 2.0f;
+            this.Radius = this.textures[this.animationFrame].Width / 2.0f;
         }
 
         private static int PingPong(int value, int length)
@@ -132,33 +135,33 @@ namespace MedicalFactory
 
         public Sprite(Texture2D texture)
         {
-            this.textures = new Texture2D[]{texture};
-            this.textureNames = new string[]{"directloaded"};
-            Init();
+            this.textures = new Texture2D[] { texture };
+            this.textureNames = new string[] { "directloaded" };
+            this.Init();
         }
 
 
         public Sprite(params string[] textureNames)
         {
-            attached = new List<IAttachable>();
-            Attached = attached.AsReadOnly();
+            this.attached = new List<IAttachable>();
+            this.Attached = this.attached.AsReadOnly();
             this.textureNames = textureNames;
         }
 
         public virtual void Init()
         {
-            UpdateRadius();
-            if (Origin == default)
+            this.UpdateRadius();
+            if (this.Origin == default)
             {
-                Origin = new Vector2(textures[0].Width / 2.0f, textures[0].Height / 2.0f);
+                this.Origin = new Vector2(this.textures[0].Width / 2.0f, this.textures[0].Height / 2.0f);
             }
 
         }
 
         public virtual void LoadContent(Game1 game)
         {
-            textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
-            Init();
+            this.textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
+            this.Init();
         }
 
         public virtual void Update(GameTime gameTime)
@@ -166,30 +169,32 @@ namespace MedicalFactory
             this.AnimationFrame = this.AnimationMode switch
             {
                 AnimationMode.None => this.AnimationFrame,
-                AnimationMode.Loop => ((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / AnimationFrameTimeInMS)) % textures.Length,
-                AnimationMode.PingPong => PingPong(((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / AnimationFrameTimeInMS)) % (textures.Length + textures.Length - 2), textures.Length),
+                AnimationMode.Loop => ((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / this.AnimationFrameTimeInMS)) % this.textures.Length,
+                AnimationMode.PingPong => PingPong(((int)Math.Floor(gameTime.TotalGameTime.TotalMilliseconds / this.AnimationFrameTimeInMS)) % (this.textures.Length + this.textures.Length - 2), this.textures.Length),
                 _ => throw new NotImplementedException($"AnimationMode {this.AnimationMode}")
             };
 
             if (this.AttachedTo == null)
             {
-                Position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            } else {
-                Vector2 offset = MyMathHelper.RotateBy(AttachOffset, AttachedTo.Rotation);
+                this.Position += this.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                Vector2 offset = MyMathHelper.RotateBy(this.AttachOffset, this.AttachedTo.Rotation);
 
-                Position = AttachedTo.Position + offset;
-                Rotation = AttachedTo.Rotation;
+                this.Position = this.AttachedTo.Position + offset;
+                this.Rotation = this.AttachedTo.Rotation;
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.White, Rotation, Origin, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, null, Color.White, this.Rotation, this.Origin, 1.0f, SpriteEffects.None, 0.0f);
 
             if (GameConfig.DrawCollisionGeometry)
             {
-                var color = hasCollision ? Color.Red : Color.White;
-                DebugHelper.DrawCircle(spriteBatch, Position, Radius, color);
+                var color = this.hasCollision ? Color.Red : Color.White;
+                DebugHelper.DrawCircle(spriteBatch, this.Position, this.Radius, color);
             }
         }
     }
