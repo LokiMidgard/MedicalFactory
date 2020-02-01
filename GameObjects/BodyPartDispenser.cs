@@ -27,8 +27,6 @@ namespace MedicalFactory.GameObjects
 
         private DispenserType type;
         private int initialStock;
-        private Texture2D bodyPartTex;
-        private Texture2D bodyPartTexDefect;
         private int count;
         private Texture2D shadow;
 
@@ -48,9 +46,7 @@ namespace MedicalFactory.GameObjects
         public override void LoadContent(Game1 game)
         {
             this.shadow = game.Content.Load<Texture2D>("Schatten_Oval");
-            this.bodyPartTex = game.Content.Load<Texture2D>(Map(type).ToString());
-            this.bodyPartTexDefect = game.Content.Load<Texture2D>(BodyPart.GetDamagedTextureName(Map(type)));
-
+            BodyPart.LoadContent(game.Content);
             base.LoadContent(game);
 
             for (int i = 0; i < initialStock; ++i)
@@ -59,7 +55,7 @@ namespace MedicalFactory.GameObjects
 
         public void CreateNew()
         {
-            var part = new BodyPart(Map(type), this.bodyPartTex, this.bodyPartTexDefect);
+            var part = new BodyPart(Map(type));
             Attach(part);
             Game1.sprites.Add(part);
             this.count++;
