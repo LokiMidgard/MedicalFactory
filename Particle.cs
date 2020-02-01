@@ -7,7 +7,15 @@ using System;
 
 namespace MedicalFactory
 {
-    public class ParticleSystem : IUpdateable, IDrawable, ILoadable
+
+    public enum PatricleDeath
+    {
+        None,
+        Fade,
+        Shrink,
+    }
+
+    public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject
     {
         private const int MaxParticles = 1000;
         private readonly string textureName;

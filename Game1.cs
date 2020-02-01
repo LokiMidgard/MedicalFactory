@@ -23,7 +23,7 @@ namespace MedicalFactory
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.DeviceCreated += (s,e) => DebugHelper.GraphicsDevice = _graphics.GraphicsDevice;
+            _graphics.DeviceCreated += (s, e) => DebugHelper.GraphicsDevice = _graphics.GraphicsDevice;
 
             screen = new Screen(_graphics);
 
@@ -54,6 +54,16 @@ namespace MedicalFactory
             testSprite2.Position.X = 100;
             sprites.Add(testSprite);
             sprites.Add(testSprite2);
+
+
+            // initilize Particles
+            var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "Roboter_Rot")
+            {
+                SpawnRate = TimeSpan.FromSeconds(0.1),
+                Velocety = Vector2.One,
+                IsEnabled = true
+            };
+            sprites.Add(particles);
 
             Random r = new Random();
             for (int i = 0; i < 100; ++i)
