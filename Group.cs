@@ -9,16 +9,18 @@ namespace MedicalFactory
 {
     public class Group : List<IGameObject>, IGameObject, ILoadable, IDrawable, IUpdateable
     {
-        public virtual void LoadContent(ContentManager Content)
+        public virtual void LoadContent(Game1 game)
         {
-            foreach(var gameObject in this) {
+            foreach (var gameObject in this)
+            {
                 if (gameObject is ILoadable go)
-                    go.LoadContent(Content);
+                    go.LoadContent(game);
             }
         }
         public virtual void Update(GameTime gameTime)
         {
-            foreach(var gameObject in this) {
+            foreach (var gameObject in this)
+            {
                 if (gameObject is IUpdateable go)
                     go.Update(gameTime);
             }
@@ -26,7 +28,8 @@ namespace MedicalFactory
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            foreach (var gameObject in this) {
+            foreach (var gameObject in this)
+            {
                 if (gameObject is IDrawable go)
                     go.Draw(spriteBatch, gameTime);
             }

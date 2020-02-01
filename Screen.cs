@@ -12,10 +12,11 @@ namespace MedicalFactory
         private const int smalWidth = 1280;
         private const int smalHeight = 720;
         private bool lastKeyState;
-        private readonly GraphicsDeviceManager graphics;
+        
         private SpriteBatch screenBatch;
-        private RenderTarget2D canvas;
+        public RenderTarget2D canvas;
         private Texture2D placeholderBackground;
+        private readonly GraphicsDeviceManager graphics;
 
         public int Width { get; }
         public int Height { get; }
@@ -46,19 +47,20 @@ namespace MedicalFactory
 
         public void PreDraw(SpriteBatch spriteBatch)
         {
-            graphics.GraphicsDevice.SetRenderTarget(canvas);
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
+            
+            spriteBatch.GraphicsDevice.SetRenderTarget(canvas);
+            spriteBatch.GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate);
         }
 
         public void PostDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.End();
-            graphics.GraphicsDevice.SetRenderTarget(null);
+            spriteBatch.GraphicsDevice.SetRenderTarget(null);
             screenBatch.Begin();
             screenBatch.Draw(canvas, new Rectangle(0, 0,
-                graphics.GraphicsDevice.PresentationParameters.BackBufferWidth,
-                graphics.GraphicsDevice.PresentationParameters.BackBufferHeight), Color.White);
+                spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
+                spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight), Color.White);
             screenBatch.End();
         }
 
@@ -77,11 +79,11 @@ namespace MedicalFactory
             this.PostDraw(spriteBatch);
         }
 
-        public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content)
+        public override void LoadContent(Game1 game)
         {
-            placeholderBackground = Content.Load<Texture2D>("background");
+            placeholderBackground = game.Content.Load<Texture2D>("background");
 
-            base.LoadContent(Content);
+            base.LoadContent(game);
         }
 
         public override void Update(GameTime gameTime)
