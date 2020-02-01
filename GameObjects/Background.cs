@@ -9,8 +9,7 @@ namespace MedicalFactory.GameObjects
     {
         public Background(Screen screen) : base("Hintergrund")
         {
-            Position.X = screen.Width / 2.0f;
-            Position.Y = screen.Height / 2.0f;
+            this.Position = new Microsoft.Xna.Framework.Vector2(screen.Width / 2.0f, screen.Height / 2.0f);
         }
     }
 }

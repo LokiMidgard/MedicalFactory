@@ -15,7 +15,18 @@ namespace MedicalFactory
         Shrink,
     }
 
-    public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject
+
+
+    public struct RandomDirection
+    {
+
+    }
+    public struct FixDirection 
+    {
+
+    }
+
+    public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject, IAttachable
     {
         private const int MaxParticles = 1000;
         private readonly string textureName;
@@ -49,6 +60,22 @@ namespace MedicalFactory
         private Vector2[] velocetys;
         private TimeSpan[] createionTime;
         private bool[] actives;
+
+        private ICanCarray attachedTo;
+        public ICanCarray AttachedTo
+        {
+            get => attachedTo; set
+            {
+                if (attachedTo == value)
+                    return;
+
+                if (attachedTo != null)
+                    attachedTo.Detach(this);
+                attachedTo = value;
+                attachedTo.Attach(this);
+            }
+        }
+
 
         public ParticleSystem(TimeSpan maxAge, string texture)
         {
@@ -117,6 +144,9 @@ namespace MedicalFactory
 
         public void Update(GameTime gameTime)
         {
+
+            if (AttachedTo != null)
+                this.Position = AttachedTo.Position;
 
             if (IsEnabled)
             {
