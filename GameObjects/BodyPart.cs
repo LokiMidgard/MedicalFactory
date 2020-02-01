@@ -103,6 +103,7 @@ namespace MedicalFactory.GameObjects
         private bool ShouldScaleUp;
         private TimeSpan finishedScalingDown;
         private TimeSpan finishedScalingUp;
+        int SplashCount = 0;
         double NextSplashTime = 0.3f;
 
         public override void LoadContent(Game1 game)
@@ -150,14 +151,15 @@ namespace MedicalFactory.GameObjects
                 this.Scale = new Vector2(scalePosition, scalePosition);
             }
 
-            if (this.Velocity.Length() > 0.0f)
-            {
-                if (this.NextSplashTime < 0.0f)
-                {
-                    Game1.Background.AddBloodSplash(this.Position, false, true);
-                    this.NextSplashTime = 0.3f;
+            if (Velocity.Length() > 0.0f) {
+                if (NextSplashTime < 0.0f) {
+                    Game1.Background.AddBloodSplash(Position, false, SplashCount*0.7f/(1.0f+SplashCount));
+                    NextSplashTime = 0.3f;
+                    SplashCount += 1;
                 }
-                this.NextSplashTime -= gameTime.ElapsedGameTime.TotalSeconds;
+                NextSplashTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            } else {
+                SplashCount = 0;
             }
         }
 
