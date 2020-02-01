@@ -12,8 +12,11 @@ namespace MedicalFactory.GameObjects
         public enum BodyPartType
         {
             HERZ,
+            KAPUTTES_HERZ,
             NIERE,
-            LUNGE
+            KAPUTTE_NIERE,
+            LUNGE,
+            KAPUTTE_LUNGE,
         }
         public BodyPartType Type { get; }
 
@@ -35,6 +38,9 @@ namespace MedicalFactory.GameObjects
                         BodyPartType.HERZ => new Vector2(0, -30),
                         BodyPartType.LUNGE => new Vector2(0, -80),
                         BodyPartType.NIERE => new Vector2(-20, 0),
+                        BodyPartType.KAPUTTES_HERZ => new Vector2(0, -30),
+                        BodyPartType.KAPUTTE_LUNGE => new Vector2(0, -80),
+                        BodyPartType.KAPUTTE_NIERE => new Vector2(-20, 0),
                         _ => throw new NotImplementedException($"Type {this.Type}")
                     };
                 }
