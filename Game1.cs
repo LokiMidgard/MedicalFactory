@@ -27,6 +27,7 @@ namespace MedicalFactory
         private Robot robot2;
 
         public PatientFactory patientFactory;
+        public ConveyerBelt conveyerBelt;
 
 
 
@@ -74,14 +75,7 @@ namespace MedicalFactory
             sprites.Add(robot1);
             sprites.Add(robot2);
 
-            // initialize sprites
-
-            for (int i = 0; i < 10; ++i)
-            {
-                Sprite conveyer = new Sprite("Fließband");
-                conveyer.Position = new Vector2(i * 180.0f + 90.0f, 60.0f * 9.5f);
-                sprites.Add(conveyer);
-            }
+            conveyerBelt = new ConveyerBelt();
 
             /*
             Random r = new Random();
@@ -115,6 +109,7 @@ namespace MedicalFactory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Screen.LoadContent(this);
             patientFactory.LoadContent(this);
+            conveyerBelt.LoadContent(this);
         }
 
         protected override void Update(GameTime gameTime)
@@ -122,6 +117,7 @@ namespace MedicalFactory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             patientFactory.Update(gameTime);
+            conveyerBelt.Update(gameTime);
             if (InputProvider.WasPressed(xBoxController, PaToRo_Desktop.Engine.Input.Buttons.A))
             {
                 if (playerOne.ControlledSprite == robot1)

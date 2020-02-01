@@ -9,7 +9,7 @@ namespace MedicalFactory
 {
     public class PatientFactory
     {
-        double Timer = 0.0;
+        double Timer = 2.0;
         Texture2D HumanTexture;
 
         public void LoadContent(Game1 game)
@@ -18,14 +18,14 @@ namespace MedicalFactory
         }
         public void Update(GameTime gameTime)
         {
-            if(Timer >= 5.0) {
+            if(Timer <= 0.0) {
                 Patient patient = new Patient(HumanTexture);
-                patient.Position = new Vector2(-120.0f, 480.0f);
+                patient.Position = new Vector2(-120.0f, 540.0f + 30.0f);
                 patient.Rotation = MathHelper.PiOver2;
                 Game1.sprites.Add(patient);
-                Timer = 0.0;
+                Timer = MyMathHelper.Random.NextDouble()*10.0f + 3.0f;
             }
-            Timer += gameTime.ElapsedGameTime.TotalSeconds;
+            Timer -= gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }
