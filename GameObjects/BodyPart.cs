@@ -20,8 +20,10 @@ namespace MedicalFactory.GameObjects
             if (CarriedBy != null && CarriedBy.ControlledSprite != null)
             {
                 var dist = 32;
-                var upVector = -Vector2.UnitY * dist;
-                var offset = MyMathHelper.RotateBy(upVector, CarriedBy.ControlledSprite.Rotation);
+                var upVector = -Vector2.UnitY;
+                Vector2 offset = MyMathHelper.RotateBy(upVector, CarriedBy.ControlledSprite.Rotation);
+                offset *= dist;
+
              
                 Position = CarriedBy.ControlledSprite.Position + offset;
                 Rotation = CarriedBy.ControlledSprite.Rotation;
