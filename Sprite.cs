@@ -16,7 +16,7 @@ namespace MedicalFactory
         PingPong
     }
 
-    public class Sprite : GameObject, IUpdateable, IDrawable, ILoadable
+    public class Sprite : IGameObject, IUpdateable, IDrawable, ILoadable
     {
         public Vector2 Position;
         public float Radius;

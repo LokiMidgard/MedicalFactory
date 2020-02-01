@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PaToRo_Desktop.Engine.Input
 {
-    public abstract class InputProvider : MedicalFactory.GameObject, MedicalFactory.IUpdateable
+    public abstract class InputProvider : MedicalFactory.IGameObject, MedicalFactory.IUpdateable
     {
         public abstract void Update(GameTime gameTime);
 

@@ -6,7 +6,7 @@ using PaToRo_Desktop.Engine.Input;
 
 namespace MedicalFactory
 {
-    public interface GameObject
+    public interface IGameObject
     {
     }
 }

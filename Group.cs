@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MedicalFactory
 {
-    public class Group : List<GameObject>, GameObject, ILoadable, IDrawable, IUpdateable
+    public class Group : List<IGameObject>, IGameObject, ILoadable, IDrawable, IUpdateable
     {
         public virtual void LoadContent(ContentManager Content)
         {
