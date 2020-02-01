@@ -15,9 +15,12 @@ namespace MedicalFactory.GameObjects
             NIERE,
             LUNGE
         }
+
+        public static Vector2 DefaultAttachOffset = Vector2.UnitY * -48;
+
         public BodyPart(BodyPartType type) : base(type.ToString())
         {
-            AttachOffset = Vector2.UnitY * -48;
+            AttachOffset = DefaultAttachOffset;
         }
     }
 }

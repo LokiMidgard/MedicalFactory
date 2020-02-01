@@ -59,6 +59,7 @@ namespace MedicalFactory
         protected override void Initialize()
         {
             Game1.game = this;
+
             // initialize screen
             this.Screen.Initialize();
 
@@ -91,13 +92,16 @@ namespace MedicalFactory
             }
             */
 
-            // add some bodyparts
-            for (int i = 0; i < 5; ++i)
-            {
-                var bodyPart = new BodyPart(BodyPart.BodyPartType.LUNGE);
-                bodyPart.Position = Screen.GetRandomWorldPos();
-                sprites.Add(bodyPart);
-            }
+            // add bodypartdispensers
+            var bpdHeart = new BodyPartDispenser(DispenserType.Herzgerät, 5) { Position = new Vector2(535, 80) };
+            conveyerBelt.Add(bpdHeart);
+
+            var bpdLungs = new BodyPartDispenser(DispenserType.Lungengerät, 5) { Position = new Vector2(1350, 80) };
+            conveyerBelt.Add(bpdLungs);
+
+            var bpdKidneys = new BodyPartDispenser(DispenserType.Nierengerät, 5) { Position = new Vector2(945, 1035) };
+            conveyerBelt.Add(bpdKidneys);
+
 
             // initialize players
             playerOne = new Player(xBoxController, robot1);

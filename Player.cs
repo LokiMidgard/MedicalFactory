@@ -49,7 +49,7 @@ namespace MedicalFactory
                         foreach (var collision in collisions)
                         {
                             BodyPart b = collision.spriteB as BodyPart;
-                            if (b != null && b.AttachedTo == null)
+                            if (b != null)// && (b.AttachedTo == null || b.AttachedTo.GetType() == typeof(BodyPartDispenser))) 
                             {
                                 ControlledSprite.Attach(b);
                                 break; // only pickup one
