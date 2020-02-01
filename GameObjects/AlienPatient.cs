@@ -22,7 +22,7 @@ namespace MedicalFactory.GameObjects
             base.Update(gameTime);
             //this.Position = this.Position + new Vector2(Game1.game.conveyerBelt.Speed, 0.0f) * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        protected override int MaximumBodyParts(BodyPart.BodyPartType type)
+        public override int MaximumBodyParts(BodyPart.BodyPartType type)
         {
             return type switch
             {

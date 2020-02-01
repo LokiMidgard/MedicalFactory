@@ -12,8 +12,11 @@ namespace MedicalFactory.GameObjects
 
         public string PatientName;
         private bool Scored = false;
+        public readonly PatientState State;
+
         public Patient(Texture2D texture, params BodyPart.BodyPartType[] bodyParts) : base(texture)
         {
+            this.State = new PatientState(this);
             foreach (var part in bodyParts)
             {
                 var item = new BodyPart(part);
@@ -23,7 +26,7 @@ namespace MedicalFactory.GameObjects
             }
         }
 
-        protected abstract int MaximumBodyParts(BodyPart.BodyPartType type);
+        public abstract int MaximumBodyParts(BodyPart.BodyPartType type);
 
         public override void Attach(IAttachable toAdd)
         {
@@ -46,8 +49,9 @@ namespace MedicalFactory.GameObjects
         public override void Update(GameTime gameTime)
         {
             this.Velocity = new Vector2(Game1.conveyerBelt.Speed, 0);
-            if (Position.X > 1920.0f && !Scored) {
-                Game1.game.Screen.scores.Enqueue(new Score(this));
+            if (Position.X > 1800.0f && !Scored)
+            {
+                Game1.game.Screen.scores.Add(new Score(this));
                 Scored = true;
             }
 

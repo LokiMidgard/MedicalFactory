@@ -97,6 +97,7 @@ namespace MedicalFactory
             conveyerBelt.Add(scanner.Lower);
             TopLayer.Add(scanner.RightWall);
             TopLayer.Add(scanner.Upper);
+            TopLayer.Add(scanner);
 
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };
@@ -120,7 +121,7 @@ namespace MedicalFactory
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+
             patientFactory.Update(gameTime);
             conveyerBelt.Update(gameTime);
 
