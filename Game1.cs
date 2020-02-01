@@ -23,6 +23,8 @@ namespace MedicalFactory
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.DeviceCreated += (s,e) => DebugHelper.GraphicsDevice = _graphics.GraphicsDevice;
+
             screen = new Screen(_graphics);
 
             controllers = new Group();

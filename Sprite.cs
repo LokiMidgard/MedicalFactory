@@ -92,9 +92,14 @@ namespace MedicalFactory
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            var color = hasCollision ? Color.Red : Color.White;
+            var topLeft = Position - (Vector2.One * Radius);
+            spriteBatch.Draw(textures[AnimationFrame], topLeft, null, Color.White);
 
-            spriteBatch.Draw(textures[AnimationFrame], Position-(Vector2.One * Radius), null, color);
+            if (GameConfig.DrawCollisionGeometry)
+            {
+                var color = hasCollision ? Color.Red : Color.White;
+                DebugHelper.DrawCircle(spriteBatch, Position, Radius, color);
+            }
         }
     }
 }

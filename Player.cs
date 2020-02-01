@@ -6,6 +6,9 @@ using PaToRo_Desktop.Engine.Input;
 
 namespace MedicalFactory
 {
+    /// <summary>
+    /// This class links a controller to a sprite
+    /// </summary>
     public class Player : GameObject, IUpdateable
     {
 
