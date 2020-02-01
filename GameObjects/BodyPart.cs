@@ -10,7 +10,7 @@ namespace MedicalFactory.GameObjects
     {
         public Player CarriedBy { get; set; }
 
-        public BodyPart() : base()
+        public BodyPart(string TextureName) : base(TextureName)
         {
 
         }

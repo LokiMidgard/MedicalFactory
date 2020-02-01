@@ -92,7 +92,7 @@ namespace MedicalFactory
             // add some bodyparts
             for (int i = 0; i < 5; ++i)
             {
-                var bodyPart = new BodyPart();
+                var bodyPart = new BodyPart("Lunge");
                 bodyPart.Position = Screen.GetRandomWorldPos();
                 sprites.Add(bodyPart);
             }
