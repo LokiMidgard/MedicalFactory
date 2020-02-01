@@ -7,7 +7,7 @@ namespace MedicalFactory.GameObjects
 {
     public enum PlayerColor
     {
-        Roboter_Blau, Roboter_Gruen, Roboter_Gelb, Roboter_Rot
+        BlauerRoboter, GruenerRoboter, GelberRoboter, RoterRoboter
     }
     public class Robot : Sprite
     {
@@ -24,15 +24,15 @@ namespace MedicalFactory.GameObjects
         {
             return player switch
             {
-                PlayerColor.Roboter_Blau => new Color(0.235f, 0.384f, 0.875f),
-                PlayerColor.Roboter_Gelb => new Color(0.71f, 0.706f, 0.031f),
-                PlayerColor.Roboter_Gruen => new Color(0.008f, 0.627f, 0.204f),
-                PlayerColor.Roboter_Rot => new Color(0.788f, 0.227f, 0.227f),
+                PlayerColor.BlauerRoboter => new Color(0.235f, 0.384f, 0.875f),
+                PlayerColor.GelberRoboter => new Color(0.71f, 0.706f, 0.031f),
+                PlayerColor.GruenerRoboter => new Color(0.008f, 0.627f, 0.204f),
+                PlayerColor.RoterRoboter => new Color(0.788f, 0.227f, 0.227f),
                 _ => throw new NotImplementedException(),
             };
         }
 
-        public Robot(PlayerColor color) : base(color.ToString())
+        public Robot(PlayerColor color) : base(color.ToString()+"_1")
         {
             this.playerColor = color;
             this.Origin = new Vector2(30.0f, 90.0f);
