@@ -16,12 +16,15 @@ namespace MedicalFactory
         public override void LoadContent(Game1 game)
         {
             HumanTexture = game.Content.Load<Texture2D>("Mensch");
-            Texture2D ConveyerTexture = game.Content.Load<Texture2D>("Fließband");
+            Texture2D ConveyerTexture1 = game.Content.Load<Texture2D>("FliessbandAnimiert_1");
+            Texture2D ConveyerTexture2 = game.Content.Load<Texture2D>("FliessbandAnimiert_2");
+            Texture2D ConveyerTexture3 = game.Content.Load<Texture2D>("FliessbandAnimiert_3");
             
             for (int i = 0; i < 10; ++i)
             {
-                Sprite conveyer = new Sprite(ConveyerTexture);
+                Sprite conveyer = new Sprite(ConveyerTexture1, ConveyerTexture2, ConveyerTexture3);
                 conveyer.Position = new Vector2(i * 180.0f + 90.0f, 60.0f * 9.5f);
+                conveyer.AnimationMode = AnimationMode.Loop;
                 Add(conveyer);
             }
 
