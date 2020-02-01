@@ -97,5 +97,11 @@ namespace MedicalFactory
             this.lastKeyState = isKeyDown;
             base.Update(gameTime);
         }
+
+        private static Random rng = new Random();
+        public static Vector2 GetRandomWorldPos()
+        {
+            return new Vector2((float)rng.NextDouble() * bigWidth, (float)rng.NextDouble() * bigHeight);
+        }
     }
 }
