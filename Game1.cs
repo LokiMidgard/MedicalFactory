@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MedicalFactory.GameObjects;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PaToRo_Desktop.Engine.Input;
@@ -11,8 +12,10 @@ namespace MedicalFactory
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
         private Group controllers;  // input devices
         private Group players;      // player abstraction, see class Player
+        private Background bg;
         private Group sprites;
         private Sprite testSprite, testSprite2;
 
@@ -28,10 +31,13 @@ namespace MedicalFactory
 
             screen = new Screen(_graphics);
 
+            bg = new Background(screen);
+
             controllers = new Group();
             players = new Group();
             sprites = new Group();
 
+            screen.Add(bg);
             screen.Add(controllers);
             screen.Add(players);
             screen.Add(sprites);
