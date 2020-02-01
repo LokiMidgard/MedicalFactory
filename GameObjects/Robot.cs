@@ -32,7 +32,7 @@ namespace MedicalFactory.GameObjects
                 Movement = ParticleMovement.Static,
             };
             this.particles.AttachedTo = this;
-
+            this.particles.AttachOffset = new Vector2(30, 30);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -58,7 +58,7 @@ namespace MedicalFactory.GameObjects
                 {
                     this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
                     this.particles.IsEnabled = true;
-
+                    
                 }
                 //else
                 {
