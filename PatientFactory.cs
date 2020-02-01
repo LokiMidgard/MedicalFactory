@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using PaToRo_Desktop.Engine.Input;
 using MedicalFactory.GameObjects;
+using System;
+using System.Linq;
 
 namespace MedicalFactory
 {
@@ -13,30 +15,42 @@ namespace MedicalFactory
         Texture2D HumanTexture;
         Texture2D AlienTexture;
 
+        private Random random = new Random();
+
         public void LoadContent(Game1 game)
         {
-            HumanTexture = game.Content.Load<Texture2D>("Mensch");
-            AlienTexture = game.Content.Load<Texture2D>("Alien");
+            this.HumanTexture = game.Content.Load<Texture2D>("Mensch");
+            this.AlienTexture = game.Content.Load<Texture2D>("Alien");
+            BodyPart.LoadContent(game.Content);
         }
         public void Update(GameTime gameTime)
         {
-            if(Timer <= 0.0) {
+            if (this.Timer <= 0.0)
+            {
                 bool IsHuman = MyMathHelper.Random.NextDouble() < 0.6f;
                 Patient patient;
                 if (IsHuman)
                 {
-                    patient = new HumanPatient(HumanTexture);
+                    patient = new HumanPatient(this.HumanTexture);
                 }
                 else
                 {
-                    patient = new AlienPatient(AlienTexture);
+                    patient = new AlienPatient(this.AlienTexture);
                 }
+
+
+                var defectOrgans = this.random.Next(1, patient.Attached.Count + 1);
+
+                foreach (var item in patient.Attached.OrderBy(x => this.random.NextDouble()).Take(defectOrgans).OfType<BodyPart>())
+                    item.IsDemaged = true;
+
+
                 patient.Position = new Vector2(-120.0f, 540.0f + 30.0f);
                 patient.Rotation = MathHelper.PiOver2;
                 Game1.game.conveyerBelt.Add(patient);
-                Timer = MyMathHelper.Random.NextDouble() * 10.0f + 3.0f;
+                this.Timer = MyMathHelper.Random.NextDouble() * 10.0f + 3.0f;
             }
-            Timer -= gameTime.ElapsedGameTime.TotalSeconds;
+            this.Timer -= gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }
