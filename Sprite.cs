@@ -24,6 +24,7 @@ namespace MedicalFactory
 
         public Vector2 Origin;
         public float Radius;
+        public float Drag = 10.0f;
         public Vector2 Velocity;
         public float Rotation { get; set; }
         public bool CanCollide = false;
@@ -168,6 +169,14 @@ namespace MedicalFactory
             if (this.AttachedTo == null)
             {
                 this.Position += this.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (Velocity.Length() != 0.0f)
+                {
+                    this.Velocity *= 0.95f;
+                    if (Velocity.Length() < 0.01f)
+                    {
+                        Velocity = new Vector2(0.0f);
+                    }
+                }
             }
             else
             {
