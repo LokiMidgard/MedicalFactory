@@ -58,6 +58,8 @@ namespace MedicalFactory
         public TimeSpan SpawnRate { get; set; }
         public bool IsEnabled { get; set; }
 
+        public Vector2 Scale { get; set; } = Vector2.One;
+
         public ParticleMovement Movement { get; set; }
 
         public ParticlelBlendMode BlendMode { get; set; }
@@ -134,10 +136,10 @@ namespace MedicalFactory
             {
                 if (this.createionTime[i] != default && gameTime.TotalGameTime - this.createionTime[i] < this.MaxAge)
                 {
-                    Vector2 position = this.positions[i];
+                    var position = this.positions[i];
                     if (this.Movement == ParticleMovement.WithEmitter)
                         position += this.Position;
-                    spriteBatch.Draw(this.texture, position, origin: this.Origin.Value, color: new Color(this.Tint, this.fade[i]));
+                    spriteBatch.Draw(this.texture, position, origin: this.Origin.Value, color: new Color(this.Tint, this.fade[i]), scale: this.scale[i] * this.Scale);
                 }
             }
             spriteBatch.GraphicsDevice.BlendState = oldBlendState;
@@ -184,7 +186,11 @@ namespace MedicalFactory
         {
 
             if (this.AttachedTo != null)
-                this.Position = this.AttachedTo.Position;
+            {
+                Vector2 offset = MyMathHelper.RotateBy(this.AttachOffset, this.AttachedTo.Rotation);
+
+                this.Position = this.AttachedTo.Position + offset;
+            }
 
             if (this.IsEnabled)
             {
