@@ -13,12 +13,25 @@ namespace MedicalFactory.GameObjects
     {
         private Texture2D shadow;
         private readonly ParticleSystem particles;
+        private readonly ParticleSystem particles2;
         private TimeSpan nextSpark;
         private TimeSpan sparkDuration;
         private PlayerColor playerColor;
 
         private static readonly Random random = new Random();
-        
+
+        public static Color ToColor(PlayerColor player)
+        {
+            return player switch
+            {
+                PlayerColor.Roboter_Blau => new Color(0.235f, 0.384f, 0.875f),
+                PlayerColor.Roboter_Gelb => new Color(0.71f, 0.706f, 0.031f),
+                PlayerColor.Roboter_Gruen => new Color(0.008f, 0.627f, 0.204f),
+                PlayerColor.Roboter_Rot => new Color(0.788f, 0.227f, 0.227f),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
         public Robot(PlayerColor color) : base(color.ToString())
         {
             this.playerColor = color;
@@ -27,7 +40,7 @@ namespace MedicalFactory.GameObjects
             // initilize Particles
             this.particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
             {
-                Tint = Color.Yellow,
+                Tint = ToColor(color),
                 SpawnRate = TimeSpan.FromSeconds(0.05),
                 Spawner = new ParticleDirectionRandom() { Scale = 0.9f },
                 DeathDuration = TimeSpan.FromSeconds(0.4),
@@ -36,9 +49,23 @@ namespace MedicalFactory.GameObjects
                 IsEnabled = true,
                 BlendMode = ParticlelBlendMode.Additive,
                 Movement = ParticleMovement.Static,
+                AttachOffset = new Vector2(30, 30),
+            };
+            this.particles2 = new ParticleSystem(TimeSpan.FromSeconds(3), "particle", 100)
+            {
+                Tint = ToColor(color),
+                SpawnRate = TimeSpan.FromSeconds(0.05),
+                Spawner = new ParticleDirectionRandom() { Scale = 0.9f },
+                DeathDuration = TimeSpan.FromSeconds(0.4),
+                MaxAge = TimeSpan.FromSeconds(0.5),
+                Death = PatricleDeath.Fade | PatricleDeath.Shrink,
+                IsEnabled = true,
+                BlendMode = ParticlelBlendMode.Additive,
+                Movement = ParticleMovement.Static,
+                AttachOffset = new Vector2(-30, 30),
             };
             this.Attach(this.particles);
-            this.particles.AttachOffset = new Vector2(30, 30);
+            this.Attach(this.particles2);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -46,12 +73,14 @@ namespace MedicalFactory.GameObjects
             spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 10), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.6f, 0.6f), SpriteEffects.None, 0.0f);
             base.Draw(spriteBatch, gameTime);
             this.particles.Draw(spriteBatch, gameTime);
+            this.particles2.Draw(spriteBatch, gameTime);
         }
 
         public override void LoadContent(Game1 game)
         {
             base.LoadContent(game);
             this.particles.LoadContent(game);
+            this.particles2.LoadContent(game);
             this.shadow = game.Content.Load<Texture2D>("Schatten_Oval");
         }
 
@@ -84,6 +113,7 @@ namespace MedicalFactory.GameObjects
             }
 
             this.particles.Update(gameTime);
+            this.particles2.Update(gameTime);
 
             if (this.Velocity.Length() > 3)
             {
@@ -91,6 +121,7 @@ namespace MedicalFactory.GameObjects
                 {
                     this.nextSpark = gameTime.TotalGameTime + TimeSpan.FromSeconds(random.NextDouble() * 3.0 + 1.0);
                     this.particles.IsEnabled = true;
+                    this.particles2.IsEnabled = true;
 
                 }
                 //else
@@ -99,7 +130,10 @@ namespace MedicalFactory.GameObjects
                 }
             }
             else
+            {
                 this.particles.IsEnabled = false;
+                this.particles2.IsEnabled = false;
+            }
 
         }
 

@@ -58,7 +58,7 @@ namespace MedicalFactory.GameObjects
         private ICanCarry oldValue;
         public override void OnAttachChanged()
         {
-            var value = AttachedTo;    
+            var value = this.AttachedTo;
             if (value is HumanPatient)
             {
                 this.AttachOffset = this.Type switch
@@ -80,21 +80,30 @@ namespace MedicalFactory.GameObjects
                     BodyPartType.NIERE => new Vector2(-20, -20),
                     _ => throw new NotImplementedException($"Type {this.Type}")
                 };
+
+
+            }
+            if (this.Type == BodyPartType.HERZ && this.oldValue is AlienPatient)
+            {
+                var otherHeart = this.oldValue.Attached.OfType<BodyPart>().FirstOrDefault(x => x.Type == BodyPartType.HERZ);
+                if (otherHeart != null)
+                    otherHeart.AttachOffset = new Vector2(15, -60);
             }
 
             if (value is Robot)
                 this.AttachOffset = DefaultAttachOffset;
 
-            this.ShouldScaleDown = value is Patient && !(oldValue is Patient);
+            this.ShouldScaleDown = value is Patient && !(this.oldValue is Patient);
             this.ShouldScaleUp = !(value is Patient) && this.Scale.X < 1f;
 
-            oldValue = value;
+            this.oldValue = value;
         }
 
         private bool ShouldScaleDown;
         private bool ShouldScaleUp;
         private TimeSpan finishedScalingDown;
         private TimeSpan finishedScalingUp;
+        int SplashCount = 0;
         double NextSplashTime = 0.3f;
 
         public override void LoadContent(Game1 game)
@@ -144,10 +153,13 @@ namespace MedicalFactory.GameObjects
 
             if (Velocity.Length() > 0.0f) {
                 if (NextSplashTime < 0.0f) {
-                    Game1.Background.AddBloodSplash(Position, false, true);
+                    Game1.Background.AddBloodSplash(Position, false, SplashCount*0.7f/(1.0f+SplashCount));
                     NextSplashTime = 0.3f;
+                    SplashCount += 1;
                 }
                 NextSplashTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            } else {
+                SplashCount = 0;
             }
         }
 

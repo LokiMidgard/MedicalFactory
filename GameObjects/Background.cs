@@ -59,5 +59,13 @@ namespace MedicalFactory.GameObjects
             decal.Scale = maxSize ? Vector2.One * 0.6f : Vector2.One * (float)(rng.NextDouble() * 0.4f);
             Decals.Add(decal);
         }
+        public void AddBloodSplash(Vector2 pos, bool slime, float size)
+        {
+            var texBase = slime ? slimeSplash : bloodSplash;
+            var decal = new Sprite(texBase[2]);
+            decal.Position = pos;
+            decal.Scale = Vector2.One * size;
+            Decals.Add(decal);
+        }
     }
 }
