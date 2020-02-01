@@ -93,6 +93,7 @@ namespace MedicalFactory
             // add scanner
             var scanner = new Scanner() { Position = new Vector2(1800, Game1.conveyerBelt.YPos) };
             conveyerBelt.Add(scanner.Lower);
+            TopLayer.Add(scanner.RightWall);
             TopLayer.Add(scanner.Upper);
 
             // add recycler
