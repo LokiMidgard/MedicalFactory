@@ -20,6 +20,7 @@ namespace MedicalFactory
         private const int MaxParticles = 1000;
         private readonly string textureName;
         private Texture2D texture;
+
         public Vector2 Origin { get; set; }
         public TimeSpan SpawnRate { get; set; }
         public bool IsEnabled { get; set; }
@@ -29,6 +30,8 @@ namespace MedicalFactory
 
         public TimeSpan MaxAge { get; set; }
         public TimeSpan DeathDuration { get; set; }
+
+        public Color Tint { get; set; } = Color.White;
 
         ///<Summary>        
         /// to safe the spawn between updates
@@ -64,19 +67,26 @@ namespace MedicalFactory
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            var oldBlendState = spriteBatch.GraphicsDevice.BlendState;
+            spriteBatch.GraphicsDevice.BlendState = BlendState.Additive;
+
+
             for (int i = 0; i < MaxParticles; i++)
             {
                 if (createionTime[i] != default && gameTime.TotalGameTime - createionTime[i] < MaxAge)
                 {
-                    spriteBatch.Draw(texture, positions[i], origin: this.Origin, color: new Color(Color.White, fade[i]));
+                    spriteBatch.Draw(texture, positions[i], origin: this.Origin, color: new Color(this.Tint, fade[i]));
                 }
             }
+            spriteBatch.GraphicsDevice.BlendState = oldBlendState;
+
+
 
         }
 
-        public void LoadContent(ContentManager Content)
+        public void LoadContent(Game1 game)
         {
-            texture = Content.Load<Texture2D>(textureName);
+            texture = game.Content.Load<Texture2D>(textureName);
         }
 
 

@@ -75,9 +75,9 @@ namespace MedicalFactory
             this.textureNames = textureNames;
         }
 
-        public virtual void LoadContent(ContentManager Content)
+        public virtual void LoadContent(Game1 game)
         {
-            textures = this.textureNames.Select(x => Content.Load<Texture2D>(x)).ToArray();
+            textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
             UpdateRadius();
             if (Origin == default) {
                 Origin = new Vector2(textures[0].Width/2.0f, textures[0].Height/2.0f);

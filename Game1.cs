@@ -19,7 +19,7 @@ namespace MedicalFactory
         private Group sprites;
         private Sprite testSprite, testSprite2;
 
-        private readonly Screen screen;
+        public readonly Screen Screen;
 
         private XBoxController xBoxController;  // => added to controllers
         private Player playerOne;               // => added to players
@@ -29,18 +29,18 @@ namespace MedicalFactory
             _graphics = new GraphicsDeviceManager(this);
             _graphics.DeviceCreated += (s, e) => DebugHelper.GraphicsDevice = _graphics.GraphicsDevice;
 
-            screen = new Screen(_graphics);
+            Screen = new Screen(_graphics);
 
-            bg = new Background(screen);
+            bg = new Background(Screen);
 
             controllers = new Group();
             players = new Group();
             sprites = new Group();
 
-            screen.Add(bg);
-            screen.Add(controllers);
-            screen.Add(players);
-            screen.Add(sprites);
+            Screen.Add(bg);
+            Screen.Add(controllers);
+            Screen.Add(players);
+            Screen.Add(sprites);
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -49,7 +49,7 @@ namespace MedicalFactory
         protected override void Initialize()
         {
             // initialize screen
-            this.screen.Initialize();
+            this.Screen.Initialize();
 
             // initialize Input Devices
             xBoxController = new XBoxController(0);
@@ -69,6 +69,7 @@ namespace MedicalFactory
             // initilize Particles
             var particles = new ParticleSystem(TimeSpan.FromSeconds(3), "particle")
             {
+                Tint = Color.Red,
                 SpawnRate = TimeSpan.FromSeconds(0.1),
                 Velocety = Vector2.One,
                 DeathDuration = TimeSpan.FromSeconds(1),
@@ -107,7 +108,7 @@ namespace MedicalFactory
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            screen.LoadContent(Content);
+            Screen.LoadContent(this);
         }
 
         protected override void Update(GameTime gameTime)
@@ -130,14 +131,14 @@ namespace MedicalFactory
             List<Collision> collisions = CollisionManager.GetCollisions(sprites);
 
             // update everything (turtles aka gameobjects all the way down)
-            screen.Update(gameTime);
+            Screen.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            this.screen.Draw(this._spriteBatch, gameTime);
+            this.Screen.Draw(this._spriteBatch, gameTime);
         }
     }
 }

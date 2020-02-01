@@ -7,6 +7,6 @@ namespace MedicalFactory
 {
     public interface ILoadable
     {
-        void LoadContent(ContentManager Content);
+        void LoadContent(Game1 game);
     }
 }
