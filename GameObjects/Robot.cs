@@ -50,6 +50,12 @@ namespace MedicalFactory.GameObjects
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            Position = new Vector2(
+                MathHelper.Clamp(Position.X, 64, 1920 - 64),
+                MathHelper.Clamp(Position.Y, 128, 1028 - 32)
+            );
+
             this.particles.Update(gameTime);
 
             if (this.Velocity.Length() > 3)
