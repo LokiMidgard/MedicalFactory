@@ -103,6 +103,10 @@ namespace MedicalFactory
             var bpdKidneys = new BodyPartDispenser(DispenserType.Nierengerät, 5) { Position = new Vector2(945, 1035) };
             conveyerBelt.Add(bpdKidneys);
 
+            // add recycler
+            var recycler = new Recycler() { Position = new Vector2(1810, 900) };
+            conveyerBelt.Add(recycler);
+
 
             // initialize players
             playerOne = new Player(xBoxController, robot1);
