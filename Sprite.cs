@@ -122,22 +122,22 @@ namespace MedicalFactory
         
         private Sprite() 
         {
-    this.attached = new List<IAttachable>();
+            this.attached = new List<IAttachable>();
             this.Attached = this.attached.AsReadOnly();
-        
         }
 
         public Sprite(Texture2D texture) :this()
         {
-            this.textures = new Texture2D[] { texture };
-            this.textureNames = new string[] { "directloaded" };
-            this.Init();
+            this.textures = new Texture2D[]{texture};
+            this.textureNames = new string[]{""};
+            Init();
         }
 
 
         public Sprite(params string[] textureNames):this()
         {
             this.textureNames = textureNames;
+            this.textures = new Texture2D[textureNames.Length];
         }
 
         public virtual void Init()
@@ -152,8 +152,14 @@ namespace MedicalFactory
 
         public virtual void LoadContent(Game1 game)
         {
-            this.textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
-            this.Init();
+            for (var i = 0; i<textures.Length; ++i)
+            {
+                if (textures[i] == null && !string.IsNullOrEmpty(textureNames[i]))
+                {
+                    textures[i] = game.Content.Load<Texture2D>(textureNames[i]);
+                }
+            }
+            Init();
         }
 
         public virtual void Update(GameTime gameTime)

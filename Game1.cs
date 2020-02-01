@@ -30,7 +30,6 @@ namespace MedicalFactory
         public ConveyerBelt conveyerBelt;
 
 
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -43,10 +42,13 @@ namespace MedicalFactory
             controllers = new Group();
             players = new Group();
             sprites = new Group();
+            
             patientFactory = new PatientFactory();
+            conveyerBelt = new ConveyerBelt();
 
             Screen.Add(bg);
             Screen.Add(controllers);
+            Screen.Add(conveyerBelt);
             Screen.Add(players);
             Screen.Add(sprites);
 
@@ -76,8 +78,6 @@ namespace MedicalFactory
             };
             sprites.Add(robot1);
             sprites.Add(robot2);
-
-            conveyerBelt = new ConveyerBelt();
 
             /*
             Random r = new Random();
