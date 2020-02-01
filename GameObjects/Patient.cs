@@ -64,7 +64,7 @@ namespace MedicalFactory.GameObjects
         }
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            Vector2 Offset = new Vector2(0.0f, -350.0f);
+            Vector2 Offset = new Vector2(0.0f, -250.0f);
             float LineHeight = 20.0f;
             spriteBatch.DrawString(Game1.game.Font, PatientName, Position + Offset, Color.Black, 0.0f, new Vector2(), 0.5f, SpriteEffects.None, 0.0f);
             if(Married) {
