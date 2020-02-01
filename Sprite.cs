@@ -94,6 +94,7 @@ namespace MedicalFactory
                 _ => throw new NotImplementedException($"AnimationMode {this.AnimationMode}")
             };
 
+            Position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
