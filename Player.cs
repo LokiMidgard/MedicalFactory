@@ -34,7 +34,7 @@ namespace MedicalFactory
                 ControlledSprite.Velocity = Direction * Speed;
                 if (Direction.X + Direction.Y != 0.0f)
                 {
-                    ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, 1.0f), Vector2.Normalize(Direction));
+                    ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, -1.0f), Vector2.Normalize(Direction));
                 }
             }
         }

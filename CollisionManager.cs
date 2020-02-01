@@ -9,6 +9,32 @@ namespace MedicalFactory
 {
     public class CollisionManager
     {
+        public static List<Collision> GetCollisions(Sprite sprite, Group group)
+        {
+            List<Collision> Collisions = new List<Collision>();
+            var thisSprite = sprite;
+            if (thisSprite != null)
+            {
+                for (var i = 0; i < group.Count; ++i)
+                {
+                    var otherSprite = group[i] as Sprite;
+                    if (otherSprite != null)
+                    {
+                        Vector2 FromTo = otherSprite.Position - thisSprite.Position;
+                        if (FromTo.Length() < thisSprite.Radius + otherSprite.Radius)
+                        {
+                            Collision collisionAB = new Collision();
+                            collisionAB.Direction = FromTo * (FromTo.Length() - thisSprite.Radius - otherSprite.Radius);
+                            collisionAB.spriteA = thisSprite;
+                            collisionAB.spriteB = otherSprite;
+                            Collisions.Add(collisionAB);
+                        }
+                    }
+                }
+            }
+            return Collisions;
+        }
+
         public static List<Collision> GetCollisions(Group group)
         {
             List<Collision> Collisions = new List<Collision>();
