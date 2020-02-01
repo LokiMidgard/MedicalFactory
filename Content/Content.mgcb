@@ -37,6 +37,24 @@
 /processorParam:TextureFormat=Color
 /build:background.png
 
+#begin belt_end.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:belt_end.ogg
+
+#begin belt_loop.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:belt_loop.ogg
+
+#begin belt_start.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:belt_start.ogg
+
 #begin BlauerRoboter_1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
