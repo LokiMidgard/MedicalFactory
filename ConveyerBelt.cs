@@ -13,7 +13,7 @@ namespace MedicalFactory
 {
     public class ConveyerBelt : Group
     {
-        public float Speed = 10.0f;
+        public float Speed = 3.0f;
         public float XPos = 0;
         public float YPos = 60.0f * 9.5f;
 
@@ -43,7 +43,7 @@ namespace MedicalFactory
 
         public void Update(GameTime gameTime)
         {
-            Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*100.0f;
+            Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*30.0f;
 
             XPos += (float)(Speed * gameTime.ElapsedGameTime.TotalSeconds);
 
