@@ -13,7 +13,8 @@ namespace MedicalFactory
 {
     public class ConveyerBelt : Group
     {
-        public float Speed = 3.0f;
+        private const float MaxSpeed = 30.0f;
+        public float Speed;
         public float XPos = 0;
         public float YPos = 60.0f * 9.5f;
 
@@ -28,7 +29,7 @@ namespace MedicalFactory
                 game.Content.Load<Texture2D>("FliessbandAnimiert_2"),
                 game.Content.Load<Texture2D>("FliessbandAnimiert_3")
             };
-            
+
             for (int i = 0; i < 10; ++i)
             {
                 Sprite conveyer = new Sprite(ConveyorTextures);
@@ -41,9 +42,16 @@ namespace MedicalFactory
             base.LoadContent(game);
         }
 
+        public static Score GetPatientUnderScanner()
+        {
+            if (Game1.game.Screen.scores.Count == 0)
+                return null;
+            return Game1.game.Screen.scores[Game1.game.Screen.scores.Count - 1];
+        }
+
         public void Update(GameTime gameTime)
         {
-            Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)+1.0f)*30.0f;
+            Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds) + 1.0f) * MaxSpeed;
 
             XPos += (float)(Speed * gameTime.ElapsedGameTime.TotalSeconds);
 

@@ -11,7 +11,7 @@ namespace MedicalFactory.GameObjects
 
     public class Score
     {
-        private Patient patient;
+        public readonly Patient patient;
         public List<string> Text = new List<String>();
 
         public Score(Patient patient)

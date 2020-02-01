@@ -14,20 +14,37 @@ namespace MedicalFactory.GameObjects
         public PatientState(Patient parent)
         {
             patient = parent;
+
         }
 
-        public void AddBodyPart(BodyPart organ)
+        public bool IsDead
         {
-            patient.Attach(organ);
-        }
-
-        public void TryRemoveBodyPart(BodyPart.BodyPartType type, ICanCarry newOwner)
-        {
-            var matching = BodyParts.Where(o => o.GetType().Name == type.ToString());
-            if (matching.Count() > 0)
+            get
             {
-                newOwner.Attach(matching.First());
+                foreach (var type in Enum.GetValues(typeof(BodyPart.BodyPartType)).OfType<BodyPart.BodyPartType>())
+                {
+                    if (this.patient.MaximumBodyParts(type) > 0)
+                        if (!this.BodyParts.Any(x => x.Type == type))
+                            return true;
+                }
+                return false;
             }
         }
+
+        public (int actual, int maximum) CalculateScore()
+        {
+            var sum = 0;
+            var maximum = 0;
+            foreach (var type in Enum.GetValues(typeof(BodyPart.BodyPartType)).OfType<BodyPart.BodyPartType>())
+            {
+                maximum += 3 * this.patient.MaximumBodyParts(type);
+                sum += this.BodyParts.Where(x => x.Type == type).Select(x => x.IsDemaged ? 1 : 3).Sum();
+            }
+            if (this.IsDead)
+                sum = 0;
+            return (sum, maximum);
+        }
+
+
     }
 }

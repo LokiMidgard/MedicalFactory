@@ -22,7 +22,7 @@ namespace MedicalFactory
 
         private float DisplayNextScore = 10.0f;
         private Score DisplayedScore = null;
-        public Queue<Score> scores = new Queue<Score>();
+        public List<Score> scores = new List<Score>();
         public int Width { get; }
         public int Height { get; }
 
@@ -69,7 +69,7 @@ namespace MedicalFactory
             this.screenBatch.Draw(this.canvas, new Rectangle(0, 0,
                 spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
                 spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight), Color.White);
-            this.screenBatch.Draw(this.overlay,  new Rectangle(0, 0,
+            this.screenBatch.Draw(this.overlay, new Rectangle(0, 0,
                spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
                spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight), color: this.tint);
             this.screenBatch.End();
@@ -87,25 +87,8 @@ namespace MedicalFactory
             this.PreDraw(spriteBatch);
             spriteBatch.Draw(this.placeholderBackground, Vector2.Zero, null, Color.White);
             base.Draw(spriteBatch, gameTime);
-            if (DisplayNextScore < 0)
-            {
-                DisplayNextScore = 10.0f;
-                DisplayedScore = null;
-            }
-            if (DisplayedScore != null)
-            {
-                Vector2 Start = new Vector2(10, 10);
-                foreach (string line in DisplayedScore.Text)
-                {
-                    spriteBatch.DrawString(Game1.game.Font, line, Start, Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
-                    Start += new Vector2(0, 30);
-                }
-            }
-            else if (scores.Count != 0)
-            {
-                DisplayedScore = scores.Dequeue();
-            }
-            DisplayNextScore -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            
             this.PostDraw(spriteBatch);
         }
 
