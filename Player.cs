@@ -51,10 +51,24 @@ namespace MedicalFactory
                             if (b != null && b.AttachedTo == null)
                             {
                                 ControlledSprite.Attach(b);
+                                break; // only pickup one
                             }
                         }
                     } else {
-                        ControlledSprite.Detach(ControlledSprite.Attached[0]);
+                        Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
+                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
+                        bool patientFound = false;
+                        foreach (var collision in collisions)
+                        {
+                            Patient patient = collision.spriteB as Patient;
+                            if (patient != null) {
+                                patient.Attach(ControlledSprite.Attached[0]);
+                                patientFound = true;
+                            }
+                        }
+                        if (!patientFound) {
+                            ControlledSprite.Detach(ControlledSprite.Attached[0]);
+                        }
                     }
                 }
             }

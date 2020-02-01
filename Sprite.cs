@@ -83,17 +83,9 @@ namespace MedicalFactory
             toAdd.AttachedTo = this;
         }
         public void Detach(IAttachable toRemove)
-        {
-            if (toRemove.AttachedTo is null)
-                return;
-            if (toRemove.AttachedTo != this)
-                throw new ArgumentException("IAttachable must be attached to this");
-            this.attached.Remove(toRemove);
+        {   this.attached.Remove(toRemove);
             toRemove.AttachedTo = null;
         }
-
-
-
 
         private int animationFrame;
         public int AnimationFrame
@@ -127,13 +119,15 @@ namespace MedicalFactory
             return value;
         }
 
-        [Obsolete]
-        public Sprite() : this("stick")
+        
+        private Sprite() 
         {
-
+    this.attached = new List<IAttachable>();
+            this.Attached = this.attached.AsReadOnly();
+        
         }
 
-        public Sprite(Texture2D texture)
+        public Sprite(Texture2D texture) :this()
         {
             this.textures = new Texture2D[] { texture };
             this.textureNames = new string[] { "directloaded" };
@@ -141,10 +135,8 @@ namespace MedicalFactory
         }
 
 
-        public Sprite(params string[] textureNames)
+        public Sprite(params string[] textureNames):this()
         {
-            this.attached = new List<IAttachable>();
-            this.Attached = this.attached.AsReadOnly();
             this.textureNames = textureNames;
         }
 
