@@ -28,7 +28,7 @@ namespace MedicalFactory
         // rot clockwise = 0 => upvector (0,-1)
         public static Vector2 RotateBy(Vector2 vec, float radians)
         {
-            return Vector2.Transform(vec, Matrix.CreateRotationX(radians));
+            return Vector2.Transform(vec, Matrix.CreateRotationZ(radians));
         }
     }
 }

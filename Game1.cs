@@ -16,7 +16,7 @@ namespace MedicalFactory
         private Group controllers;  // input devices
         private Group players;      // player abstraction, see class Player
         private Background bg;
-        private Group sprites;
+        public static Group sprites;
         private Sprite testSprite, testSprite2;
 
         public readonly Screen Screen;
