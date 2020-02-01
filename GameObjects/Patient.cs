@@ -10,6 +10,8 @@ namespace MedicalFactory.GameObjects
     public abstract class Patient : Sprite
     {
 
+        public string PatientName;
+        private bool Scored = false;
         public Patient(Texture2D texture, params BodyPart.BodyPartType[] bodyParts) : base(texture)
         {
             foreach (var part in bodyParts)
@@ -44,9 +46,18 @@ namespace MedicalFactory.GameObjects
         public override void Update(GameTime gameTime)
         {
             this.Velocity = new Vector2(Game1.conveyerBelt.Speed, 0);
+            if (Position.X > 1920.0f && !Scored) {
+                Game1.game.Screen.scores.Enqueue(new Score(this));
+                Scored = true;
+            }
 
             base.Update(gameTime);
-            //this.Position = this.Position + new Vector2(Game1.game.conveyerBelt.Speed, 0.0f) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            spriteBatch.DrawString(Game1.game.Font, PatientName, Position + new Vector2(-2.0f, -151.0f), Color.White, 0.0f, new Vector2(), 1.1f, SpriteEffects.None, 0.0f);
+            spriteBatch.DrawString(Game1.game.Font, PatientName, Position + new Vector2(0.0f, -150.0f), Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+            base.Draw(spriteBatch, gameTime);
         }
     }
 }

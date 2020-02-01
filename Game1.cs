@@ -17,6 +17,7 @@ namespace MedicalFactory
 
         private Group controllers;  // input devices
         private Group playersGroup;      // player abstraction, see class Player
+        public SpriteFont Font;
         public static Background Background;
         public static Group sprites;
 
@@ -31,6 +32,7 @@ namespace MedicalFactory
         public static Group TopLayer;
 
         private Random rng = new Random();
+
 
         public Game1()
         {
@@ -111,6 +113,7 @@ namespace MedicalFactory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Screen.LoadContent(this);
             patientFactory.LoadContent(this);
+            Font = Content.Load<SpriteFont>("PressStart2P");
         }
 
         protected override void Update(GameTime gameTime)

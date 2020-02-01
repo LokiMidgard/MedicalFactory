@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using MedicalFactory.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,6 +20,9 @@ namespace MedicalFactory
         private Texture2D overlay;
         private readonly GraphicsDeviceManager graphics;
 
+        private float DisplayNextScore = 10.0f;
+        private Score DisplayedScore = null;
+        public Queue<Score> scores = new Queue<Score>();
         public int Width { get; }
         public int Height { get; }
 
@@ -82,6 +87,25 @@ namespace MedicalFactory
             this.PreDraw(spriteBatch);
             spriteBatch.Draw(this.placeholderBackground, Vector2.Zero, null, Color.White);
             base.Draw(spriteBatch, gameTime);
+            if (DisplayNextScore < 0)
+            {
+                DisplayNextScore = 10.0f;
+                DisplayedScore = null;
+            }
+            if (DisplayedScore != null)
+            {
+                Vector2 Start = new Vector2(10, 10);
+                foreach (string line in DisplayedScore.Text)
+                {
+                    spriteBatch.DrawString(Game1.game.Font, line, Start, Color.Black, 0.0f, new Vector2(), 1.0f, SpriteEffects.None, 0.0f);
+                    Start += new Vector2(0, 30);
+                }
+            }
+            else if (scores.Count != 0)
+            {
+                DisplayedScore = scores.Dequeue();
+            }
+            DisplayNextScore -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.PostDraw(spriteBatch);
         }
 
