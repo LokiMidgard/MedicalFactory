@@ -13,8 +13,8 @@ namespace MedicalFactory
     public class Player : IGameObject, IUpdateable
     {
         private float Speed = 1000.0f;
-        private float PickupRange = 10.0f;
-        private float PickupOffset = 10.0f;
+        private float PickupRange = 50.0f;
+        private float PickupOffset = 100.0f;
 
         public Sprite ControlledSprite;
         public InputProvider inputProvider;
