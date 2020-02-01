@@ -133,6 +133,13 @@ namespace MedicalFactory
             Init();
         }
 
+        public Sprite(params Texture2D[] textures) :this()
+        {
+            this.textures = textures;
+            this.textureNames = new string[]{""};
+            Init();
+        }
+
 
         public Sprite(params string[] textureNames):this()
         {
