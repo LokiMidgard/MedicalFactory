@@ -15,10 +15,14 @@ namespace MedicalFactory
         private SpriteBatch screenBatch;
         public RenderTarget2D canvas;
         private Texture2D placeholderBackground;
+        private Texture2D overlay;
         private readonly GraphicsDeviceManager graphics;
 
         public int Width { get; }
         public int Height { get; }
+
+        private Color tint;
+        private Vector2 overlayScale;
 
         public Screen(GraphicsDeviceManager graphics)
         {
@@ -56,10 +60,13 @@ namespace MedicalFactory
         {
             spriteBatch.End();
             spriteBatch.GraphicsDevice.SetRenderTarget(null);
-            this.screenBatch.Begin();
+            this.screenBatch.Begin(blendState: BlendState.NonPremultiplied);
             this.screenBatch.Draw(this.canvas, new Rectangle(0, 0,
                 spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
                 spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight), Color.White);
+            this.screenBatch.Draw(this.overlay,  new Rectangle(0, 0,
+               spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
+               spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight), color: this.tint);
             this.screenBatch.End();
         }
 
@@ -81,6 +88,7 @@ namespace MedicalFactory
         public override void LoadContent(Game1 game)
         {
             this.placeholderBackground = game.Content.Load<Texture2D>("background");
+            this.overlay = game.Content.Load<Texture2D>("Overlay");
 
             base.LoadContent(game);
         }
@@ -108,6 +116,11 @@ namespace MedicalFactory
 
             if (blockingConveyer)
                 GameConfig.KeepPlayersToTheirSide = !GameConfig.KeepPlayersToTheirSide;
+
+            this.tint = Color.Lerp(Color.Transparent, Color.Red, (float)(gameTime.TotalGameTime / TimeSpan.FromSeconds(10)));
+            //this.tint = Color.Red;
+
+            this.overlayScale = Vector2.One * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);
 
             this.lastState = keyboardstate;
             base.Update(gameTime);
