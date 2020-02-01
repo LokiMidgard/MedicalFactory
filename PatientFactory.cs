@@ -12,6 +12,8 @@ namespace MedicalFactory
     public class PatientFactory
     {
         double Timer = 2.0;
+        
+        int PatientCount = 20;
         Texture2D HumanTexture;
         Texture2D AlienTexture;
         
@@ -32,7 +34,7 @@ namespace MedicalFactory
 
         public void Update(GameTime gameTime)
         {
-            if (this.Timer <= 0.0)
+            if (this.Timer <= 0.0 && PatientCount > 0)
             {
                 bool IsHuman = MyMathHelper.Random.NextDouble() < 0.6f;
                 Patient patient;
@@ -63,10 +65,14 @@ namespace MedicalFactory
                     item.IsDemaged = true;
 
 
-                patient.Position = new Vector2(-120.0f, 540.0f + 30.0f);
+                patient.Position = new Vector2(-420.0f, 540.0f + 30.0f);
                 patient.Rotation = MathHelper.PiOver2;
                 Game1.conveyerBelt.Add(patient);
-                this.Timer = MyMathHelper.Random.NextDouble() * 10.0f + 3.0f;
+                this.Timer = MyMathHelper.Random.NextDouble() * 15.0f + 8.0f;
+                PatientCount -= 1;
+            }
+            if (PatientCount == 0) {
+                // this factory is done
             }
             this.Timer -= gameTime.ElapsedGameTime.TotalSeconds;
         }
