@@ -16,19 +16,30 @@ namespace MedicalFactory
     }
 
 
-
-    public struct RandomDirection
+    public interface IParticleDirectionSpawner
     {
+        Vector2 GetVelocety();
+    }
+    public class ParticleDirectionRandom : IParticleDirectionSpawner
+    {
+        private Random random = new Random();
+        public float Scale { get; set; } = 1.0f;
+        public Vector2 GetVelocety()
+        {
+            return new Vector2(this.Scale * (((float)random.NextDouble()) * 2f - 1f), this.Scale * (((float)random.NextDouble()) * 2f - 1f));
+        }
 
     }
-    public struct FixDirection 
+    public class ParticleDirectionFix : IParticleDirectionSpawner
     {
+        public Vector2 Velocety { get; set; }
+        public Vector2 GetVelocety() => Velocety;
 
     }
 
     public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject, IAttachable
     {
-        private const int MaxParticles = 1000;
+        public const int MaxParticles = 1000;
         private readonly string textureName;
         private Texture2D texture;
 
@@ -51,7 +62,7 @@ namespace MedicalFactory
 
 
         public Vector2 Position { get; set; }
-        public Vector2 Velocety { get; set; }
+        public IParticleDirectionSpawner Spawner { get; set; }
         public PatricleDeath Death { get; set; }
 
         private Vector2[] positions;
@@ -131,7 +142,7 @@ namespace MedicalFactory
 
 
                 positions[startIndex] = Position;
-                velocetys[startIndex] = Velocety;
+                velocetys[startIndex] = this.Spawner?.GetVelocety() ?? Vector2.Zero;
                 fade[startIndex] = 1.0f;
                 scale[startIndex] = Vector2.One;
 

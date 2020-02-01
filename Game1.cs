@@ -71,8 +71,9 @@ namespace MedicalFactory
             {
                 Tint = Color.Red,
                 SpawnRate = TimeSpan.FromSeconds(0.1),
-                Velocety = Vector2.One,
+                Spawner = new ParticleDirectionRandom(),
                 DeathDuration = TimeSpan.FromSeconds(1),
+                MaxAge = TimeSpan.FromSeconds(1),
                 Death = PatricleDeath.Fade,
                 IsEnabled = true
             };
