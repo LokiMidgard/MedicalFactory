@@ -17,7 +17,7 @@ namespace MedicalFactory
 
     public class ParticleSystem : IUpdateable, IDrawable, ILoadable, IGameObject
     {
-        private const int MaxParticles = 10;
+        private const int MaxParticles = 1;
         private readonly string textureName;
         private Texture2D texture;
         public Vector2 Origin { get; set; }
@@ -68,7 +68,7 @@ namespace MedicalFactory
             {
                 if (createionTime[i] != default && gameTime.TotalGameTime - createionTime[i] < MaxAge)
                 {
-                    spriteBatch.Draw(texture, positions[i], origin: this.Origin);
+                    spriteBatch.Draw(texture, positions[i], origin: this.Origin, color: new Color(Color.White, fade[i]));
                 }
             }
 
@@ -127,7 +127,7 @@ namespace MedicalFactory
 
                     var age = gameTime.TotalGameTime - createionTime[i];
 
-                    var deathBegin = age - DeathDuration;
+                    var deathBegin = this.MaxAge - DeathDuration;
 
 
 
@@ -139,11 +139,14 @@ namespace MedicalFactory
                     }
                     else if (age > deathBegin)
                     {
-                        // var (age - deathBegin);
-                        // if (this.Death.HasFlag(PatricleDeath.Fade))
-                        // {
+                        var deathPosition = (age - deathBegin) / DeathDuration;
 
-                        // }
+                        System.Diagnostics.Debug.Assert(deathPosition <= 1 && deathPosition >= 0);
+
+                        if (this.Death.HasFlag(PatricleDeath.Fade))
+                        {
+                            fade[i] = 1f - (float)deathPosition;
+                        }
 
                     }
                 }

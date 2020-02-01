@@ -65,6 +65,8 @@ namespace MedicalFactory
             {
                 SpawnRate = TimeSpan.FromSeconds(0.1),
                 Velocety = Vector2.One,
+                DeathDuration = TimeSpan.FromSeconds(1),
+                Death = PatricleDeath.Fade,
                 IsEnabled = true
             };
             sprites.Add(particles);
@@ -82,7 +84,7 @@ namespace MedicalFactory
             */
 
             // add some bodyparts
-            for (int i=0;i <5; ++i)
+            for (int i = 0; i < 5; ++i)
             {
                 var bodyPart = new BodyPart();
                 bodyPart.Position = Screen.GetRandomWorldPos();
@@ -106,10 +108,14 @@ namespace MedicalFactory
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) {
-                if (playerOne.ControlledSprite == testSprite) {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+            {
+                if (playerOne.ControlledSprite == testSprite)
+                {
                     playerOne.ControlledSprite = testSprite2;
-                } else {
+                }
+                else
+                {
                     playerOne.ControlledSprite = testSprite;
                 }
             }
