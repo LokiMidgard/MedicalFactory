@@ -127,13 +127,12 @@ namespace MedicalFactory
         [Obsolete]
         public Sprite() : this("stick")
         {
-
         }
 
         public Sprite(Texture2D texture)
         {
             this.textures = new Texture2D[]{texture};
-            this.textureNames = new string[]{"directloaded"};
+            this.textureNames = new string[]{""};
             Init();
         }
 
@@ -143,6 +142,7 @@ namespace MedicalFactory
             attached = new List<IAttachable>();
             Attached = attached.AsReadOnly();
             this.textureNames = textureNames;
+            this.textures = new Texture2D[textureNames.Length];
         }
 
         public virtual void Init()
@@ -157,7 +157,13 @@ namespace MedicalFactory
 
         public virtual void LoadContent(Game1 game)
         {
-            textures = this.textureNames.Select(x => game.Content.Load<Texture2D>(x)).ToArray();
+            for (var i = 0; i<textures.Length; ++i)
+            {
+                if (textures[i] == null && !string.IsNullOrEmpty(textureNames[i]))
+                {
+                    textures[i] = game.Content.Load<Texture2D>(textureNames[i]);
+                }
+            }
             Init();
         }
 
