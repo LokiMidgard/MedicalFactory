@@ -75,7 +75,7 @@ namespace MedicalFactory
             this.textureNames = textureNames;
         }
 
-        public void LoadContent(ContentManager Content)
+        public virtual void LoadContent(ContentManager Content)
         {
             textures = this.textureNames.Select(x => Content.Load<Texture2D>(x)).ToArray();
             UpdateRadius();
@@ -84,7 +84,7 @@ namespace MedicalFactory
             }
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             this.AnimationFrame = this.AnimationMode switch
             {
@@ -94,9 +94,10 @@ namespace MedicalFactory
                 _ => throw new NotImplementedException($"AnimationMode {this.AnimationMode}")
             };
 
+            Position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(textures[AnimationFrame], Position, null, Color.White, Rotation, Origin, 1.0f, SpriteEffects.None, 0.0f);
 

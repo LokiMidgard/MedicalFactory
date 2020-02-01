@@ -50,7 +50,9 @@ namespace MedicalFactory
 
             // initialize sprites
             var testSprite = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.PingPong };
+            testSprite.Origin = new Vector2(30.0f, 90.0f);
             var testSprite2 = new Sprite("Roboter_Blau", "Roboter_Gruen", "Roboter_Gelb", "Roboter_Rot") { AnimationMode = AnimationMode.Loop };
+            testSprite2.Origin = new Vector2(30.0f, 90.0f);
             testSprite2.Position.X = 100;
             sprites.Add(testSprite);
             sprites.Add(testSprite2);
@@ -72,6 +74,8 @@ namespace MedicalFactory
                 blub.Position.X = (float)r.NextDouble() * 1920;
                 blub.Position.Y = (float)r.NextDouble() * 1080;
                 blub.Origin = new Vector2(30.0f, 90.0f);
+                blub.Rotation = (float)MathHelper.ToRadians(90);
+                blub.Rotation = (float)MyMathHelper.RightAngleInRadians(new Vector2(1, 0), new Vector2(-1, 0));
                 sprites.Add(blub);
             }
 

@@ -11,6 +11,7 @@ namespace MedicalFactory
     /// </summary>
     public class Player : IGameObject, IUpdateable
     {
+        private float Speed = 1000.0f;
 
         public Sprite ControlledSprite;
         public InputProvider inputProvider;
@@ -29,8 +30,12 @@ namespace MedicalFactory
         {
             if (ControlledSprite != null)
             {
-                ControlledSprite.Position.X += inputProvider.Get(Sliders.LeftStickX);
-                ControlledSprite.Position.Y += inputProvider.Get(Sliders.LeftStickY);
+                Vector2 Direction = new Vector2(inputProvider.Get(Sliders.LeftStickX), inputProvider.Get(Sliders.LeftStickY));
+                ControlledSprite.Velocity = Direction * Speed;
+                if (Direction.X + Direction.Y != 0.0f)
+                {
+                    ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, 1.0f), Vector2.Normalize(Direction));
+                }
             }
         }
     }
