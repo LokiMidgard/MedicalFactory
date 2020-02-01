@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,7 @@ namespace MedicalFactory.GameObjects
     {
         public static BodyPartType Map(DispenserType type)
         {
-            switch(type)
+            switch (type)
             {
                 case DispenserType.Herzgerät: return BodyPartType.HERZ;
                 case DispenserType.Lungengerät: return BodyPartType.LUNGE;
@@ -23,21 +24,36 @@ namespace MedicalFactory.GameObjects
                 default: throw new Exception("Unknown DispenserType");
             }
         }
-
+ 
         private DispenserType type;
         private int initialStock;
+        private Texture2D bodyPartTex;
+        private int count;
 
-        public BodyPartDispenser(DispenserType type, int stock) : base(type.ToString())
+        public BodyPartDispenser(DispenserType type, int stock) : base(type.ToString(), "Leeresgerät")
         {
             this.type = type;
             this.initialStock = stock;
+            this.count = 0;
+        }
 
-            for (var i = 0; i < initialStock; ++i)
-            {
-                var part = new BodyPart(Map(type));
-                Attach(part);
-                Game1.sprites.Add(part);
-            }
+        public override void LoadContent(Game1 game)
+        {
+            base.LoadContent(game);
+
+            this.bodyPartTex = game.Content.Load<Texture2D>(Map(type).ToString());
+            
+            for (int i = 0; i < initialStock; ++i)
+                CreateNew();
+        }
+
+        public void CreateNew()
+        {
+            var part = new BodyPart(Map(type), this.bodyPartTex);
+            Attach(part);
+            Game1.sprites.Add(part);
+            this.count++;
+            UpdateAnimFrame();
         }
 
         public override void Attach(IAttachable toAdd)
@@ -58,6 +74,13 @@ namespace MedicalFactory.GameObjects
                 s.Visible = true;
             }
             base.Detach(toRemove);
+            this.count--;
+            UpdateAnimFrame();
+        }
+
+        private void UpdateAnimFrame()
+        {
+            AnimationFrame = this.count == 0 ? 1 : 0;
         }
     }
 }
