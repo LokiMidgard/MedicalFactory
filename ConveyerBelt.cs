@@ -14,7 +14,8 @@ namespace MedicalFactory
 {
     public class ConveyerBelt : Group
     {
-        private const float MaxSpeed = 50.0f;
+        public const float DefaultSpeed = 50.0f;
+        public float MaxSpeed = DefaultSpeed;
         public float Speed;
         public float XPos = 0;
         public float YPos = 60.0f * 9.5f;

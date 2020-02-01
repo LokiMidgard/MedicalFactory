@@ -12,17 +12,28 @@ namespace MedicalFactory
     public class PatientFactory
     {
         double Timer = 2.0;
-        
-        int PatientCount = 20;
+
+        public int CurrentPatientCount;
+        public int PatientCount = 2;
         Texture2D HumanTexture;
         Texture2D AlienTexture;
-        
+
         static string bigNameList = "Frank Tim Peter James Jordan Lissy Tom Jenny Karla Sahra Brett Harold Kumar Prince Manfred";
         static string[] Names = bigNameList.Split(" ");
         static string GetRandomName()
         {
-                int idx = MyMathHelper.Random.Next()%Names.Count();
-                return Names[idx];
+            int idx = MyMathHelper.Random.Next() % Names.Count();
+            return Names[idx];
+        }
+
+        public PatientFactory()
+        {
+            this.Start();
+        }
+
+        public void Start()
+        {
+            CurrentPatientCount = PatientCount;
         }
 
         public void LoadContent(Game1 game)
@@ -34,7 +45,7 @@ namespace MedicalFactory
 
         public void Update(GameTime gameTime)
         {
-            if (this.Timer <= 0.0 && PatientCount > 0)
+            if (this.Timer <= 0.0 && CurrentPatientCount > 0)
             {
                 bool IsHuman = MyMathHelper.Random.NextDouble() < 0.6f;
                 Patient patient;
@@ -48,14 +59,15 @@ namespace MedicalFactory
                 }
                 patient.PatientName = GetRandomName();
                 int MaxChildren = 7;
-                patient.NumberOfChildren = MyMathHelper.Random.Next()%MaxChildren;
+                patient.NumberOfChildren = MyMathHelper.Random.Next() % MaxChildren;
                 patient.Married = MyMathHelper.Random.NextDouble() < 0.5;
-                if (patient.Married) {
+                if (patient.Married)
+                {
                     patient.SpouseName = GetRandomName();
                 }
                 int MaxAge = 120;
-                patient.Age = MyMathHelper.Random.Next()%MaxAge;
-                patient.LifeExpectancy = MaxAge - patient.Age + (MyMathHelper.Random.Next()%20) - 10;
+                patient.Age = MyMathHelper.Random.Next() % MaxAge;
+                patient.LifeExpectancy = MaxAge - patient.Age + (MyMathHelper.Random.Next() % 20) - 10;
                 if (patient.LifeExpectancy <= 0) patient.LifeExpectancy = 0;
 
 
@@ -69,11 +81,9 @@ namespace MedicalFactory
                 patient.Rotation = MathHelper.PiOver2;
                 Game1.conveyerBelt.Add(patient);
                 this.Timer = MyMathHelper.Random.NextDouble() * 15.0f + 8.0f;
-                PatientCount -= 1;
+                CurrentPatientCount -= 1;
             }
-            if (PatientCount == 0) {
-                // this factory is done
-            }
+
             this.Timer -= gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
