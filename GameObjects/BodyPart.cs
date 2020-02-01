@@ -9,28 +9,9 @@ namespace MedicalFactory.GameObjects
 
     public class BodyPart : Sprite
     {
-        public Player CarriedBy { get; set; }
-
         public BodyPart(string TextureName) : base(TextureName)
         {
-
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            if (CarriedBy != null && CarriedBy.ControlledSprite != null)
-            {
-                var dist = 32;
-                var upVector = -Vector2.UnitY;
-                Vector2 offset = MyMathHelper.RotateBy(upVector, CarriedBy.ControlledSprite.Rotation);
-                offset *= dist;
-
-             
-                Position = CarriedBy.ControlledSprite.Position + offset;
-                Rotation = CarriedBy.ControlledSprite.Rotation;
-            }
-
-            base.Update(gameTime);
+            AttachOffset = Vector2.UnitY * -48;
         }
     }
 }

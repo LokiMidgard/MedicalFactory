@@ -45,7 +45,7 @@ namespace MedicalFactory
                 foreach (var collision in collisions) {
                     BodyPart b = collision.spriteB as BodyPart;
                     if (b != null) {
-                        b.CarriedBy = this;
+                        ControlledSprite.Attach(b);
                     }
                 }
             }
