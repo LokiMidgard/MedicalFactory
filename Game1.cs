@@ -58,9 +58,10 @@ namespace MedicalFactory
             Random r = new Random();
             for (int i = 0; i < 100; ++i)
             {
-                Sprite blub = new Sprite("stick_master");
+                Sprite blub = new Sprite("Roboter_Blau");
                 blub.Position.X = (float)r.NextDouble() * 1920;
                 blub.Position.Y = (float)r.NextDouble() * 1080;
+                blub.Origin = new Vector2(30.0f, 90.0f);
                 sprites.Add(blub);
             }
 
@@ -87,6 +88,7 @@ namespace MedicalFactory
             foreach (Collision c in collisions)
             {
                 c.spriteA.hasCollision = true;
+                c.spriteA.Rotation += 0.01f;
             }
 
             // update everything (turtles aka gameobjects all the way down)
