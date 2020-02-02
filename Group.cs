@@ -9,6 +9,8 @@ namespace MedicalFactory
 {
     public class Group : List<IGameObject>, IGameObject, ILoadable, IDrawable, IUpdateable
     {
+        public virtual bool Visible { get; set; } = true;
+
         public virtual void LoadContent(Game1 game)
         {
             foreach (var gameObject in this)
@@ -28,10 +30,13 @@ namespace MedicalFactory
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            foreach (var gameObject in this)
+            if (Visible)
             {
-                if (gameObject is IDrawable go)
-                    go.Draw(spriteBatch, gameTime);
+                foreach (var gameObject in this)
+                {
+                    if (gameObject is IDrawable go)
+                        go.Draw(spriteBatch, gameTime);
+                }
             }
         }
     }

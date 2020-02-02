@@ -17,9 +17,18 @@ namespace MedicalFactory.GameObjects
         public Score(Patient patient)
         {
             this.patient = patient;
-            Text.Add("THE MOTHERFUCKER");
-            Text.Add(patient.PatientName);
-            Text.Add("DIED");
+
+            if (patient.State.IsDead)
+            {
+                Text.Add($"Today you lost {patient.PatientName}");
+                Text.Add($"{patient.PatientName} leaves {patient.NumberOfChildren} children behind.");
+            } else if(patient.State.IsCompletelyHealed)
+            {
+                Text.Add($"Today you completely healed {patient.PatientName}.");
+            } else
+            {
+                Text.Add($"Today you somehow kept {patient.PatientName} alive.");
+            }
         }
     }
 

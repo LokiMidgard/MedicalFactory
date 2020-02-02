@@ -29,7 +29,7 @@ namespace MedicalFactory
         public static Group TopLayer;
 
         private Random rng = new Random();
-        private Sprite finishScreen;
+        public FinishScreen FinishScreen;
 
         public Game1()
         {
@@ -104,9 +104,9 @@ namespace MedicalFactory
             TopLayer.Add(scanner.Upper);
             TopLayer.Add(scanner);
 
-            this.finishScreen = new Sprite("FinishedOverlay") { Position = new Vector2(960,540)};
-            TopLayer.Add(finishScreen);
-            finishScreen.Visible = false;
+            // prepare FinishScreen
+            this.FinishScreen = new FinishScreen();
+            TopLayer.Add(FinishScreen);
 
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };
@@ -124,12 +124,11 @@ namespace MedicalFactory
             base.Initialize();
         }
 
-        public void ShowFinisScreen()
+        public void ShowFinishScreen()
         {
-            if (this.finishScreen.Visible)
+            if (this.FinishScreen.Visible)
                 return;
-            this.finishScreen.Visible = true;
-            // Show Score
+            this.FinishScreen.Visible = true;
         }
 
         protected override void LoadContent()
@@ -145,7 +144,7 @@ namespace MedicalFactory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (this.finishScreen.Visible)
+            if (this.FinishScreen.Visible)
             {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
                     this.RestartGame();
@@ -165,7 +164,9 @@ namespace MedicalFactory
 
         private void RestartGame()
         {
-            this.finishScreen.Visible = false;
+            this.FinishScreen.Visible = false;
+            Background.CleanFloor();
+            conveyerBelt.ResetAll();
             this.patientFactory.Start();
             this.Screen.scores.Clear();
         }

@@ -21,7 +21,7 @@ namespace MedicalFactory
     {
         public Vector2 Position { get; set; }
         public Vector2 Scale { get; set; } = Vector2.One;
-
+        public virtual Color Color { get; set; } = Color.White;
         public Vector2 Origin;
         public float Radius;
         public float Drag = 10.0f;
@@ -175,7 +175,7 @@ namespace MedicalFactory
                 this.Position += this.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (Velocity.Length() != 0.0f)
                 {
-                    this.Velocity *= 0.96f;
+                    this.Velocity *= 0.95f;
                     if (Velocity.Length() < 0.1f)
                     {
                         Velocity = new Vector2(0.0f);
@@ -195,7 +195,7 @@ namespace MedicalFactory
         {
             if (Visible)
             {
-                spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, rotation: this.Rotation, origin: this.Origin, scale: this.Scale);
+                spriteBatch.Draw(this.textures[this.AnimationFrame], this.Position, color: Color, rotation: this.Rotation, origin: this.Origin, scale: this.Scale);
                 if (GameConfig.DrawCollisionGeometry)
                 {
                     var color = this.hasCollision ? Color.Red : Color.White;
