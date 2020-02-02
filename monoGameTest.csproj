@@ -12,6 +12,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <RootNamespace>MedicalFactory</RootNamespace>
+    <AssemblyName>MedicalFactory</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
