@@ -7,6 +7,7 @@ using System.Text;
 
 namespace MedicalFactory
 {
+
     public class FinishScreen : Group
     {
         private Sprite background;
@@ -16,10 +17,15 @@ namespace MedicalFactory
         public override bool Visible
         {
             get => base.Visible;
-            set {
+            set
+            {
                 if (!base.Visible && value)
                 {
+                    Songs.PlayTitleSong();
                     YScroll = 1080;
+                }else if(base.Visible && !value)
+                {
+                    Songs.PlayGameSong();
                 }
                 base.Visible = value;
             }
@@ -28,7 +34,7 @@ namespace MedicalFactory
         public FinishScreen()
         {
             Visible = false;
-            background= new Sprite("FinishedOverlay") { Position = new Vector2(960, 540) };
+            background = new Sprite("FinishedOverlay") { Position = new Vector2(960, 540) };
             Add(background);
 
             textbox = new TextBox();
@@ -44,7 +50,7 @@ namespace MedicalFactory
             base.Update(gameTime);
             if (Visible)
             {
-                YScroll -= (float)gameTime.ElapsedGameTime.TotalSeconds * 80f;
+                YScroll -= (float)gameTime.ElapsedGameTime.TotalSeconds * 200f;
                 textbox.YScroll = YScroll;
 
                 textbox.Text = Text;
@@ -56,9 +62,13 @@ namespace MedicalFactory
           + "\n\n"
           + "The factory is proud to present today's REPAIRS:\n"
           + "\n"
-          + string.Join("\n\n\n", Game1.game.Screen.scores.Select(ScoreText))
+          + "\n"
+          + string.Join("\n\n", Game1.game.Screen.scores.Select(ScoreText))
           + "\n\n"
           + $"You left {Game1.CountOrgansOnFloor} organs lying on the floor.\n\n"
+
+          + "\n\n\n\n"
+          + Credits.Text
           ;
 
         private static string ScoreText(Score score)

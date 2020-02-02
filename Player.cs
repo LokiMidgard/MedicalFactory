@@ -17,21 +17,44 @@ namespace MedicalFactory
         private float PickupRange = 50.0f;
         private float PickupOffset = 120.0f;
 
-        public Sprite ControlledSprite;
+        public bool Active { get; private set; }
+
+        public Robot ControlledSprite;
         public InputProvider inputProvider;
         public Player(InputProvider inputProvider)
         {
             this.inputProvider = inputProvider;
         }
 
-        public Player(InputProvider inputProvider, Sprite controlledSprite)
+        public Player(InputProvider inputProvider, Robot controlledSprite)
         {
             this.inputProvider = inputProvider;
             this.ControlledSprite = controlledSprite;
+            controlledSprite.Player = this;
+        }
+
+        public void Rumble()
+        {
+            inputProvider?.Rumble(1f, 1f, 250);
         }
 
         public void Update(GameTime gameTime)
         {
+            if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
+                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
+                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)
+                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Y)
+                
+                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Start)
+
+                || inputProvider.Get(Sliders.LeftStickX) != 0
+                || inputProvider.Get(Sliders.LeftStickY) != 0
+                )
+            {
+                this.Active = true;
+            }
+            ControlledSprite.Visible = this.Active;
+
             if (ControlledSprite != null)
             {
                 // Handle Directions
@@ -43,7 +66,12 @@ namespace MedicalFactory
                 }
 
                 // Handle Buttons
-                if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
+                bool wasButtonPressed = InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
+                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)
+                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
+                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Y);
+
+                if (wasButtonPressed)
                 {
                     var holdedItem = ControlledSprite.Attached.OfType<IItem>().FirstOrDefault();
 

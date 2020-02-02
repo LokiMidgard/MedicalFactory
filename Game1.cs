@@ -11,6 +11,12 @@ namespace MedicalFactory
 {
     public class Game1 : Game
     {
+        public bool Paused;
+        private GameTime MyGameTime = new GameTime();
+
+        public static Random rng = new Random();
+
+
         public static Game1 game;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -28,8 +34,8 @@ namespace MedicalFactory
         public static ConveyerBelt conveyerBelt;
         public static Group TopLayer;
 
-        private Random rng = new Random();
         public FinishScreen FinishScreen;
+        public StartScreen StartScreen { get; private set; }
 
         public Game1()
         {
@@ -42,7 +48,7 @@ namespace MedicalFactory
 
             controllers = new Group();
             playersGroup = new Group();
-            sprites = new Group();
+            sprites = new Group() { Enabled = false };
 
             patientFactory = new PatientFactory();
             conveyerBelt = new ConveyerBelt();
@@ -80,7 +86,16 @@ namespace MedicalFactory
                 var xBoxController = new XBoxController(i);
                 controllers.Add(xBoxController);
 
-                var robot = new Robot((PlayerColor)(i % 4)) { Position = new Vector2(300 + (float)(rng.NextDouble() * 1500), i % 2 == 0 ? 300 : 800) };
+                var pos = (i % 4) switch
+                {
+                    0 => new Vector2(300, 300),
+                    1 => new Vector2(300, 800),
+                    2 => new Vector2(1400, 300),
+                    3 => new Vector2(1400, 800),
+                    _ => throw new NotImplementedException()
+                };
+
+                var robot = new Robot((PlayerColor)(i % 4)) { Position = pos };
                 sprites.Add(robot);
 
                 var player = new Player(xBoxController, robot);
@@ -108,6 +123,11 @@ namespace MedicalFactory
             this.FinishScreen = new FinishScreen();
             TopLayer.Add(FinishScreen);
 
+            // prepare StartScreen
+            this.StartScreen = new StartScreen(playersGroup.OfType<Player>()) { Visible = true };
+            TopLayer.Add(this.StartScreen);
+
+
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };
             recycler.AddDispenser(bpdHeart);
@@ -129,20 +149,45 @@ namespace MedicalFactory
             if (this.FinishScreen.Visible)
                 return;
             this.FinishScreen.Visible = true;
+            sprites.Enabled = false;
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Songs.LoadContent(this);
+            Credits.LoadContent(this);
+
+            Songs.PlayTitleSong();
+
             Screen.LoadContent(this);
             patientFactory.LoadContent(this);
             Font = Content.Load<SpriteFont>("PressStart2P");
+            SoundEffects.LoadContent(game);
         }
 
         protected override void Update(GameTime gameTime)
         {
+            if (!Paused)
+            {
+                MyGameTime.TotalGameTime += gameTime.ElapsedGameTime;
+                MyGameTime.ElapsedGameTime = gameTime.ElapsedGameTime;
+            } else
+            {
+                MyGameTime.ElapsedGameTime = TimeSpan.Zero;
+            }
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+
+            if (this.StartScreen.Visible)
+            {
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                {
+                    this.RestartGame();
+                }
+            }
 
             if (this.FinishScreen.Visible)
             {
@@ -150,30 +195,32 @@ namespace MedicalFactory
                     this.RestartGame();
             }
 
-            patientFactory.Update(gameTime);
-            conveyerBelt.Update(gameTime);
+            patientFactory.Update(MyGameTime);
+            conveyerBelt.Update(MyGameTime);
 
             // detect collisions
             List<Collision> collisions = CollisionManager.GetCollisions(sprites);
 
             // update everything (turtles aka gameobjects all the way down)
-            Screen.Update(gameTime);
+            Screen.Update(MyGameTime);
 
-            base.Update(gameTime);
+            base.Update(MyGameTime);
         }
 
         private void RestartGame()
         {
             this.FinishScreen.Visible = false;
+            this.StartScreen.Visible = false;
             Background.CleanFloor();
             conveyerBelt.ResetAll();
             this.patientFactory.Start();
             this.Screen.scores.Clear();
+            sprites.Enabled = true;
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            this.Screen.Draw(this._spriteBatch, gameTime);
+                this.Screen.Draw(this._spriteBatch, gameTime);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace MedicalFactory.GameObjects
         private TimeSpan nextSpark;
         private TimeSpan sparkDuration;
         public PlayerColor PlayerColor;
+        public Player Player;
 
         private static readonly Random random = new Random();
 
@@ -91,10 +92,13 @@ namespace MedicalFactory.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 10), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.6f, 0.6f), SpriteEffects.None, 0.0f);
-            base.Draw(spriteBatch, gameTime);
-            this.particles.Draw(spriteBatch, gameTime);
-            this.particles2.Draw(spriteBatch, gameTime);
+            if (Visible)
+            {
+                spriteBatch.Draw(this.shadow, this.Position + new Vector2(0, 10), null, Color.White, 0, new Vector2(shadow.Width / 2.0f, shadow.Height / 2.0f), new Vector2(0.6f, 0.6f), SpriteEffects.None, 0.0f);
+                base.Draw(spriteBatch, gameTime);
+                this.particles.Draw(spriteBatch, gameTime);
+                this.particles2.Draw(spriteBatch, gameTime);
+            }
         }
 
         public override void LoadContent(Game1 game)
@@ -110,6 +114,24 @@ namespace MedicalFactory.GameObjects
             base.Update(gameTime);
 
             CollisionManager.KeepInWorld(this);
+
+            // PlayerCollisions
+            if (Visible)
+            {
+                IEnumerable<Collision> objColls = CollisionManager.GetCollisions(this, Game1.sprites);
+                objColls = objColls.Where(c => (c.spriteB is Robot));
+                if (objColls.Count() > 0)
+                {
+                    var coll = objColls.First();
+                    if (coll.spriteB.Visible)
+                    {
+                        Position += coll.Distance * 2;
+                        coll.spriteB.Position -= coll.Distance * 2;
+                        Player?.Rumble();
+                        (coll.spriteB as Robot)?.Player?.Rumble();
+                    }
+                }
+            }
 
             // if transporting body part => spill some blood
             var item = Attached.OfType<IItem>().FirstOrDefault();

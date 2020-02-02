@@ -34,11 +34,16 @@ namespace MedicalFactory.GameObjects
                 var rect = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
                 spriteBatch.Draw(this.textures[0], rect, Color);
 
-                var lineHeight = 30 * FontScale;
+                var lineHeight = 40 * FontScale;
                 var yOffset = YScroll;
-                foreach (var line in this.Text.Split("\n"))
+                string[] splitString = this.Text.Split("\n", StringSplitOptions.None);
+                foreach (var line in splitString)
                 {
-                    spriteBatch.DrawString(font, line, Position + Vector2.One * 5 + Vector2.UnitY * yOffset, Color.Black, 0, Vector2.Zero, FontScale, SpriteEffects.None, 0);
+                    Color color = Color.Black;
+                    if (line.Contains("behind") || line.Contains("lost")) {
+                        color = Color.Red;
+                    }
+                    spriteBatch.DrawString(font, line, Position + Vector2.One * 5 + Vector2.UnitY * yOffset, color, 0, Vector2.Zero, FontScale, SpriteEffects.None, 0);
                     yOffset += lineHeight;
                 }
             }

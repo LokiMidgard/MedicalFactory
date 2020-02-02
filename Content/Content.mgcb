@@ -475,6 +475,18 @@
 /processorParam:TextureFormat=Color
 /build:particle.png
 
+#begin Pausescreen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pausescreen.png
+
 #begin PressStart2P.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -650,6 +662,126 @@
 /processorParam:TextureFormat=Color
 /build:Schleim_Mittel.PNG
 
+#begin Songs/GamePlay.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/GamePlay.ogg
+
+#begin Songs/TitleSong.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/TitleSong.ogg
+
+#begin SoundEffects/failed_patient.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/failed_patient.ogg
+
+#begin SoundEffects/slime_01.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_01.ogg
+
+#begin SoundEffects/slime_02.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_02.ogg
+
+#begin SoundEffects/slime_03.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_03.ogg
+
+#begin SoundEffects/slime_04.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_04.ogg
+
+#begin SoundEffects/slime_05.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_05.ogg
+
+#begin SoundEffects/slime_06.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_06.ogg
+
+#begin SoundEffects/slime_07.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_07.ogg
+
+#begin SoundEffects/slime_08.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_08.ogg
+
+#begin SoundEffects/slime_09.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_09.ogg
+
+#begin SoundEffects/slime_10.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_10.ogg
+
+#begin SoundEffects/slime_11.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_11.ogg
+
+#begin SoundEffects/slime_12.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_12.ogg
+
+#begin SoundEffects/slime_13.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_13.ogg
+
+#begin SoundEffects/slime_14.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_14.ogg
+
+#begin SoundEffects/slime_15.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_15.ogg
+
+#begin SoundEffects/slime_16.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_16.ogg
+
+#begin SoundEffects/success_patient.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/success_patient.wav
+
 #begin square.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -661,6 +793,90 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:square.PNG
+
+#begin StartScreen/BlauerRoboterWolke.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartScreen/BlauerRoboterWolke.PNG
+
+#begin StartScreen/GelberRoboterWolke.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartScreen/GelberRoboterWolke.png
+
+#begin StartScreen/GruenerRoboterWolke.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartScreen/GruenerRoboterWolke.PNG
+
+#begin StartScreen/HintergrundMitSchatten.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartScreen/HintergrundMitSchatten.png
+
+#begin StartScreen/HintergrundTitel.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartScreen/HintergrundTitel.png
+
+#begin StartScreen/RoterRoboterWolke.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartScreen/RoterRoboterWolke.PNG
+
+#begin StartScreen/Titelbild.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartScreen/Titelbild.PNG
 
 #begin stick.png
 /importer:TextureImporter

@@ -12,6 +12,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <RootNamespace>MedicalFactory</RootNamespace>
+    <AssemblyName>MedicalFactory</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +26,12 @@
 
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

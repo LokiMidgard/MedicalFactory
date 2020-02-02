@@ -10,6 +10,7 @@ namespace MedicalFactory
     public class Group : List<IGameObject>, IGameObject, ILoadable, IDrawable, IUpdateable
     {
         public virtual bool Visible { get; set; } = true;
+        public virtual bool Enabled { get; set; } = true;
 
         public virtual void LoadContent(Game1 game)
         {
@@ -21,10 +22,13 @@ namespace MedicalFactory
         }
         public virtual void Update(GameTime gameTime)
         {
-            foreach (var gameObject in this)
+            if (Enabled)
             {
-                if (gameObject is IUpdateable go)
-                    go.Update(gameTime);
+                foreach (var gameObject in this)
+                {
+                    if (gameObject is IUpdateable go)
+                        go.Update(gameTime);
+                }
             }
         }
 
