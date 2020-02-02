@@ -722,6 +722,18 @@
 /processorParam:TextureFormat=Color
 /build:Schleim_Mittel.PNG
 
+#begin Songs/GamePlay.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/GamePlay.ogg
+
+#begin Songs/TitleSong.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/TitleSong.ogg
+
 #begin SoundEffects/failed_patient.ogg
 /importer:OggImporter
 /processor:SoundEffectProcessor

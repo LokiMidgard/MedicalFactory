@@ -137,6 +137,10 @@ namespace MedicalFactory
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Songs.LoadContent(this);
+
+            Songs.PlayTitleSong();
+
             Screen.LoadContent(this);
             patientFactory.LoadContent(this);
             Font = Content.Load<SpriteFont>("PressStart2P");
