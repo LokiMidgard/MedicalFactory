@@ -66,7 +66,12 @@ namespace MedicalFactory
                 }
 
                 // Handle Buttons
-                if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X))
+                bool wasButtonPressed = InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
+                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)
+                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
+                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Y);
+
+                if (wasButtonPressed)
                 {
                     var holdedItem = ControlledSprite.Attached.OfType<IItem>().FirstOrDefault();
 

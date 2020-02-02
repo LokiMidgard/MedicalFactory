@@ -40,15 +40,10 @@ namespace MedicalFactory
             this.screenBatch = new SpriteBatch(this.graphics.GraphicsDevice);
             this.canvas = new RenderTarget2D(this.graphics.GraphicsDevice, this.Width, this.Height);
 
-#if DEBUG
             this.graphics.PreferredBackBufferWidth = smalWidth;
             this.graphics.PreferredBackBufferHeight = smalHeight;
             this.graphics.IsFullScreen = false;
-#else
-            graphics.PreferredBackBufferWidth = bigHeight;
-            graphics.PreferredBackBufferHeight = bigHeight;
-            graphics.IsFullScreen = true;
-#endif
+
             this.graphics.ApplyChanges();
         }
 
@@ -133,7 +128,7 @@ namespace MedicalFactory
                 GameConfig.SoundEnabled= !GameConfig.SoundEnabled;
 
 
-            var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 50f, 0f, 1f);
+            var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 20f, 0f, 1f);
             if (Game1.game.FinishScreen.Visible)
                 tintAmount = 1.0f;
             this.tint = Color.Lerp(Color.Transparent, Color.Red, tintAmount);

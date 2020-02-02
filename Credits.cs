@@ -13,7 +13,7 @@ namespace MedicalFactory
         {
             try
             {
-                Text = File.ReadAllText("./README.md");
+                Text = File.ReadAllText("./README.md", Encoding.UTF8);
             } catch(Exception exc)
             {
 
