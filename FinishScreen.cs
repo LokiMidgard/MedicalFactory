@@ -21,7 +21,11 @@ namespace MedicalFactory
             {
                 if (!base.Visible && value)
                 {
+                    Songs.PlayTitleSong();
                     YScroll = 1080;
+                }else if(base.Visible && !value)
+                {
+                    Songs.PlayGameSong();
                 }
                 base.Visible = value;
             }
