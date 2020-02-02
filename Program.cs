@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace monoGameTest
+namespace MedicalFactory
 {
     public static class Program
     {
