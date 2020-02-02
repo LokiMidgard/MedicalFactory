@@ -11,6 +11,7 @@ namespace MedicalFactory
     {
         private const int bigWidth = 1920;
         private const int bigHeight = 1080;
+
         private const int smalWidth = 1280;
         private const int smalHeight = 720;
 
@@ -20,8 +21,6 @@ namespace MedicalFactory
         private Texture2D overlay;
         private readonly GraphicsDeviceManager graphics;
 
-        private float DisplayNextScore = 10.0f;
-        private Score DisplayedScore = null;
         public List<Score> scores = new List<Score>();
         public int Width { get; }
         public int Height { get; }
