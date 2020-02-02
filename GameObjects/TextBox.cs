@@ -39,7 +39,11 @@ namespace MedicalFactory.GameObjects
                 string[] splitString = this.Text.Split("\n", StringSplitOptions.None);
                 foreach (var line in splitString)
                 {
-                    spriteBatch.DrawString(font, line, Position + Vector2.One * 5 + Vector2.UnitY * yOffset, Color.Black, 0, Vector2.Zero, FontScale, SpriteEffects.None, 0);
+                    Color color = Color.Black;
+                    if (line.Contains("behind") || line.Contains("lost")) {
+                        color = Color.Red;
+                    }
+                    spriteBatch.DrawString(font, line, Position + Vector2.One * 5 + Vector2.UnitY * yOffset, color, 0, Vector2.Zero, FontScale, SpriteEffects.None, 0);
                     yOffset += lineHeight;
                 }
             }
