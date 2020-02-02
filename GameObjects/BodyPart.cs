@@ -73,7 +73,7 @@ namespace MedicalFactory.GameObjects
 
                 BlendMode = ParticlelBlendMode.None,
                 DeathDuration = TimeSpan.FromSeconds(0.5),
-                Scale = new Vector2(0.5f, 0.5f),
+                Scale = new Vector2(0.6f, 0.6f),
                 Death = PatricleDeath.Fade | PatricleDeath.Grow,
                 Movement = ParticleMovement.WithEmitter
 
@@ -102,8 +102,8 @@ namespace MedicalFactory.GameObjects
                 var isSeccondHath = value.Attached.OfType<BodyPart>().Where(x => x.Type == BodyPartType.HERZ).Count() >= 2;
                 this.AttachOffset = this.Type switch
                 {
-                    BodyPartType.HERZ => isSeccondHath ? new Vector2(-15, -75) : new Vector2(15, -60),
-                    BodyPartType.LUNGE => new Vector2(-20, 20),
+                    BodyPartType.HERZ => isSeccondHath ? new Vector2(-15, -65) : new Vector2(25, -55),
+                    BodyPartType.LUNGE => new Vector2(0, -10),
                     BodyPartType.NIERE => new Vector2(-20, -20),
                     _ => throw new NotImplementedException($"Type {this.Type}")
                 };
@@ -183,7 +183,7 @@ namespace MedicalFactory.GameObjects
             }
 
             var scalingTime = TimeSpan.FromSeconds(1);
-            if (this.ShouldScaleDown && this.finishedScalingDown == default && this.Scale.X > 0.5f)
+            if (this.ShouldScaleDown && this.finishedScalingDown == default && this.Scale.X > 0.6f)
             {
                 this.finishedScalingDown = gameTime.TotalGameTime + scalingTime;
                 this.ShouldScaleDown = false;
@@ -196,7 +196,7 @@ namespace MedicalFactory.GameObjects
             if (this.finishedScalingDown != default && gameTime.TotalGameTime >= this.finishedScalingDown)
             {
                 this.finishedScalingDown = default;
-                this.Scale = new Vector2(0.5f, 0.5f);
+                this.Scale = new Vector2(0.6f, 0.6f);
             }
             else if (this.finishedScalingDown != default)
             {
