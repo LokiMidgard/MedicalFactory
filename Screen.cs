@@ -9,6 +9,8 @@ namespace MedicalFactory
 {
     public class Screen : Group
     {
+        private bool pause = false;
+        private Texture2D pauseScreen;
         private const int bigWidth = 1920;
         private const int bigHeight = 1080;
 
@@ -84,10 +86,15 @@ namespace MedicalFactory
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             this.PreDraw(spriteBatch);
-            spriteBatch.Draw(this.placeholderBackground, Vector2.Zero, null, Color.White);
-            base.Draw(spriteBatch, gameTime);
-
-
+            if (!pause)
+            {
+                spriteBatch.Draw(this.placeholderBackground, Vector2.Zero, null, Color.White);
+                base.Draw(spriteBatch, gameTime);
+            }
+            else
+            {
+                spriteBatch.Draw(pauseScreen, new Vector2(0, 0));
+            }
             this.PostDraw(spriteBatch);
         }
 
@@ -95,6 +102,7 @@ namespace MedicalFactory
         {
             this.placeholderBackground = game.Content.Load<Texture2D>("background");
             this.overlay = game.Content.Load<Texture2D>("Overlay");
+            pauseScreen = game.Content.Load<Texture2D>("Pausescreen");
 
             base.LoadContent(game);
         }
@@ -108,42 +116,47 @@ namespace MedicalFactory
             var blockingConveyer = GetBlockingConveyer(Keys.F3);
             var speedUp = GetBlockingConveyer(Keys.F4);
             var silent = GetBlockingConveyer(Keys.F5);
+            var pausePressed = GetBlockingConveyer(Keys.P);
 
+            if (pausePressed) {
+               pause = !pause;
+            }
 
             bool GetBlockingConveyer(Keys key)
             {
                 return keyboardstate.IsKeyDown(key) && this.lastState.IsKeyUp(key);
             }
+            if (!pause)
+            {
+                if (isKeyDownFullScreen)
+                    this.ToggleFullscreen();
+
+                if (isKeyDownDebugGraphic)
+                    GameConfig.DrawCollisionGeometry = !GameConfig.DrawCollisionGeometry;
+
+                if (blockingConveyer)
+                    GameConfig.KeepPlayersToTheirSide = !GameConfig.KeepPlayersToTheirSide;
 
 
-            if (isKeyDownFullScreen)
-                this.ToggleFullscreen();
+                if (speedUp)
+                    Game1.conveyerBelt.MaxSpeed = (Game1.conveyerBelt.MaxSpeed == ConveyerBelt.DefaultSpeed) ? ConveyerBelt.DefaultSpeed * 10f : ConveyerBelt.DefaultSpeed;
 
-            if (isKeyDownDebugGraphic)
-                GameConfig.DrawCollisionGeometry = !GameConfig.DrawCollisionGeometry;
-
-            if (blockingConveyer)
-                GameConfig.KeepPlayersToTheirSide = !GameConfig.KeepPlayersToTheirSide;
+                if (silent)
+                    GameConfig.SoundEnabled = !GameConfig.SoundEnabled;
 
 
-            if (speedUp)
-                Game1.conveyerBelt.MaxSpeed = (Game1.conveyerBelt.MaxSpeed == ConveyerBelt.DefaultSpeed) ? ConveyerBelt.DefaultSpeed * 10f : ConveyerBelt.DefaultSpeed;
+                var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 50f, 0f, 1f);
+                if (Game1.game.FinishScreen.Visible)
+                    tintAmount = 1.0f;
+                this.tint = Color.Lerp(Color.Transparent, Color.Red, tintAmount);
+                //this.tint = Color.Transparent;
+                //this.tint = Color.Red;
 
-            if (silent)
-                GameConfig.SoundEnabled= !GameConfig.SoundEnabled;
+                this.overlayScale = Vector2.One * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);
 
-
-            var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 50f, 0f, 1f);
-            if (Game1.game.FinishScreen.Visible)
-                tintAmount = 1.0f;
-            this.tint = Color.Lerp(Color.Transparent, Color.Red, tintAmount);
-            //this.tint = Color.Transparent;
-            //this.tint = Color.Red;
-
-            this.overlayScale = Vector2.One * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);
-
+                base.Update(gameTime);
+            }
             this.lastState = keyboardstate;
-            base.Update(gameTime);
         }
 
 

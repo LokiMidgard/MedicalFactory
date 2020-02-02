@@ -161,7 +161,6 @@ namespace MedicalFactory
                 Exit();
 
 
-
             if (this.StartScreen.Visible)
             {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
@@ -199,7 +198,7 @@ namespace MedicalFactory
 
         protected override void Draw(GameTime gameTime)
         {
-            this.Screen.Draw(this._spriteBatch, gameTime);
+                this.Screen.Draw(this._spriteBatch, gameTime);
         }
     }
 }
