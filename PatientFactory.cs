@@ -12,13 +12,15 @@ namespace MedicalFactory
     public class PatientFactory
     {
         double Timer = 2.0;
+        Patient LastPatient;
+        float NextSpawnDistance;
 
-        public int CurrentPatientCount;
-        public int PatientCount = 2;
+        public int PatientsLeft;
+        public int PatientCount = 15;
         Texture2D[] HumanTextures;
         Texture2D[] AlienTextures;
         
-        static string bigNameList = "Frank Tim Peter James Jordan Lissy Tom Jenny Karla Sahra Brett Harold Kumar Prince Manfred";
+        static string bigNameList = "Frank Thorsten Norbert Susi Andrea Carl Dracula Tim Peter James Jordan Lissy Tom Jenny Karla Sahra Brett Harold Kumar Prince Manfred";
         static string[] Names = bigNameList.Split(" ");
         static string GetRandomName()
         {
@@ -32,7 +34,7 @@ namespace MedicalFactory
 
         public void Start()
         {
-            CurrentPatientCount = PatientCount;
+            PatientsLeft = PatientCount;
         }
 
         public void LoadContent(Game1 game)
@@ -50,10 +52,8 @@ namespace MedicalFactory
             BodyPart.LoadContent(game.Content);
         }
 
-        public void Update(GameTime gameTime)
+        private Patient SpawnPatient()
         {
-            if (this.Timer <= 0.0 && CurrentPatientCount > 0)
-            {
                 bool IsHuman = MyMathHelper.Random.NextDouble() < 0.6f;
                 Patient patient;
                 if (IsHuman)
@@ -88,7 +88,20 @@ namespace MedicalFactory
                 patient.Rotation = MathHelper.PiOver2;
                 Game1.conveyerBelt.Add(patient);
                 this.Timer = MyMathHelper.Random.NextDouble() * 15.0f + 8.0f;
-                CurrentPatientCount -= 1;
+                
+                PatientsLeft -= 1;
+
+                // next patient
+                NextSpawnDistance = MyMathHelper.Random.Next()%500 + 90;
+                return patient;
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            if (LastPatient == null) {
+                LastPatient = SpawnPatient();
+            } else if (PatientsLeft > 0 && LastPatient.Position.X > NextSpawnDistance) {
+                LastPatient = SpawnPatient();
             }
 
             this.Timer -= gameTime.ElapsedGameTime.TotalSeconds;
