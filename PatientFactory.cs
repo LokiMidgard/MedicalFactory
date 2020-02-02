@@ -15,9 +15,9 @@ namespace MedicalFactory
 
         public int CurrentPatientCount;
         public int PatientCount = 2;
-        Texture2D HumanTexture;
-        Texture2D AlienTexture;
-
+        Texture2D[] HumanTextures;
+        Texture2D[] AlienTextures;
+        
         static string bigNameList = "Frank Tim Peter James Jordan Lissy Tom Jenny Karla Sahra Brett Harold Kumar Prince Manfred";
         static string[] Names = bigNameList.Split(" ");
         static string GetRandomName()
@@ -38,8 +38,16 @@ namespace MedicalFactory
 
         public void LoadContent(Game1 game)
         {
-            this.HumanTexture = game.Content.Load<Texture2D>("Mensch");
-            this.AlienTexture = game.Content.Load<Texture2D>("Alien");
+            this.HumanTextures = new Texture2D[]{
+                game.Content.Load<Texture2D>("Mensch"),
+                game.Content.Load<Texture2D>("ToterMensch"),
+                game.Content.Load<Texture2D>("GluecklicherMensch")
+            };
+            this.AlienTextures = new Texture2D[]{
+                game.Content.Load<Texture2D>("Alien"),
+                game.Content.Load<Texture2D>("TotesAlien"),
+                game.Content.Load<Texture2D>("GluecklichesAlien")
+            };
             BodyPart.LoadContent(game.Content);
         }
 
@@ -51,11 +59,11 @@ namespace MedicalFactory
                 Patient patient;
                 if (IsHuman)
                 {
-                    patient = new HumanPatient(this.HumanTexture);
+                    patient = new HumanPatient(this.HumanTextures);
                 }
                 else
                 {
-                    patient = new AlienPatient(this.AlienTexture);
+                    patient = new AlienPatient(this.AlienTextures);
                 }
                 patient.PatientName = GetRandomName();
                 int MaxChildren = 7;

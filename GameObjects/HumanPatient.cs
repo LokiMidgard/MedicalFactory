@@ -9,7 +9,7 @@ namespace MedicalFactory.GameObjects
     public class HumanPatient : Patient
     {
 
-        public HumanPatient(Texture2D texture) : base(texture, BodyPart.BodyPartType.HERZ, BodyPart.BodyPartType.LUNGE, BodyPart.BodyPartType.NIERE)
+        public HumanPatient(Texture2D[] texture) : base(texture, BodyPart.BodyPartType.HERZ, BodyPart.BodyPartType.LUNGE, BodyPart.BodyPartType.NIERE)
         {
         }
 

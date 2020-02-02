@@ -19,7 +19,7 @@ namespace MedicalFactory.GameObjects
         private bool Scored = false;
         public readonly PatientState State;
 
-        public Patient(Texture2D texture, params BodyPart.BodyPartType[] bodyParts) : base(texture)
+        public Patient(Texture2D[] texture, params BodyPart.BodyPartType[] bodyParts) : base(texture)
         {
             this.State = new PatientState(this);
             foreach (var part in bodyParts)
@@ -53,6 +53,13 @@ namespace MedicalFactory.GameObjects
 
         public override void Update(GameTime gameTime)
         {
+            if (this.State.IsDead)
+                this.AnimationFrame = 1;
+            else if (this.State.IsCompletelyHealed)
+                this.AnimationFrame = 2;
+            else
+                this.AnimationFrame = 0;
+
             this.Velocity = new Vector2(Game1.conveyerBelt.Speed, 0);
             if (Position.X > 1700.0f && !Scored)
             {
