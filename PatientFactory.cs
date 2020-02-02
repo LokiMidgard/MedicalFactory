@@ -11,10 +11,10 @@ namespace MedicalFactory
 {
     public class PatientFactory
     {
-        double Timer = 2.0;
         Patient LastPatient;
         float NextSpawnDistance;
 
+        public bool Enabled = false;
         public int PatientsLeft;
         public int PatientCount = 15;
         Texture2D[] HumanTextures;
@@ -34,6 +34,7 @@ namespace MedicalFactory
 
         public void Start()
         {
+            Enabled = true;
             PatientsLeft = PatientCount;
             LastPatient = null;
         }
@@ -88,7 +89,6 @@ namespace MedicalFactory
                 patient.Position = new Vector2(-420.0f, 540.0f + 30.0f);
                 patient.Rotation = MathHelper.PiOver2;
                 Game1.conveyerBelt.Add(patient);
-                this.Timer = MyMathHelper.Random.NextDouble() * 15.0f + 8.0f;
                 
                 PatientsLeft -= 1;
 
@@ -99,13 +99,18 @@ namespace MedicalFactory
 
         public void Update(GameTime gameTime)
         {
-            if (LastPatient == null) {
-                LastPatient = SpawnPatient();
-            } else if (PatientsLeft > 0 && LastPatient.Position.X > NextSpawnDistance) {
-                LastPatient = SpawnPatient();
+            if (Enabled)
+            {
+                if (LastPatient == null)
+                {
+                    LastPatient = SpawnPatient();
+                }
+                else if (PatientsLeft > 0 && LastPatient.Position.X > NextSpawnDistance)
+                {
+                    LastPatient = SpawnPatient();
+                }
             }
 
-            this.Timer -= gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }

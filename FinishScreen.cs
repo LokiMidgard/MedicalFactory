@@ -50,7 +50,7 @@ namespace MedicalFactory
             base.Update(gameTime);
             if (Visible)
             {
-                YScroll -= (float)gameTime.ElapsedGameTime.TotalSeconds * 80f;
+                YScroll -= (float)gameTime.ElapsedGameTime.TotalSeconds * 200f;
                 textbox.YScroll = YScroll;
 
                 textbox.Text = Text;
@@ -62,7 +62,8 @@ namespace MedicalFactory
           + "\n\n"
           + "The factory is proud to present today's REPAIRS:\n"
           + "\n"
-          + string.Join("\n\n\n", Game1.game.Screen.scores.Select(ScoreText))
+          + "\n"
+          + string.Join("\n\n", Game1.game.Screen.scores.Select(ScoreText))
           + "\n\n"
           + $"You left {Game1.CountOrgansOnFloor} organs lying on the floor.\n\n"
           ;
