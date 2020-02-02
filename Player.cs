@@ -30,6 +30,12 @@ namespace MedicalFactory
         {
             this.inputProvider = inputProvider;
             this.ControlledSprite = controlledSprite;
+            controlledSprite.Player = this;
+        }
+
+        public void Rumble()
+        {
+            inputProvider?.Rumble(1f, 1f, 250);
         }
 
         public void Update(GameTime gameTime)

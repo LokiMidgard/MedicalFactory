@@ -19,6 +19,7 @@ namespace MedicalFactory.GameObjects
         private TimeSpan nextSpark;
         private TimeSpan sparkDuration;
         public PlayerColor PlayerColor;
+        public Player Player;
 
         private static readonly Random random = new Random();
 
@@ -120,8 +121,11 @@ namespace MedicalFactory.GameObjects
             if (objColls.Count() > 0)
             {
                 var coll = objColls.First();
-                Position += coll.Distance *2;
+                Position += coll.Distance * 2;
                 coll.spriteB.Position -= coll.Distance * 2;
+                Player?.Rumble();
+                (coll.spriteB as Robot)?.Player?.Rumble();
+
             }
 
             // if transporting body part => spill some blood

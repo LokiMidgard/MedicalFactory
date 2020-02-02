@@ -18,7 +18,7 @@ namespace MedicalFactory
             for (var i = 0; i < group.Count; ++i)
             {
                 var otherSprite = group[i] as Sprite;
-                if (otherSprite != null)
+                if (otherSprite != null && otherSprite.Visible)
                 {
                     Vector2 FromTo = otherSprite.Position - Position;
                     if (FromTo.Length() < Radius + otherSprite.Radius)
@@ -42,7 +42,7 @@ namespace MedicalFactory
                 for (var i = 0; i < group.Count; ++i)
                 {
                     var otherSprite = group[i] as Sprite;
-                    if (otherSprite != null && otherSprite != sprite)
+                    if (otherSprite != null && otherSprite != sprite && sprite.Visible && otherSprite.Visible)
                     {
                         Vector2 FromTo = otherSprite.Position - thisSprite.Position;
                         if (FromTo.Length() < thisSprite.Radius + otherSprite.Radius)
@@ -69,7 +69,7 @@ namespace MedicalFactory
                     for(var j = i+1; j<group.Count; ++j)
                     {
                         var otherSprite = group[j] as Sprite;
-                        if (otherSprite != null)
+                        if (otherSprite != null && thisSprite.Visible && otherSprite.Visible)
                         {
                             Vector2 FromTo = otherSprite.Position - thisSprite.Position;
                             if (FromTo.Length() < thisSprite.Radius + otherSprite.Radius)
