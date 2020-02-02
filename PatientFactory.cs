@@ -35,6 +35,7 @@ namespace MedicalFactory
         public void Start()
         {
             PatientsLeft = PatientCount;
+            LastPatient = null;
         }
 
         public void LoadContent(Game1 game)
