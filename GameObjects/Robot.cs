@@ -111,6 +111,15 @@ namespace MedicalFactory.GameObjects
 
             CollisionManager.KeepInWorld(this);
 
+            // PlayerCollisions
+            IEnumerable<Collision> objColls = CollisionManager.GetCollisions(this, Game1.sprites);
+            objColls = objColls.Where(c => (c.spriteB is Robot));
+            if (objColls.Count() > 0)
+            {
+                var coll = objColls.First();
+                Position += coll.Distance;
+            }
+
             // if transporting body part => spill some blood
             var item = Attached.OfType<IItem>().FirstOrDefault();
             if (item is BodyPart bodyPart)
