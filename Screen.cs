@@ -9,6 +9,8 @@ namespace MedicalFactory
 {
     public class Screen : Group
     {
+        private Texture2D pauseScreen;
+
         private const int bigWidth = 1920;
         private const int bigHeight = 1080;
 
@@ -79,10 +81,14 @@ namespace MedicalFactory
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             this.PreDraw(spriteBatch);
+
             spriteBatch.Draw(this.placeholderBackground, Vector2.Zero, null, Color.White);
             base.Draw(spriteBatch, gameTime);
 
-
+            if (Game1.game.Paused)
+            {
+                spriteBatch.Draw(pauseScreen, new Vector2(0, 0), color: new Color(Color.White, 1.0f));
+            }
             this.PostDraw(spriteBatch);
         }
 
@@ -90,6 +96,7 @@ namespace MedicalFactory
         {
             this.placeholderBackground = game.Content.Load<Texture2D>("background");
             this.overlay = game.Content.Load<Texture2D>("Overlay");
+            pauseScreen = game.Content.Load<Texture2D>("Pausescreen");
 
             base.LoadContent(game);
         }
@@ -98,18 +105,22 @@ namespace MedicalFactory
         {
             var keyboardstate = Keyboard.GetState();
 
-            var isKeyDownFullScreen = GetBlockingConveyer(Keys.F1);
-            var isKeyDownDebugGraphic = GetBlockingConveyer(Keys.F2);
-            var blockingConveyer = GetBlockingConveyer(Keys.F3);
-            var speedUp = GetBlockingConveyer(Keys.F4);
-            var silent = GetBlockingConveyer(Keys.F5);
+            var isKeyDownFullScreen = WasPressed(Keys.F1);
+            var isKeyDownDebugGraphic = WasPressed(Keys.F2);
+            var blockingConveyer = WasPressed(Keys.F3);
+            var speedUp = WasPressed(Keys.F4);
+            var silent = WasPressed(Keys.F5);
+            var pausePressed = WasPressed(Keys.P);
 
+            if (pausePressed)
+            {
+                Game1.game.Paused = !Game1.game.Paused;
+            }
 
-            bool GetBlockingConveyer(Keys key)
+            bool WasPressed(Keys key)
             {
                 return keyboardstate.IsKeyDown(key) && this.lastState.IsKeyUp(key);
             }
-
 
             if (isKeyDownFullScreen)
                 this.ToggleFullscreen();
@@ -125,7 +136,7 @@ namespace MedicalFactory
                 Game1.conveyerBelt.MaxSpeed = (Game1.conveyerBelt.MaxSpeed == ConveyerBelt.DefaultSpeed) ? ConveyerBelt.DefaultSpeed * 10f : ConveyerBelt.DefaultSpeed;
 
             if (silent)
-                GameConfig.SoundEnabled= !GameConfig.SoundEnabled;
+                GameConfig.SoundEnabled = !GameConfig.SoundEnabled;
 
 
             var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 20f, 0f, 1f);
@@ -137,8 +148,9 @@ namespace MedicalFactory
 
             this.overlayScale = Vector2.One * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);
 
-            this.lastState = keyboardstate;
             base.Update(gameTime);
+
+            this.lastState = keyboardstate;
         }
 
 

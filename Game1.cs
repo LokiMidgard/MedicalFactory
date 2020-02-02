@@ -11,6 +11,8 @@ namespace MedicalFactory
 {
     public class Game1 : Game
     {
+        public bool Paused;
+        private GameTime MyGameTime = new GameTime();
 
         public static Random rng = new Random();
 
@@ -166,9 +168,17 @@ namespace MedicalFactory
 
         protected override void Update(GameTime gameTime)
         {
+            if (!Paused)
+            {
+                MyGameTime.TotalGameTime += gameTime.ElapsedGameTime;
+                MyGameTime.ElapsedGameTime = gameTime.ElapsedGameTime;
+            } else
+            {
+                MyGameTime.ElapsedGameTime = TimeSpan.Zero;
+            }
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
 
 
             if (this.StartScreen.Visible)
@@ -185,16 +195,16 @@ namespace MedicalFactory
                     this.RestartGame();
             }
 
-            patientFactory.Update(gameTime);
-            conveyerBelt.Update(gameTime);
+            patientFactory.Update(MyGameTime);
+            conveyerBelt.Update(MyGameTime);
 
             // detect collisions
             List<Collision> collisions = CollisionManager.GetCollisions(sprites);
 
             // update everything (turtles aka gameobjects all the way down)
-            Screen.Update(gameTime);
+            Screen.Update(MyGameTime);
 
-            base.Update(gameTime);
+            base.Update(MyGameTime);
         }
 
         private void RestartGame()
@@ -210,7 +220,7 @@ namespace MedicalFactory
 
         protected override void Draw(GameTime gameTime)
         {
-            this.Screen.Draw(this._spriteBatch, gameTime);
+                this.Screen.Draw(this._spriteBatch, gameTime);
         }
     }
 }
