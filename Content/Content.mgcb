@@ -650,6 +650,102 @@
 /processorParam:TextureFormat=Color
 /build:Schleim_Mittel.PNG
 
+#begin SoundEffects/slime_01.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_01.ogg
+
+#begin SoundEffects/slime_02.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_02.ogg
+
+#begin SoundEffects/slime_03.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_03.ogg
+
+#begin SoundEffects/slime_04.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_04.ogg
+
+#begin SoundEffects/slime_05.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_05.ogg
+
+#begin SoundEffects/slime_06.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_06.ogg
+
+#begin SoundEffects/slime_07.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_07.ogg
+
+#begin SoundEffects/slime_08.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_08.ogg
+
+#begin SoundEffects/slime_09.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_09.ogg
+
+#begin SoundEffects/slime_10.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_10.ogg
+
+#begin SoundEffects/slime_11.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_11.ogg
+
+#begin SoundEffects/slime_12.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_12.ogg
+
+#begin SoundEffects/slime_13.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_13.ogg
+
+#begin SoundEffects/slime_14.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_14.ogg
+
+#begin SoundEffects/slime_15.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_15.ogg
+
+#begin SoundEffects/slime_16.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/slime_16.ogg
+
 #begin square.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
