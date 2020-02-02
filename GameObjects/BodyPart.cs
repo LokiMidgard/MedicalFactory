@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -38,7 +39,7 @@ namespace MedicalFactory.GameObjects
 
         private static Dictionary<BodyPartType, Texture2D> defect = new Dictionary<BodyPartType, Texture2D>();
         private static Dictionary<BodyPartType, Texture2D> correct = new Dictionary<BodyPartType, Texture2D>();
-
+        private static SoundEffect[] splashs;
         public static void LoadContent(ContentManager content)
         {
             if (defect.Count == 0)
@@ -47,6 +48,14 @@ namespace MedicalFactory.GameObjects
                     defect.Add(item, content.Load<Texture2D>(GetDamagedTextureName(item)));
                     correct.Add(item, content.Load<Texture2D>(item.ToString()));
                 }
+
+            const int numberOfSoundefects = 16;
+            splashs = new SoundEffect[numberOfSoundefects];
+            for (int i = 1; i <= numberOfSoundefects; i++)
+            {
+                var name = $"SoundEffects/slime_{ string.Format("{0}", i).PadLeft(2, '0')}";
+                splashs[i-1] = content.Load<SoundEffect>(name);
+            }
         }
 
         public BodyPart(BodyPartType type) : base(correct[type], defect[type])
@@ -81,9 +90,14 @@ namespace MedicalFactory.GameObjects
                     BodyPartType.NIERE => new Vector2(-20, -20),
                     _ => throw new NotImplementedException($"Type {this.Type}")
                 };
-
-
             }
+
+            if (oldValue is Patient || value is Patient)
+            {
+                var index = Game1.rng.Next(0, splashs.Length);
+                splashs[index].Play();
+            }
+
             if (this.Type == BodyPartType.HERZ && this.oldValue is AlienPatient)
             {
                 var otherHeart = this.oldValue.Attached.OfType<BodyPart>().FirstOrDefault(x => x.Type == BodyPartType.HERZ);
@@ -126,7 +140,8 @@ namespace MedicalFactory.GameObjects
                     DreiSekundenRegel = TimeSpan.FromSeconds(3);
                 }
                 CollisionManager.KeepInWorld(this, (recycler) => { recycler.PutStuffInside(this); });
-            } else
+            }
+            else
             {
                 DreiSekundenRegel = TimeSpan.FromSeconds(3);
             }
@@ -168,7 +183,7 @@ namespace MedicalFactory.GameObjects
                 if (NextSplashTime <= 0.0f)
                 {
                     Game1.Background.AddBloodSplash(Position, IsDamaged, SplashCount * 0.5f / (1.0f + SplashCount));
-                    NextSplashTime = 80/Velocity.Length();
+                    NextSplashTime = 80 / Velocity.Length();
                     SplashCount += 1;
                 }
                 NextSplashTime -= gameTime.ElapsedGameTime.TotalSeconds;
