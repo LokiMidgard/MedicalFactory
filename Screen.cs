@@ -130,7 +130,9 @@ namespace MedicalFactory
 
 
 
-            var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 10f, 0f, 1f);
+            var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 50f, 0f, 1f);
+            if (Game1.game.FinishScreen.Visible)
+                tintAmount = 1.0f;
             this.tint = Color.Lerp(Color.Transparent, Color.Red, tintAmount);
             //this.tint = Color.Transparent;
             //this.tint = Color.Red;

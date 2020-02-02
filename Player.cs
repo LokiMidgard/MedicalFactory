@@ -15,7 +15,7 @@ namespace MedicalFactory
     {
         private float Speed = 600.0f;
         private float PickupRange = 50.0f;
-        private float PickupOffset = 100.0f;
+        private float PickupOffset = 120.0f;
 
         public Sprite ControlledSprite;
         public InputProvider inputProvider;
@@ -85,12 +85,13 @@ namespace MedicalFactory
                                     break;
                                 }
                             }
+
                         if (!iPutItSomewhere)
                         {
                             if (holdedItem is Sprite sprite)
                             {
                                 var direction = MyMathHelper.RotateBy(-Vector2.UnitY, ControlledSprite.Rotation);
-                                sprite.Velocity = direction * 300f + ControlledSprite.Velocity;
+                                sprite.Velocity = direction * 800f + ControlledSprite.Velocity;
                             }
 
                             ControlledSprite.Detach(holdedItem);
