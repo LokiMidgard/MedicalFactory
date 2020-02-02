@@ -75,8 +75,8 @@ namespace MedicalFactory.GameObjects
                 DeathDuration = TimeSpan.FromSeconds(0.5),
                 Scale = new Vector2(0.5f, 0.5f),
                 Death = PatricleDeath.Fade | PatricleDeath.Grow,
-                 Movement = ParticleMovement.WithEmitter
-                 
+                Movement = ParticleMovement.WithEmitter
+
             };
             this.Attach(this.bloodParticle);
         }
@@ -112,7 +112,9 @@ namespace MedicalFactory.GameObjects
             if (this.oldValue is Patient || value is Patient && !this.Silent)
             {
                 var index = Game1.rng.Next(0, splashs.Length);
-                splashs[index].Play();
+
+                if (GameConfig.SoundEnabled)
+                    splashs[index].Play();
                 this.Splash = true;
             }
 

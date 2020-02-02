@@ -67,11 +67,15 @@ namespace MedicalFactory.GameObjects
             {
                 Game1.game.Screen.scores.Add(new Score(this));
                 Scored = true;
-                if (this.State.IsCompletelyHealed) {
-                    SoundEffects.SuccessPatient.Play();
-                } else {
-                    SoundEffects.FailedPatient.Play();
-                }
+                if (GameConfig.SoundEnabled)
+                    if (this.State.IsCompletelyHealed)
+                    {
+                        SoundEffects.SuccessPatient.Play();
+                    }
+                    else
+                    {
+                        SoundEffects.FailedPatient.Play();
+                    }
             }
 
             base.Update(gameTime);

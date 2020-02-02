@@ -108,6 +108,7 @@ namespace MedicalFactory
             var isKeyDownDebugGraphic = GetBlockingConveyer(Keys.F2);
             var blockingConveyer = GetBlockingConveyer(Keys.F3);
             var speedUp = GetBlockingConveyer(Keys.F4);
+            var silent = GetBlockingConveyer(Keys.F5);
 
 
             bool GetBlockingConveyer(Keys key)
@@ -125,9 +126,12 @@ namespace MedicalFactory
             if (blockingConveyer)
                 GameConfig.KeepPlayersToTheirSide = !GameConfig.KeepPlayersToTheirSide;
 
+
             if (speedUp)
                 Game1.conveyerBelt.MaxSpeed = (Game1.conveyerBelt.MaxSpeed == ConveyerBelt.DefaultSpeed) ? ConveyerBelt.DefaultSpeed * 10f : ConveyerBelt.DefaultSpeed;
 
+            if (silent)
+                GameConfig.SoundEnabled= !GameConfig.SoundEnabled;
 
 
             var tintAmount = MathHelper.Clamp(Game1.CountOrgansOnFloor / 50f, 0f, 1f);

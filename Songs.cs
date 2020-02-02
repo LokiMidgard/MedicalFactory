@@ -25,6 +25,7 @@ namespace MedicalFactory
                 Play(CurrentPlaying);
         }
 
+
         private static void Play(Song song, float? volume = null)
         {
             CurrentPlaying = song;
