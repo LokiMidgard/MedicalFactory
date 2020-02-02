@@ -137,6 +137,7 @@ namespace MedicalFactory
             Screen.LoadContent(this);
             patientFactory.LoadContent(this);
             Font = Content.Load<SpriteFont>("PressStart2P");
+            SoundEffects.LoadContent(game);
         }
 
         protected override void Update(GameTime gameTime)

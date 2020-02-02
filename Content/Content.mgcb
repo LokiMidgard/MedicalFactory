@@ -650,6 +650,12 @@
 /processorParam:TextureFormat=Color
 /build:Schleim_Mittel.PNG
 
+#begin SoundEffects/failed_patient.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/failed_patient.ogg
+
 #begin SoundEffects/slime_01.ogg
 /importer:OggImporter
 /processor:SoundEffectProcessor

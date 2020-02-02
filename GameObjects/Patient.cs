@@ -65,6 +65,7 @@ namespace MedicalFactory.GameObjects
             {
                 Game1.game.Screen.scores.Add(new Score(this));
                 Scored = true;
+                SoundEffects.FailedPatient.Play();
             }
 
             base.Update(gameTime);
