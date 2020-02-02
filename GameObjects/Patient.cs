@@ -25,7 +25,9 @@ namespace MedicalFactory.GameObjects
             foreach (var part in bodyParts)
             {
                 var item = new BodyPart(part);
+                item.Silent = true;
                 this.Attach(item);
+                item.Silent = false;
                 item.Scale = new Vector2(0.5f, 0.5f);
                 Game1.sprites.Add(item);
             }
