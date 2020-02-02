@@ -12,6 +12,8 @@ namespace MedicalFactory.GameObjects
     public class BodyPart : Sprite, IItem
     {
 
+        public bool Silent { get; set; }
+
         private TimeSpan DreiSekundenRegel = TimeSpan.FromSeconds(3);
         public bool IsDamaged { get => this.AnimationFrame == 0 ? false : true; set => this.AnimationFrame = value ? 1 : 0; }
 
@@ -54,7 +56,7 @@ namespace MedicalFactory.GameObjects
             for (int i = 1; i <= numberOfSoundefects; i++)
             {
                 var name = $"SoundEffects/slime_{ string.Format("{0}", i).PadLeft(2, '0')}";
-                splashs[i-1] = content.Load<SoundEffect>(name);
+                splashs[i - 1] = content.Load<SoundEffect>(name);
             }
         }
 
@@ -92,7 +94,7 @@ namespace MedicalFactory.GameObjects
                 };
             }
 
-            if (oldValue is Patient || value is Patient)
+            if (this.oldValue is Patient || value is Patient && !this.Silent)
             {
                 var index = Game1.rng.Next(0, splashs.Length);
                 splashs[index].Play();
