@@ -145,6 +145,7 @@ namespace MedicalFactory
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Songs.LoadContent(this);
+            Credits.LoadContent(this);
 
             Songs.PlayTitleSong();
 

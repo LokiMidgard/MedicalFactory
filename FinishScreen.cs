@@ -66,6 +66,9 @@ namespace MedicalFactory
           + string.Join("\n\n", Game1.game.Screen.scores.Select(ScoreText))
           + "\n\n"
           + $"You left {Game1.CountOrgansOnFloor} organs lying on the floor.\n\n"
+
+          + "\n\n\n\n"
+          + Credits.Text
           ;
 
         private static string ScoreText(Score score)
