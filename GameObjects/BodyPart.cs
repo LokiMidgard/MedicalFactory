@@ -11,6 +11,7 @@ namespace MedicalFactory.GameObjects
 {
     public class BodyPart : Sprite, IItem
     {
+        public bool Splash { get; private set; }
 
         public bool Silent { get; set; }
 
@@ -38,10 +39,11 @@ namespace MedicalFactory.GameObjects
 
         public static Vector2 DefaultAttachOffset = Vector2.UnitY * -48;
         public BodyPartType Type;
-
+        private readonly ParticleSystem bloodParticle;
         private static Dictionary<BodyPartType, Texture2D> defect = new Dictionary<BodyPartType, Texture2D>();
         private static Dictionary<BodyPartType, Texture2D> correct = new Dictionary<BodyPartType, Texture2D>();
         private static SoundEffect[] splashs;
+        private static Texture2D[] blood;
         public static void LoadContent(ContentManager content)
         {
             if (defect.Count == 0)
@@ -58,12 +60,25 @@ namespace MedicalFactory.GameObjects
                 var name = $"SoundEffects/slime_{ string.Format("{0}", i).PadLeft(2, '0')}";
                 splashs[i - 1] = content.Load<SoundEffect>(name);
             }
+
+            blood = new string[] { "Blut_Mittel" }.Select(x => content.Load<Texture2D>(x)).ToArray();
         }
 
         public BodyPart(BodyPartType type) : base(correct[type], defect[type])
         {
             this.AttachOffset = DefaultAttachOffset;
             this.Type = type;
+            this.bloodParticle = new ParticleSystem(TimeSpan.FromSeconds(0.3), blood[0], 3)
+            {
+
+                BlendMode = ParticlelBlendMode.None,
+                DeathDuration = TimeSpan.FromSeconds(0.5),
+                Scale = new Vector2(0.5f, 0.5f),
+                Death = PatricleDeath.Fade | PatricleDeath.Grow,
+                 Movement = ParticleMovement.WithEmitter
+                 
+            };
+            this.Attach(this.bloodParticle);
         }
 
         private ICanCarry oldValue;
@@ -98,6 +113,7 @@ namespace MedicalFactory.GameObjects
             {
                 var index = Game1.rng.Next(0, splashs.Length);
                 splashs[index].Play();
+                this.Splash = true;
             }
 
             if (this.Type == BodyPartType.HERZ && this.oldValue is AlienPatient)
@@ -113,11 +129,14 @@ namespace MedicalFactory.GameObjects
             this.ShouldScaleDown = value is Patient && !(this.oldValue is Patient);
             this.ShouldScaleUp = !(value is Patient) && this.Scale.X < 1f;
 
+
             this.oldValue = value;
         }
 
         private bool ShouldScaleDown;
         private bool ShouldScaleUp;
+
+
         private TimeSpan finishedScalingDown;
         private TimeSpan finishedScalingUp;
         int SplashCount = 0;
@@ -128,9 +147,22 @@ namespace MedicalFactory.GameObjects
             LoadContent(game.Content);
         }
 
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            base.Draw(spriteBatch, gameTime);
+            this.bloodParticle.Draw(spriteBatch, gameTime);
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (this.Splash)
+            {
+
+                this.bloodParticle.Spawn(gameTime);
+                this.Splash = false;
+            }
+            this.bloodParticle.Update(gameTime);
 
             if (this.AttachedTo is null)
             {

@@ -13,6 +13,7 @@ namespace MedicalFactory
         None,
         Fade = 1 << 1,
         Shrink = 1 << 2,
+        Grow = 1 << 3,
     }
 
     public enum ParticleMovement
@@ -114,6 +115,20 @@ namespace MedicalFactory
             this.fade = new float[this.MaxParticles];
             this.MaxAge = maxAge;
         }
+        public ParticleSystem(TimeSpan maxAge, Texture2D texture, int maxParticles = 1000)
+        {
+            this.MaxParticles = maxParticles;
+            this.textureName = texture.Name;
+            this.texture = texture;
+            this.positions = new Vector2[this.MaxParticles];
+            this.velocetys = new Vector2[this.MaxParticles];
+            this.scale = new Vector2[this.MaxParticles];
+            this.createionTime = new TimeSpan[this.MaxParticles];
+            this.actives = new bool[this.MaxParticles];
+            this.fade = new float[this.MaxParticles];
+            this.MaxAge = maxAge;
+            this.Origin = new Vector2(this.texture.Width / 2f, this.texture.Height / 2f);
+        }
 
 
 
@@ -145,12 +160,14 @@ namespace MedicalFactory
 
         public void LoadContent(Game1 game)
         {
+            if (texture != null)
+                return;
             this.texture = game.Content.Load<Texture2D>(this.textureName);
             this.Origin ??= new Vector2(this.texture.Width / 2f, this.texture.Height / 2f);
         }
 
 
-        private void Spawn(GameTime gameTime)
+        public void Spawn(GameTime gameTime)
         {
             if (this.active < this.MaxParticles)
             {
@@ -229,6 +246,10 @@ namespace MedicalFactory
                         if (this.Death.HasFlag(PatricleDeath.Shrink))
                         {
                             this.scale[i] = Vector2.One * (1f - (float)deathPosition);
+                        }
+                        else if (this.Death.HasFlag(PatricleDeath.Grow))
+                        {
+                            this.scale[i] = Vector2.One + Vector2.One *2f* ((float)deathPosition);
                         }
 
                     }
