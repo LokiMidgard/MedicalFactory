@@ -70,6 +70,8 @@ namespace MedicalFactory
             }
         }
 
+        public StartScreen StartScreen { get; private set; }
+
         protected override void Initialize()
         {
             Game1.game = this;
@@ -111,6 +113,11 @@ namespace MedicalFactory
             this.FinishScreen = new FinishScreen();
             TopLayer.Add(FinishScreen);
 
+            // prepare StartScreen
+            this.StartScreen = new StartScreen() { Visible = true };
+
+            TopLayer.Add(this.StartScreen);
+
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };
             recycler.AddDispenser(bpdHeart);
@@ -148,7 +155,9 @@ namespace MedicalFactory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (this.FinishScreen.Visible)
+
+
+            if (this.FinishScreen.Visible || this.StartScreen.Visible)
             {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
                     this.RestartGame();
@@ -169,6 +178,7 @@ namespace MedicalFactory
         private void RestartGame()
         {
             this.FinishScreen.Visible = false;
+            this.StartScreen.Visible = false;
             Background.CleanFloor();
             conveyerBelt.ResetAll();
             this.patientFactory.Start();

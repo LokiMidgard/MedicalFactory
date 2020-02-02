@@ -28,7 +28,6 @@ namespace MedicalFactory
 
         public PatientFactory()
         {
-            this.Start();
         }
 
         public void Start()

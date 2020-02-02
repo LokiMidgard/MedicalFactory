@@ -7,6 +7,7 @@ using System.Text;
 
 namespace MedicalFactory
 {
+
     public class FinishScreen : Group
     {
         private Sprite background;
@@ -16,7 +17,8 @@ namespace MedicalFactory
         public override bool Visible
         {
             get => base.Visible;
-            set {
+            set
+            {
                 if (!base.Visible && value)
                 {
                     YScroll = 1080;
@@ -28,7 +30,7 @@ namespace MedicalFactory
         public FinishScreen()
         {
             Visible = false;
-            background= new Sprite("FinishedOverlay") { Position = new Vector2(960, 540) };
+            background = new Sprite("FinishedOverlay") { Position = new Vector2(960, 540) };
             Add(background);
 
             textbox = new TextBox();
