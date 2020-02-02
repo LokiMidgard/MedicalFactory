@@ -28,7 +28,7 @@ namespace MedicalFactory.GameObjects
                 item.Silent = true;
                 this.Attach(item);
                 item.Silent = false;
-                item.Scale = new Vector2(0.5f, 0.5f);
+                item.Scale = new Vector2(0.6f, 0.6f);
                 Game1.sprites.Add(item);
             }
         }
