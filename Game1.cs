@@ -114,7 +114,7 @@ namespace MedicalFactory
             TopLayer.Add(FinishScreen);
 
             // prepare StartScreen
-            this.StartScreen = new StartScreen() { Visible = true };
+            this.StartScreen = new StartScreen(playersGroup.OfType<Player>()) { Visible = true };
 
             TopLayer.Add(this.StartScreen);
 
@@ -145,6 +145,7 @@ namespace MedicalFactory
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Songs.LoadContent(this);
+            Credits.LoadContent(this);
 
             Songs.PlayTitleSong();
 
@@ -161,7 +162,14 @@ namespace MedicalFactory
 
 
 
-            if (this.FinishScreen.Visible || this.StartScreen.Visible)
+            if (this.StartScreen.Visible)
+            {
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                {
+                    this.RestartGame();
+                }
+            }
+            if (this.FinishScreen.Visible)
             {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
                     this.RestartGame();
