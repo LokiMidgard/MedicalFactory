@@ -752,6 +752,12 @@
 /processorParam:Quality=Best
 /build:SoundEffects/slime_16.ogg
 
+#begin SoundEffects/success_patient.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/success_patient.wav
+
 #begin square.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
