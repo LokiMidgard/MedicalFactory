@@ -19,6 +19,7 @@ namespace MedicalFactory.GameObjects
         private TimeSpan nextSpark;
         private TimeSpan sparkDuration;
         public PlayerColor PlayerColor;
+        public Player Player;
 
         private static readonly Random random = new Random();
 
@@ -113,6 +114,19 @@ namespace MedicalFactory.GameObjects
             base.Update(gameTime);
 
             CollisionManager.KeepInWorld(this);
+
+            // PlayerCollisions
+            IEnumerable<Collision> objColls = CollisionManager.GetCollisions(this, Game1.sprites);
+            objColls = objColls.Where(c => (c.spriteB is Robot));
+            if (objColls.Count() > 0)
+            {
+                var coll = objColls.First();
+                Position += coll.Distance * 2;
+                coll.spriteB.Position -= coll.Distance * 2;
+                Player?.Rumble();
+                (coll.spriteB as Robot)?.Player?.Rumble();
+
+            }
 
             // if transporting body part => spill some blood
             var item = Attached.OfType<IItem>().FirstOrDefault();
