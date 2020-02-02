@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MedicalFactory.GameObjects
@@ -50,6 +51,14 @@ namespace MedicalFactory.GameObjects
             Decals.Update(gameTime);
         }
 
+        public void CleanFloor()
+        {
+            var looseOrgans = Game1.sprites.OfType<BodyPart>().ToList();
+            foreach (var pb in looseOrgans)
+                Game1.sprites.Remove(pb);
+            Decals.Clear();
+        }
+
         public void AddBloodSplash(Vector2 pos, bool slime = false, bool maxSize = false)
         {
             var texBase = slime ? slimeSplash : bloodSplash;
@@ -62,7 +71,8 @@ namespace MedicalFactory.GameObjects
         public void AddBloodSplash(Vector2 pos, bool slime, float size)
         {
             var texBase = slime ? slimeSplash : bloodSplash;
-            var decal = new Sprite(texBase[2]);
+            var idx = (int)(rng.NextDouble() * texBase.Length);
+            var decal = new Sprite(texBase[idx]);
             decal.Position = pos;
             decal.Scale = Vector2.One * size;
             Decals.Add(decal);

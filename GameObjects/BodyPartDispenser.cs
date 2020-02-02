@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static MedicalFactory.GameObjects.BodyPart;
 
@@ -26,6 +27,7 @@ namespace MedicalFactory.GameObjects
         }
 
         public DispenserType type;
+        private int originalStock;
         private int initialStock;
         private int count;
         private Texture2D shadow;
@@ -59,6 +61,7 @@ namespace MedicalFactory.GameObjects
         {
             this.type = type;
             this.initialStock = stock;
+            this.originalStock = stock;
             this.count = 0;
         }
 
@@ -69,8 +72,7 @@ namespace MedicalFactory.GameObjects
             BodyPart.LoadContent(game.Content);
             base.LoadContent(game);
 
-            for (int i = 0; i < initialStock; ++i)
-                CreateNew();
+            Reset();
         }
 
         public void CreateNew()
@@ -106,6 +108,20 @@ namespace MedicalFactory.GameObjects
             base.Detach(toRemove);
             this.count--;
             UpdateAnimFrame();
+        }
+
+        internal void Reset()
+        {
+            this.initialStock = originalStock;
+            var attached = Attached.Where(s => s is BodyPart).Select(a => a as BodyPart).ToList();
+            foreach (var part in attached)
+            {
+                Game1.sprites.Remove(part);
+                Detach(part);
+            }
+
+            for (int i = 0; i < initialStock; ++i)
+                CreateNew();
         }
 
         private void UpdateAnimFrame()

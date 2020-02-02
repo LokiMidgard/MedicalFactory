@@ -105,7 +105,7 @@ namespace MedicalFactory.GameObjects
         private TimeSpan finishedScalingDown;
         private TimeSpan finishedScalingUp;
         int SplashCount = 0;
-        double NextSplashTime = 0.3f;
+        double NextSplashTime = 0;
 
         public override void LoadContent(Game1 game)
         {
@@ -123,6 +123,7 @@ namespace MedicalFactory.GameObjects
                 {
                     this.IsDamaged = true;
                     Game1.Background.AddBloodSplash(Position, IsDamaged, 0.4f);
+                    DreiSekundenRegel = TimeSpan.FromSeconds(3);
                 }
                 CollisionManager.KeepInWorld(this, (recycler) => { recycler.PutStuffInside(this); });
             } else
@@ -164,16 +165,17 @@ namespace MedicalFactory.GameObjects
 
             if (Velocity.Length() > 2f)
             {
-                if (NextSplashTime < 0.0f)
+                if (NextSplashTime <= 0.0f)
                 {
                     Game1.Background.AddBloodSplash(Position, IsDamaged, SplashCount * 0.5f / (1.0f + SplashCount));
-                    NextSplashTime = 0.3f;
+                    NextSplashTime = 80/Velocity.Length();
                     SplashCount += 1;
                 }
                 NextSplashTime -= gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
+                NextSplashTime = 0;
                 SplashCount = 0;
             }
         }

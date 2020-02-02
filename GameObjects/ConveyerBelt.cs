@@ -90,5 +90,17 @@ namespace MedicalFactory
             base.Update(gameTime);
         }
 
+        internal void ResetAll()
+        {
+            // Remove patients
+            var toRemove = this.OfType<Patient>().ToList();
+            foreach (var p in toRemove)
+                Remove(p);
+
+            // Reinitialize Dispensers
+            var dispensers = this.OfType<BodyPartDispenser>().ToList();
+            foreach (var d in dispensers)
+                d.Reset();
+        }
     }
 }
