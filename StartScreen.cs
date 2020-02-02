@@ -21,15 +21,15 @@ namespace MedicalFactory
             };
             this.green = new Sprite("StartScreen/GruenerRoboterWolke")
             {
-                Origin = new Vector2(429,932),
+                Origin = new Vector2(429, 932),
             };
             this.yellow = new Sprite("StartScreen/GelberRoboterWolke")
             {
-                Origin = new Vector2(1174,719),
+                Origin = new Vector2(1174, 719),
             };
             this.red = new Sprite("StartScreen/RoterRoboterWolke")
             {
-                Origin = new Vector2(867,841),
+                Origin = new Vector2(867, 841),
             };
             this.blue = new Sprite("StartScreen/BlauerRoboterWolke")
             {
@@ -48,6 +48,21 @@ namespace MedicalFactory
             }
         }
 
+        public override bool Visible
+        {
+            get => base.Visible; set
+            {
+                if (base.Visible != value)
+                {
+                    base.Visible = value;
+                    if (Visible)
+                        Songs.PlayTitleSong();
+                    else
+                        Songs.PlayGameSong();
+                }
+            }
+        }
+
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             base.Draw(spriteBatch, gameTime);
@@ -57,10 +72,10 @@ namespace MedicalFactory
         {
             var interpolation = (float)Math.Sin(gameTime.TotalGameTime / TimeSpan.FromSeconds(1.5));
 
-            blue.Rotation = MathHelper.Lerp(-MathHelper.PiOver4/24, MathHelper.PiOver4/24, interpolation);
-            red.Rotation = MathHelper.Lerp(-MathHelper.PiOver4/24, MathHelper.PiOver4/24, interpolation);
-            yellow.Rotation = MathHelper.Lerp(-MathHelper.PiOver4/24, MathHelper.PiOver4/24, -interpolation);
-            green.Rotation = MathHelper.Lerp(-MathHelper.PiOver4/24, MathHelper.PiOver4/24, -interpolation);
+            blue.Rotation = MathHelper.Lerp(-MathHelper.PiOver4 / 24, MathHelper.PiOver4 / 24, interpolation);
+            red.Rotation = MathHelper.Lerp(-MathHelper.PiOver4 / 24, MathHelper.PiOver4 / 24, interpolation);
+            yellow.Rotation = MathHelper.Lerp(-MathHelper.PiOver4 / 24, MathHelper.PiOver4 / 24, -interpolation);
+            green.Rotation = MathHelper.Lerp(-MathHelper.PiOver4 / 24, MathHelper.PiOver4 / 24, -interpolation);
 
 
             base.Update(gameTime);
