@@ -31,6 +31,15 @@ namespace MedicalFactory.GameObjects
             }
         }
 
+        public bool IsCompletelyHealed
+        {
+            get 
+            {
+                var result = CalculateScore();
+                return result.actual == result.maximum;
+            }
+        }
+
         public (int actual, int maximum) CalculateScore()
         {
             var sum = 0;

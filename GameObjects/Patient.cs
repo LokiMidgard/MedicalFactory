@@ -54,7 +54,7 @@ namespace MedicalFactory.GameObjects
         public override void Update(GameTime gameTime)
         {
             this.Velocity = new Vector2(Game1.conveyerBelt.Speed, 0);
-            if (Position.X > 1800.0f && !Scored)
+            if (Position.X > 1700.0f && !Scored)
             {
                 Game1.game.Screen.scores.Add(new Score(this));
                 Scored = true;
