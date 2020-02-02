@@ -144,12 +144,11 @@ namespace MedicalFactory
         }
 
 
-        private static Random rng = new Random();
         private KeyboardState lastState;
 
         public static Vector2 GetRandomWorldPos()
         {
-            return new Vector2((float)rng.NextDouble() * bigWidth, (float)rng.NextDouble() * bigHeight);
+            return new Vector2((float)Game1.rng.NextDouble() * bigWidth, (float)Game1.rng.NextDouble() * bigHeight);
         }
     }
 }

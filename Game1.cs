@@ -11,6 +11,10 @@ namespace MedicalFactory
 {
     public class Game1 : Game
     {
+
+        public static Random rng = new Random();
+
+
         public static Game1 game;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -28,7 +32,6 @@ namespace MedicalFactory
         public static ConveyerBelt conveyerBelt;
         public static Group TopLayer;
 
-        private Random rng = new Random();
         public FinishScreen FinishScreen;
 
         public Game1()
