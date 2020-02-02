@@ -120,7 +120,8 @@ namespace MedicalFactory.GameObjects
             if (objColls.Count() > 0)
             {
                 var coll = objColls.First();
-                Position += coll.Distance;
+                Position += coll.Distance *2;
+                coll.spriteB.Position -= coll.Distance * 2;
             }
 
             // if transporting body part => spill some blood

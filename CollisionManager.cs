@@ -42,7 +42,7 @@ namespace MedicalFactory
                 for (var i = 0; i < group.Count; ++i)
                 {
                     var otherSprite = group[i] as Sprite;
-                    if (otherSprite != null)
+                    if (otherSprite != null && otherSprite != sprite)
                     {
                         Vector2 FromTo = otherSprite.Position - thisSprite.Position;
                         if (FromTo.Length() < thisSprite.Radius + otherSprite.Radius)

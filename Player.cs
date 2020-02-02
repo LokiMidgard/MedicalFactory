@@ -34,7 +34,6 @@ namespace MedicalFactory
 
         public void Update(GameTime gameTime)
         {
-
             if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
                 || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
                 || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)

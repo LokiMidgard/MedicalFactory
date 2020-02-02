@@ -33,6 +33,7 @@ namespace MedicalFactory
         public static Group TopLayer;
 
         public FinishScreen FinishScreen;
+        public StartScreen StartScreen { get; private set; }
 
         public Game1()
         {
@@ -45,7 +46,7 @@ namespace MedicalFactory
 
             controllers = new Group();
             playersGroup = new Group();
-            sprites = new Group();
+            sprites = new Group() { Enabled = false };
 
             patientFactory = new PatientFactory();
             conveyerBelt = new ConveyerBelt();
@@ -70,8 +71,6 @@ namespace MedicalFactory
             }
         }
 
-        public StartScreen StartScreen { get; private set; }
-
         protected override void Initialize()
         {
             Game1.game = this;
@@ -85,7 +84,16 @@ namespace MedicalFactory
                 var xBoxController = new XBoxController(i);
                 controllers.Add(xBoxController);
 
-                var robot = new Robot((PlayerColor)(i % 4)) { Position = new Vector2(300 + (float)(rng.NextDouble() * 1500), i % 2 == 0 ? 300 : 800) };
+                var pos = (i % 4) switch
+                {
+                    0 => new Vector2(300, 300),
+                    1 => new Vector2(300, 800),
+                    2 => new Vector2(1400, 300),
+                    3 => new Vector2(1400, 800),
+                    _ => throw new NotImplementedException()
+                };
+
+                var robot = new Robot((PlayerColor)(i % 4)) { Position = pos };
                 sprites.Add(robot);
 
                 var player = new Player(xBoxController, robot);
@@ -115,8 +123,8 @@ namespace MedicalFactory
 
             // prepare StartScreen
             this.StartScreen = new StartScreen(playersGroup.OfType<Player>()) { Visible = true };
-
             TopLayer.Add(this.StartScreen);
+
 
             // add recycler
             var recycler = new Recycler() { Position = new Vector2(1810, 900) };
@@ -139,6 +147,7 @@ namespace MedicalFactory
             if (this.FinishScreen.Visible)
                 return;
             this.FinishScreen.Visible = true;
+            sprites.Enabled = false;
         }
 
         protected override void LoadContent()
@@ -169,6 +178,7 @@ namespace MedicalFactory
                     this.RestartGame();
                 }
             }
+
             if (this.FinishScreen.Visible)
             {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
@@ -195,6 +205,7 @@ namespace MedicalFactory
             conveyerBelt.ResetAll();
             this.patientFactory.Start();
             this.Screen.scores.Clear();
+            sprites.Enabled = true;
         }
 
         protected override void Draw(GameTime gameTime)
