@@ -17,68 +17,88 @@ namespace MedicalFactory
         private float PickupRange = 50.0f;
         private float PickupOffset = 120.0f;
 
-        public bool Active { get; private set; }
+        public bool Active => this.ControlledSprite != null;
 
-        public Robot ControlledSprite;
+        public Robot ControlledSprite
+        {
+            get => this.controlledSprite; private set
+            {
+                if (value is null)
+                {
+                    if (this.controlledSprite != null)
+                        this.controlledSprite.Player = null;
+                }
+                else
+                {
+                    if (value.Player != null)
+                        return;
+                }
+                this.controlledSprite = value;
+                if (this.controlledSprite != null)
+                    this.controlledSprite.Player = this;
+            }
+        }
+
+        public bool SignalStart { get; private set; }
+
         public InputProvider inputProvider;
+        private Robot controlledSprite;
+
         public Player(InputProvider inputProvider)
         {
             this.inputProvider = inputProvider;
         }
 
-        public Player(InputProvider inputProvider, Robot controlledSprite)
-        {
-            this.inputProvider = inputProvider;
-            this.ControlledSprite = controlledSprite;
-            controlledSprite.Player = this;
-        }
-
         public void Rumble()
         {
-            inputProvider?.Rumble(1f, 1f, 250);
+            this.inputProvider?.Rumble(1f, 1f, 250);
         }
 
         public void Update(GameTime gameTime)
         {
-            if (InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
-                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
-                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)
-                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Y)
-                
-                || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Start)
+            if (!this.Active
+                && (InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
+                    || InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
+                    || InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)
+                    || InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Y)
 
-                || inputProvider.Get(Sliders.LeftStickX) != 0
-                || inputProvider.Get(Sliders.LeftStickY) != 0
-                )
+                    || InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Start)
+
+                    || this.inputProvider.Get(Sliders.LeftStickX) != 0
+                    || this.inputProvider.Get(Sliders.LeftStickY) != 0
+                ))
             {
-                this.Active = true;
+                var availablePlayer = Game1.sprites.OfType<Robot>().FirstOrDefault(x => x.Player is null);
+                this.ControlledSprite = availablePlayer;
             }
-            ControlledSprite.Visible = this.Active;
 
-            if (ControlledSprite != null)
+            this.SignalStart = InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Start);
+
+            if (this.ControlledSprite != null)
             {
+                this.ControlledSprite.Visible = this.Active;
                 // Handle Directions
-                Vector2 Direction = new Vector2(inputProvider.Get(Sliders.LeftStickX), inputProvider.Get(Sliders.LeftStickY));
-                ControlledSprite.Velocity = Direction * Speed;
+                Vector2 Direction = new Vector2(this.inputProvider.Get(Sliders.LeftStickX), this.inputProvider.Get(Sliders.LeftStickY));
+                this.ControlledSprite.Velocity = Direction * this.Speed;
                 if (Direction.X + Direction.Y != 0.0f)
                 {
-                    ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, -1.0f), Vector2.Normalize(Direction));
+                    this.ControlledSprite.Rotation = MyMathHelper.RightAngleInRadians(new Vector2(0.0f, -1.0f), Vector2.Normalize(Direction));
                 }
 
                 // Handle Buttons
-                bool wasButtonPressed = InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
-                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)
-                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
-                    || InputProvider.WasPressed(inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Y);
+                bool wasButtonPressed = InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.A)
+                    || InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.B)
+                    || InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.X)
+                    || InputProvider.WasPressed(this.inputProvider, PaToRo_Desktop.Engine.Input.Buttons.Y);
 
                 if (wasButtonPressed)
                 {
-                    var holdedItem = ControlledSprite.Attached.OfType<IItem>().FirstOrDefault();
+                    var holdedItem = this.ControlledSprite.Attached.OfType<IItem>().FirstOrDefault();
 
                     if (holdedItem is null)  // if nothing is attached
                     {
-                        Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
-                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.sprites);
+                        Vector2 PickupPoint = this.ControlledSprite.Position + (Direction * this.PickupOffset);
+                        var collisions = CollisionManager.GetCollisions(PickupPoint, this.PickupRange, Game1.sprites);
                         // We order all Body parts we colide so demaged will be first.
                         var toTake = collisions.Select(x => x.spriteB).OfType<IItem>().OrderBy(x =>
                         {
@@ -87,13 +107,13 @@ namespace MedicalFactory
                             return 2;
                         }).FirstOrDefault();
                         if (toTake != null)
-                            ControlledSprite.Attach(toTake);
+                            this.ControlledSprite.Attach(toTake);
 
                     }
                     else
                     {
-                        Vector2 PickupPoint = ControlledSprite.Position + (Direction * PickupOffset);
-                        var collisions = CollisionManager.GetCollisions(PickupPoint, PickupRange, Game1.conveyerBelt);
+                        Vector2 PickupPoint = this.ControlledSprite.Position + (Direction * this.PickupOffset);
+                        var collisions = CollisionManager.GetCollisions(PickupPoint, this.PickupRange, Game1.conveyerBelt);
                         bool iPutItSomewhere = false;
                         if (holdedItem is BodyPart bodyPart)
                             foreach (var collision in collisions)
@@ -118,11 +138,11 @@ namespace MedicalFactory
                         {
                             if (holdedItem is Sprite sprite)
                             {
-                                var direction = MyMathHelper.RotateBy(-Vector2.UnitY, ControlledSprite.Rotation);
-                                sprite.Velocity = direction * 800f + ControlledSprite.Velocity;
+                                var direction = MyMathHelper.RotateBy(-Vector2.UnitY, this.ControlledSprite.Rotation);
+                                sprite.Velocity = direction * 800f + this.ControlledSprite.Velocity;
                             }
 
-                            ControlledSprite.Detach(holdedItem);
+                            this.ControlledSprite.Detach(holdedItem);
                         }
                     }
                 }

@@ -10,6 +10,7 @@ namespace PaToRo_Desktop.Engine.Input
 {
     public class KeyboardController : InputProvider
     {
+        public const int SupportedNumber = 2;
         private int index;
         private XnaInput.KeyboardState st;
         private XnaInput.KeyboardState lastState;
@@ -17,93 +18,117 @@ namespace PaToRo_Desktop.Engine.Input
 
         public KeyboardController(int index)
         {
+            if (index >= SupportedNumber)
+                throw new ArgumentOutOfRangeException($"Index for Keybord was {index} but maximum is {SupportedNumber - 1}");
             this.index = index;
         }
 
         public override void Update(GameTime gameTime)
         {
-            lastState = st;
-            st = XnaInput.Keyboard.GetState();
+            this.lastState = this.st;
+            this.st = XnaInput.Keyboard.GetState();
         }
 
-        private bool GetInternal(XnaInput.KeyboardState st, Buttons btn)
+        private bool GetInternal0(XnaInput.KeyboardState st, Buttons btn)
         {
-            switch (btn)
+            return btn switch
             {
-                case Buttons.A: return st.IsKeyDown(XnaInput.Keys.A);
-                case Buttons.B: return st.IsKeyDown(XnaInput.Keys.S);
-                case Buttons.X: return st.IsKeyDown(XnaInput.Keys.Q);
-                case Buttons.Y: return st.IsKeyDown(XnaInput.Keys.W);
-
-                case Buttons.R: return st.IsKeyDown(XnaInput.Keys.D1);
-                case Buttons.L: return st.IsKeyDown(XnaInput.Keys.D2);
-                case Buttons.LeftStick: return false;
-                case Buttons.RightStick: return false;
-
-                case Buttons.DPad_Left: return st.IsKeyDown(XnaInput.Keys.Left);
-                case Buttons.DPad_Right: return st.IsKeyDown(XnaInput.Keys.Right);
-                case Buttons.DPad_Up: return st.IsKeyDown(XnaInput.Keys.Up);
-                case Buttons.DPad_Down: return st.IsKeyDown(XnaInput.Keys.Down);
-
-                case Buttons.Select: return st.IsKeyDown(XnaInput.Keys.LeftControl) || st.IsKeyDown(XnaInput.Keys.RightControl);
-                case Buttons.Start: return st.IsKeyDown(XnaInput.Keys.Space);
-
-                case Buttons.ToggleFullscreen: return st.IsKeyDown(XnaInput.Keys.F1);
-            }
-            return false;
+                Buttons.A => st.IsKeyDown(XnaInput.Keys.Q),
+                Buttons.B => st.IsKeyDown(XnaInput.Keys.E),
+                Buttons.Start => st.IsKeyDown(XnaInput.Keys.Enter),
+                _ => false,
+            };
         }
-        
+        private bool GetInternal1(XnaInput.KeyboardState st, Buttons btn)
+        {
+            return btn switch
+            {
+                Buttons.A => st.IsKeyDown(XnaInput.Keys.NumPad4),
+                Buttons.B => st.IsKeyDown(XnaInput.Keys.NumPad6),
+                Buttons.Start => st.IsKeyDown(XnaInput.Keys.NumPad0),
+                _ => false,
+            };
+        }
+
         public override bool Get(Buttons btn)
         {
-            return GetInternal(st, btn);
+
+            return this.index switch
+            {
+                0 => this.GetInternal0(this.st, btn),
+                1 => this.GetInternal1(this.st, btn),
+                _ => false
+            };
         }
         public override bool GetLast(Buttons btn)
         {
-            return GetInternal(lastState, btn);
+            return this.index switch
+            {
+                0 => this.GetInternal0(this.lastState, btn),
+                1 => this.GetInternal1(this.lastState, btn),
+                _ => false
+            };
         }
 
-        public float XAxis()
+        private float XAxis0()
         {
-            var left = st.IsKeyDown(XnaInput.Keys.Left) ? -1 : 0;
-            var right = st.IsKeyDown(XnaInput.Keys.Right) ? 1 : 0;
+            var left = this.st.IsKeyDown(XnaInput.Keys.A) ? -1 : 0;
+            var right = this.st.IsKeyDown(XnaInput.Keys.D) ? 1 : 0;
             return left + right;
         }
 
-        public float YAxis()
+        private float YAxis0()
         {
-            var up = st.IsKeyDown(XnaInput.Keys.Up) ? -1 : 0;
-            var down = st.IsKeyDown(XnaInput.Keys.Down) ? 1 : 0;
+            var up = this.st.IsKeyDown(XnaInput.Keys.W) ? -1 : 0;
+            var down = this.st.IsKeyDown(XnaInput.Keys.S) ? 1 : 0;
+            return up + down;
+        }
+
+        private float XAxis1()
+        {
+            var left = this.st.IsKeyDown(XnaInput.Keys.NumPad1) ? -1 : 0;
+            var right = this.st.IsKeyDown(XnaInput.Keys.NumPad3) ? 1 : 0;
+            return left + right;
+        }
+
+        private float YAxis1()
+        {
+            var up = this.st.IsKeyDown(XnaInput.Keys.NumPad5) ? -1 : 0;
+            var down = this.st.IsKeyDown(XnaInput.Keys.NumPad2) ? 1 : 0;
             return up + down;
         }
 
         public override float Get(Sliders sldr)
         {
-            switch (sldr)
+            return this.index switch
             {
-                case Sliders.LeftStickX: return XAxis();
-                case Sliders.LeftStickY: return YAxis();
-                //case Sliders.RightStickX: return st.ThumbSticks.Right.X;
-                //case Sliders.RightStickY: return -st.ThumbSticks.Right.Y;
-                case Sliders.LeftTrigger: return st.IsKeyDown(XnaInput.Keys.LeftShift) ? 1.0f : 0.0f;
-                case Sliders.RightTrigger: return st.IsKeyDown(XnaInput.Keys.RightShift) ? 1.0f : 0.0f;
-            }
-            return 0.0f;
+                0 => this.Get0(sldr),
+                1 => this.Get1(sldr),
+                _ => 0f
+            };
+        }
+        private float Get1(Sliders sldr)
+        {
+            return sldr switch
+            {
+                Sliders.LeftStickX => this.XAxis1(),
+                Sliders.LeftStickY => this.YAxis1(),
+                _ => 0f
+            };
+        }
+        private float Get0(Sliders sldr)
+        {
+            return sldr switch
+            {
+                Sliders.LeftStickX => this.XAxis0(),
+                Sliders.LeftStickY => this.YAxis0(),
+                _ => 0f
+            };
         }
 
-        private bool triggered = false;
-        private bool vibrating = false;
-        private double cooldown = 0;
-        private SharpDX.XInput.Vibration vibration;
 
         public override void Rumble(float low, float high, int ms)
         {
-            if (!vibrating)
-            {
-                triggered = true;
-                cooldown = ms;
-                vibration.LeftMotorSpeed = (ushort)(ushort.MaxValue * low);
-                vibration.RightMotorSpeed = (ushort)(ushort.MaxValue * high);
-            }
         }
     }
 }

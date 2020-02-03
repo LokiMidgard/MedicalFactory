@@ -13,6 +13,7 @@ namespace PaToRo_Desktop.Engine.Input
         private int index;
         private XnaInput.GamePadState st;
         private XnaInput.GamePadState lastState;
+        public const int SupportedNumber = 4;
 
         private bool vibrationFaild;
 

@@ -9,7 +9,7 @@ namespace MedicalFactory
     {
         public static bool DrawCollisionGeometry = false;
         public static bool KeepPlayersToTheirSide = true;
-        public static int NumPlayers = 4;
+        public const int NumPlayers = 4;
         private static bool soundEnabled = true;
 
         public static bool SoundEnabled

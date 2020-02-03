@@ -7,7 +7,9 @@ using System.Collections.Generic;
 
 namespace MedicalFactory
 {
-    public class Group : List<IGameObject>, IGameObject, ILoadable, IDrawable, IUpdateable
+    public class Group : Group<IGameObject> { }
+    public class Group<T> : List<T>, IGameObject, ILoadable, IDrawable, IUpdateable
+        where T : IGameObject
     {
         public virtual bool Visible { get; set; } = true;
         public virtual bool Enabled { get; set; } = true;
@@ -44,4 +46,5 @@ namespace MedicalFactory
             }
         }
     }
+
 }

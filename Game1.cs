@@ -21,8 +21,8 @@ namespace MedicalFactory
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private Group controllers;  // input devices
-        private Group playersGroup;      // player abstraction, see class Player
+        private Group<InputProvider> controllers;  // input devices
+        private Group<Player> playersGroup;      // player abstraction, see class Player
         public SpriteFont Font;
         public static Background Background;
         public static TextBox TextBoxLeft;
@@ -46,8 +46,8 @@ namespace MedicalFactory
 
             Background = new Background(Screen);
 
-            controllers = new Group();
-            playersGroup = new Group();
+            controllers = new Group<InputProvider>();
+            playersGroup = new Group<Player>();
             sprites = new Group() { Enabled = false };
 
             patientFactory = new PatientFactory();
@@ -80,11 +80,10 @@ namespace MedicalFactory
             // initialize screen
             this.Screen.Initialize();
 
-            // initialize players
+            // initialize players Avatars
             for (int i = 0; i < GameConfig.NumPlayers; ++i)
             {
-                var xBoxController = new XBoxController(i);
-                controllers.Add(xBoxController);
+
 
                 var pos = (i % 4) switch
                 {
@@ -95,12 +94,30 @@ namespace MedicalFactory
                     _ => throw new NotImplementedException()
                 };
 
-                var robot = new Robot((PlayerColor)(i % 4)) { Position = pos };
+                var robot = new Robot((PlayerColor)(i % 4)) { Position = pos, Visible = false };
                 sprites.Add(robot);
+            }
 
-                var player = new Player(xBoxController, robot);
+            // init Controler Players
+            for (int i = 0; i < XBoxController.SupportedNumber; ++i)
+            {
+                var xBoxController = new XBoxController(i);
+                controllers.Add(xBoxController);
+
+                var player = new Player(xBoxController);
                 playersGroup.Add(player);
             }
+
+            // init Keybord Players
+            for (int i = 0; i < KeyboardController.SupportedNumber; ++i)
+            {
+                var keyboardControler = new KeyboardController(i);
+                controllers.Add(keyboardControler);
+
+                var player = new Player(keyboardControler);
+                playersGroup.Add(player);
+            }
+
 
             // add bodypartdispensers
             var bpdHeart = new BodyPartDispenser(DispenserType.Herzgerät, 2) { Position = new Vector2(945, 1035) };
@@ -124,7 +141,7 @@ namespace MedicalFactory
             TopLayer.Add(FinishScreen);
 
             // prepare StartScreen
-            this.StartScreen = new StartScreen(playersGroup.OfType<Player>()) { Visible = true };
+            this.StartScreen = new StartScreen(sprites.OfType<Robot>()) { Visible = true };
             TopLayer.Add(this.StartScreen);
 
 
@@ -172,7 +189,8 @@ namespace MedicalFactory
             {
                 MyGameTime.TotalGameTime += gameTime.ElapsedGameTime;
                 MyGameTime.ElapsedGameTime = gameTime.ElapsedGameTime;
-            } else
+            }
+            else
             {
                 MyGameTime.ElapsedGameTime = TimeSpan.Zero;
             }
@@ -183,7 +201,8 @@ namespace MedicalFactory
 
             if (this.StartScreen.Visible)
             {
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
+
+                if (playersGroup.Any(x => x.Active && x.SignalStart))
                 {
                     this.RestartGame();
                 }
@@ -191,7 +210,7 @@ namespace MedicalFactory
 
             if (this.FinishScreen.Visible)
             {
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                if (playersGroup.Any(x => x.Active && x.SignalStart))
                     this.RestartGame();
             }
 
@@ -220,7 +239,7 @@ namespace MedicalFactory
 
         protected override void Draw(GameTime gameTime)
         {
-                this.Screen.Draw(this._spriteBatch, gameTime);
+            this.Screen.Draw(this._spriteBatch, gameTime);
         }
     }
 }

@@ -8,22 +8,23 @@ namespace MedicalFactory
 {
     public class StartScreen : Group
     {
-        private readonly Player yellowPlayer;
-        private readonly Player greenPlayer;
         private readonly Sprite background;
         private readonly Sprite green;
         private readonly Sprite yellow;
         private readonly Sprite blue;
         private readonly Sprite red;
-        private readonly Player redPlayer;
-        private readonly Player bluePlayer;
+        
+        private readonly Robot yellowPlayer;
+        private readonly Robot greenPlayer;
+        private readonly Robot redPlayer;
+        private readonly Robot bluePlayer;
 
-        public StartScreen(System.Collections.Generic.IEnumerable<Player> enumerable)
+        public StartScreen(System.Collections.Generic.IEnumerable<Robot> enumerable)
         {
-            this.redPlayer = enumerable.FirstOrDefault(x => x.ControlledSprite.PlayerColor == PlayerColor.RoterRoboter);
-            this.bluePlayer = enumerable.FirstOrDefault(x => x.ControlledSprite.PlayerColor == PlayerColor.BlauerRoboter);
-            this.yellowPlayer = enumerable.FirstOrDefault(x => x.ControlledSprite.PlayerColor == PlayerColor.GelberRoboter);
-            this.greenPlayer = enumerable.FirstOrDefault(x => x.ControlledSprite.PlayerColor == PlayerColor.GruenerRoboter);
+            this.redPlayer = enumerable.FirstOrDefault(x => x.PlayerColor == PlayerColor.RoterRoboter);
+            this.bluePlayer = enumerable.FirstOrDefault(x => x.PlayerColor == PlayerColor.BlauerRoboter);
+            this.yellowPlayer = enumerable.FirstOrDefault(x => x.PlayerColor == PlayerColor.GelberRoboter);
+            this.greenPlayer = enumerable.FirstOrDefault(x => x.PlayerColor == PlayerColor.GruenerRoboter);
 
             this.background = new Sprite("StartScreen/HintergrundMitSchatten")
             {
@@ -85,22 +86,22 @@ namespace MedicalFactory
 
             const float normal = MathHelper.PiOver4 / 24;
             const float active = MathHelper.PiOver4 / 24;
-            if (this.bluePlayer.Active)
+            if (this.bluePlayer.Player !=null)
                 this.blue.Rotation = MathHelper.Lerp(-active, active, activeinterpolation);
             else
                 this.blue.Rotation = MathHelper.Lerp(-normal, normal, interpolation);
 
-            if (this.redPlayer.Active)
+            if (this.redPlayer.Player != null)
                 this.red.Rotation = MathHelper.Lerp(-active, active, activeinterpolation);
             else
                 this.red.Rotation = MathHelper.Lerp(-normal, normal, interpolation);
 
-            if (this.yellowPlayer.Active)
+            if (this.yellowPlayer.Player != null)
                 this.yellow.Rotation = MathHelper.Lerp(-active, active, -activeinterpolation);
             else
                 this.yellow.Rotation = MathHelper.Lerp(-normal, normal, -interpolation);
 
-            if (this.greenPlayer.Active)
+            if (this.greenPlayer.Player != null)
                 this.green.Rotation = MathHelper.Lerp(-active, active, -activeinterpolation);
             else
                 this.green.Rotation = MathHelper.Lerp(-normal, normal, -interpolation);
