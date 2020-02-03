@@ -71,7 +71,7 @@ namespace MedicalFactory.GameObjects
             this.rect = game.Content.Load<Texture2D>("square");
             BodyPart.LoadContent(game.Content);
             base.LoadContent(game);
-
+            this.Radius = 50f;
             Reset();
         }
 
@@ -90,6 +90,7 @@ namespace MedicalFactory.GameObjects
             {
                 s.AttachOffset = Vector2.Zero;
                 s.Visible = false;
+                s.Radius *= 2f;
             }
             this.count++;
             if (this.count > this.initialStock)
@@ -104,6 +105,8 @@ namespace MedicalFactory.GameObjects
             {
                 s.AttachOffset = BodyPart.DefaultAttachOffset;
                 s.Visible = true;
+                s.Radius /= 2f;
+
             }
             base.Detach(toRemove);
             this.count--;
