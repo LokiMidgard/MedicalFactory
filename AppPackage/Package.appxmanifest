@@ -7,13 +7,13 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="ab833926-a691-4f27-bd78-a73b07d12d48"
+    Name="MedicalFactory-b833926-a691-4f27-bd78-a73b07d12d48"
     Publisher="CN=Patrick Kranz"
-    Version="1.0.5.0" />
+    Version="1.0.14.0" />
 
   <Properties>
-    <DisplayName>AppPackage</DisplayName>
-    <PublisherDisplayName>patri</PublisherDisplayName>
+    <DisplayName>MedicalFactory</DisplayName>
+    <PublisherDisplayName>Chantal Grau (Artwork), Patrick Kranz (Programming), Robert Rößger (Programming), Tobias Krumholz (Programming)</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,8 +31,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="AppPackage"
-        Description="AppPackage"
+        DisplayName="Medical Factory"
+        Description="A multiplayer game about helping as many patients as you can. REPAIR every...body. Build at GlobalGameJam 2020 in Trier by: Chantal Grau (Artwork), Patrick Kranz (Programming), Robert Rößger (Programming), Tobias Krumholz (Programming)"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">

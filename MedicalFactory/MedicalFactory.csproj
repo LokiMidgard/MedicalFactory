@@ -8,6 +8,7 @@
     <TieredCompilation>false</TieredCompilation>
     <Platforms>x64;x86</Platforms>
     <OutputPath>bin\$(Configuration)</OutputPath>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Platform)'=='x64'">
