@@ -35,6 +35,7 @@ You can reanimate dead patients if you insert the missing organs.
 
 To start a new game after one round ends PRESS START
 
+You will need at least to player to play the game.
 
 ## Controls
 
