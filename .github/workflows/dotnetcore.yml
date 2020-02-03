@@ -18,10 +18,13 @@ jobs:
         with:
           dotnet-version:  '3.1.100'
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: |
+            dotnet build --configuration Release /p:Platform=x64
+            dotnet build --configuration Release /p:Platform=x86
       - name: Zip Release
         run: |
-            Compress-Archive -Path bin\Release\netcoreapp3.0\win-x64 -DestinationPath win-x64.zip
+            Compress-Archive -Path MedicalFactory\bin\Release\netcoreapp3.0\win-x64 -DestinationPath MedicalFactory-win-x64.zip
+            Compress-Archive -Path MedicalFactory\bin\Release\netcoreapp3.0\win-x86 -DestinationPath MedicalFactory-win-x86.zip
         shell: powershell
       - name: Create Release
         id: create_release
@@ -33,13 +36,23 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
+      - name: Upload Release Asset x64
+        id: upload-release-asset-x64 
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./win-x64.zip
-          asset_name: win-x64.zip
+          asset_path: ./MedicalFactory-win-x64.zip
+          asset_name: MedicalFactory-win-x64.zip
+          asset_content_type: application/zip
+      - name: Upload Release Asset x86
+        id: upload-release-asset-x86 
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./MedicalFactory-win-x86.zip
+          asset_name: MedicalFactory-win-x86.zip
           asset_content_type: application/zip
