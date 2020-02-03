@@ -17,6 +17,11 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version:  '3.1.100'
+      - name: Nerdbank.GitVersioning
+        uses: AArnott/nbgv@v0.3
+        with:
+            setCommonVars: true
+ 
       - name: Build with dotnet
         run: |
             dotnet build MedicalFactory --configuration Release /p:Platform=x64
@@ -32,8 +37,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ GitBuildVersion }}
+          release_name: Release ${{ GitBuildVersion }}
           draft: false
           prerelease: false
       - name: Upload Release Asset x64
