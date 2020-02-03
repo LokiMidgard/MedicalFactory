@@ -19,8 +19,8 @@ jobs:
           dotnet-version:  '3.1.100'
       - name: Build with dotnet
         run: |
-            dotnet build --configuration Release /p:Platform=x64
-            dotnet build --configuration Release /p:Platform=x86
+            dotnet build MedicalFactory --configuration Release /p:Platform=x64
+            dotnet build MedicalFactory --configuration Release /p:Platform=x86
       - name: Zip Release
         run: |
             Compress-Archive -Path MedicalFactory\bin\Release\netcoreapp3.0\win-x64 -DestinationPath MedicalFactory-win-x64.zip
