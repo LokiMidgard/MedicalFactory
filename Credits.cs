@@ -14,7 +14,11 @@ namespace MedicalFactory
             try
             {
                 Text = File.ReadAllText("./README.md", Encoding.UTF8);
-            } catch(Exception exc)
+                var end = Text.IndexOf("---");
+                if (end != -1)
+                    Text = Text.Substring(0, end);
+            }
+            catch (Exception exc)
             {
 
             }
