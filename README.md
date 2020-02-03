@@ -51,7 +51,7 @@ There are currently 2 Keyboard player supported
    - Left: 'D'
    - Right: 'A'
    - Action: 'Q' or 'E'
-   - Start: 'Enter'
+   - Start: 'Space'
  * Seccod input scheme
    - Up: 'Num5'
    - Down: 'Num2'
@@ -59,3 +59,10 @@ There are currently 2 Keyboard player supported
    - Right: 'Num3'
    - Action: 'Num4' or 'Num6'
    - Start: 'Num0'
+ * Third input scheme
+   - Up: 'Up'
+   - Down: 'Down'
+   - Left: 'Left'
+   - Right: 'Right'
+   - Action: 'LeftShift' or 'LeftControl'
+   - Start: 'Enter'

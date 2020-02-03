@@ -10,7 +10,7 @@ namespace PaToRo_Desktop.Engine.Input
 {
     public class KeyboardController : InputProvider
     {
-        public const int SupportedNumber = 2;
+        public const int SupportedNumber = 3;
         private int index;
         private XnaInput.KeyboardState st;
         private XnaInput.KeyboardState lastState;
@@ -35,7 +35,7 @@ namespace PaToRo_Desktop.Engine.Input
             {
                 Buttons.A => st.IsKeyDown(XnaInput.Keys.Q),
                 Buttons.B => st.IsKeyDown(XnaInput.Keys.E),
-                Buttons.Start => st.IsKeyDown(XnaInput.Keys.Enter),
+                Buttons.Start => st.IsKeyDown(XnaInput.Keys.Space),
                 _ => false,
             };
         }
@@ -50,6 +50,17 @@ namespace PaToRo_Desktop.Engine.Input
             };
         }
 
+        private bool GetInternal2(XnaInput.KeyboardState st, Buttons btn)
+        {
+            return btn switch
+            {
+                Buttons.A => st.IsKeyDown(XnaInput.Keys.RightShift),
+                Buttons.B => st.IsKeyDown(XnaInput.Keys.RightControl),
+                Buttons.Start => st.IsKeyDown(XnaInput.Keys.Enter),
+                _ => false,
+            };
+        }
+        
         public override bool Get(Buttons btn)
         {
 
@@ -57,6 +68,7 @@ namespace PaToRo_Desktop.Engine.Input
             {
                 0 => this.GetInternal0(this.st, btn),
                 1 => this.GetInternal1(this.st, btn),
+                2 => this.GetInternal2(this.st, btn),
                 _ => false
             };
         }
@@ -66,6 +78,7 @@ namespace PaToRo_Desktop.Engine.Input
             {
                 0 => this.GetInternal0(this.lastState, btn),
                 1 => this.GetInternal1(this.lastState, btn),
+                2 => this.GetInternal2(this.lastState, btn),
                 _ => false
             };
         }
@@ -97,6 +110,19 @@ namespace PaToRo_Desktop.Engine.Input
             var down = this.st.IsKeyDown(XnaInput.Keys.NumPad2) ? 1 : 0;
             return up + down;
         }
+        private float XAxis2()
+        {
+            var left = this.st.IsKeyDown(XnaInput.Keys.Left) ? -1 : 0;
+            var right = this.st.IsKeyDown(XnaInput.Keys.Right) ? 1 : 0;
+            return left + right;
+        }
+
+        private float YAxis2()
+        {
+            var up = this.st.IsKeyDown(XnaInput.Keys.Up) ? -1 : 0;
+            var down = this.st.IsKeyDown(XnaInput.Keys.Down) ? 1 : 0;
+            return up + down;
+        }
 
         public override float Get(Sliders sldr)
         {
@@ -104,6 +130,7 @@ namespace PaToRo_Desktop.Engine.Input
             {
                 0 => this.Get0(sldr),
                 1 => this.Get1(sldr),
+                2 => this.Get2(sldr),
                 _ => 0f
             };
         }
@@ -122,6 +149,15 @@ namespace PaToRo_Desktop.Engine.Input
             {
                 Sliders.LeftStickX => this.XAxis0(),
                 Sliders.LeftStickY => this.YAxis0(),
+                _ => 0f
+            };
+        }
+        private float Get2(Sliders sldr)
+        {
+            return sldr switch
+            {
+                Sliders.LeftStickX => this.XAxis2(),
+                Sliders.LeftStickY => this.YAxis2(),
                 _ => 0f
             };
         }
