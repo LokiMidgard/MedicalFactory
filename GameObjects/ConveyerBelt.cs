@@ -58,7 +58,7 @@ namespace MedicalFactory
             return Game1.game.Screen.scores[Game1.game.Screen.scores.Count - 1];
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             Speed = ((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds) + 1.0f) * MaxSpeed;
 
