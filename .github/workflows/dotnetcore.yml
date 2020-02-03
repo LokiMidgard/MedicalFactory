@@ -23,8 +23,8 @@ jobs:
             dotnet build --configuration Release /p:Platform=x86
       - name: Zip Release
         run: |
-            Compress-Archive -Path bin\Release\netcoreapp3.0\win-x64 -DestinationPath MedicalFactory-win-x64.zip
-            Compress-Archive -Path bin\Release\netcoreapp3.0\win-x86 -DestinationPath MedicalFactory-win-x86.zip
+            Compress-Archive -Path MedicalFactory\bin\Release\netcoreapp3.0\win-x64 -DestinationPath MedicalFactory-win-x64.zip
+            Compress-Archive -Path MedicalFactory\bin\Release\netcoreapp3.0\win-x86 -DestinationPath MedicalFactory-win-x86.zip
         shell: powershell
       - name: Create Release
         id: create_release
