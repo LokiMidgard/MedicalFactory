@@ -13,15 +13,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+        
+      - name: Fetch all history for all tags and branches
+        run: git fetch --prune --unshallow
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.6.1
+        with:
+          versionSpec: '5.1.x'
+          
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version:  '3.1.100'
-      - name: Nerdbank.GitVersioning
-        uses: AArnott/nbgv@v0.3
-        with:
-            setCommonVars: true
- 
+          
+      - name: Use GitVersion
+        id: gitversion # step id used as reference for output values
+        uses: gittools/actions/gitversion/execute@v0.6.1
+
       - name: Build with dotnet
         run: |
             dotnet build MedicalFactory --configuration Release /p:Platform=x64
@@ -37,8 +46,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.GitBuildVersion }}
-          release_name: Release ${{ env.GitBuildVersion }}
+          tag_name: ${{ steps.gitversion.outputs.fullSemVer }}
+          release_name: Release ${{ steps.gitversion.outputs.fullSemVer }}
           draft: false
           prerelease: false
       - name: Upload Release Asset x64
