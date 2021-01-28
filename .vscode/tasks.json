@@ -31,10 +31,9 @@
             "type": "process",
             "args": [
                 "watch",
-                "run",
-                "${workspaceFolder}/monoGameTest.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--project",
+                "${workspaceFolder}/MedicalFactory/MedicalFactory.csproj",
+                "run"
             ],
             "problemMatcher": "$msCompile"
         }
